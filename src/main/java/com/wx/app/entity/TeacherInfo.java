@@ -9,11 +9,11 @@ import lombok.Data;
 
 /**
  *
- * @TableName student_test_info
+ * @TableName teacher_info
  */
-@TableName(value ="student_test_info")
+@TableName(value ="teacher_info")
 @Data
-public class StudentTestInfo implements Serializable {
+public class TeacherInfo implements Serializable {
     /**
      *
      */
@@ -23,56 +23,27 @@ public class StudentTestInfo implements Serializable {
     /**
      *
      */
+    private Long userId;
+
+    /**
+     *
+     */
     private String name;
 
     /**
      *
      */
-    private String location;
+    private String sex;
 
     /**
      *
      */
-    private String day;
+    private String college;
 
     /**
      *
      */
-    private String hour;
-
-    /**
-     *
-     */
-    private Integer store;
-
-    /**
-     *
-     */
-    private Integer orderNum;
-
-    /**
-     *
-     */
-    private Integer version;
-
-    /**
-     *
-     */
-    private String semester;
-
-    /**
-     *
-     */
-    private Long headid;
-
-    /**
-     *
-     */
-    private String delFlag;
-
-    @TableField(exist = false)
-    private TeacherInfo teacherInfo;
-
+    private Long phoneNum;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

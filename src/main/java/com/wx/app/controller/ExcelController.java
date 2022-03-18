@@ -61,7 +61,7 @@ public class ExcelController {
     @PostMapping("upload")
     @ApiOperation(value = "Excel上传")
     public Result upload(MultipartFile file) throws IOException {
-        EasyExcel.read(file.getInputStream(), StudentInfoVo.class, new ReadListener<DemoData>() {
+        EasyExcel.read(file.getInputStream(), StudentFreeTestVo.class, new ReadListener<StudentFreeTestVo>() {
             /**
              * 单次缓存的数据量
              */
@@ -69,10 +69,11 @@ public class ExcelController {
             /**
              *临时存储
              */
-            private List<DemoData> cachedDataList = ListUtils.newArrayListWithExpectedSize(BATCH_COUNT);
+            private List<StudentFreeTestVo> cachedDataList = ListUtils.newArrayListWithExpectedSize(BATCH_COUNT);
 
             @Override
-            public void invoke(DemoData data, AnalysisContext context) {
+            public void invoke(StudentFreeTestVo data, AnalysisContext context) {
+
                 cachedDataList.add(data);
                 if (cachedDataList.size() >= BATCH_COUNT) {
                     saveData();
@@ -91,7 +92,7 @@ public class ExcelController {
              */
             private void saveData() {
                 log.info("{}条数据，开始存储数据库！", cachedDataList.size());
-                for(DemoData s:cachedDataList){
+                for(StudentFreeTestVo s:cachedDataList){
                     log.info("数据：{}", s.toString());
                 }
                 log.info("存储数据库成功！");

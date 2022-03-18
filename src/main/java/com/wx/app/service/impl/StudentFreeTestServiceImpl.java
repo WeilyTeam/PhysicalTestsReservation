@@ -8,7 +8,9 @@ import com.wx.app.enums.CommonCode;
 import com.wx.app.service.StudentFreeTestService;
 import com.wx.app.mapper.StudentFreeTestMapper;
 import com.wx.app.utils.Result;
+import com.wx.app.utils.UserUtils;
 import com.wx.app.vo.StudentFreeTestVo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 *
 */
 @Service
+@Slf4j
 public class StudentFreeTestServiceImpl extends ServiceImpl<StudentFreeTestMapper, StudentFreeTest>
 implements StudentFreeTestService{
     @Autowired
@@ -30,6 +33,8 @@ implements StudentFreeTestService{
 
     @Override
     public Result freeTestApplication(StudentFreeTest studentFreeTest) {
+        Long userId = UserUtils.getUserId();
+        studentFreeTest.setUserId(userId);
         int insert = studentFreeTestMapper.insert(studentFreeTest);
         if (insert > 0){
             return new Result(CommonCode.SUCCESS);

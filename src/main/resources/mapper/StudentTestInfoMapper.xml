@@ -6,25 +6,29 @@
 
     <resultMap id="BaseResultMap" type="com.wx.app.entity.StudentTestInfo">
             <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="time" column="time" jdbcType="TIMESTAMP"/>
             <result property="name" column="name" jdbcType="VARCHAR"/>
             <result property="location" column="location" jdbcType="VARCHAR"/>
+            <result property="day" column="day" jdbcType="VARCHAR"/>
+            <result property="hour" column="hour" jdbcType="VARCHAR"/>
             <result property="store" column="store" jdbcType="INTEGER"/>
             <result property="orderNum" column="order_num" jdbcType="INTEGER"/>
             <result property="version" column="version" jdbcType="INTEGER"/>
             <result property="semester" column="semester" jdbcType="VARCHAR"/>
+            <result property="headid" column="headId" jdbcType="BIGINT"/>
+            <result property="delFlag" column="del_flag" jdbcType="CHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,time,name,
-        location,store,order_num,
-        version,semester
+        id,name,location,
+        day,hour,store,
+        order_num,version,semester,
+        headId,del_flag
     </sql>
 
     <update id="updateOrderNum" parameterType="com.wx.app.entity.StudentTestInfo">
         update student_Test_info set
-            order_num=order_num+1
+            order_num=order_num+1, version=version+1
         where
-            id=#{id}
+            id=#{id} and version = #{version}
     </update>
 </mapper>

@@ -21,7 +21,7 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Accessors(chain = true)
+//@Accessors(chain = true)
 @EqualsAndHashCode
 @ContentRowHeight(20)
 @HeadRowHeight(20)

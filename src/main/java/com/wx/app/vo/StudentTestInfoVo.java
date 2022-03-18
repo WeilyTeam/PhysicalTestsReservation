@@ -1,11 +1,15 @@
-package com.wx.app.entity;
+package com.wx.app.vo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.io.Serializable;
+import com.wx.app.entity.StudentTest;
+import com.wx.app.entity.StudentTestInfo;
+import com.wx.app.entity.TeacherInfo;
 import lombok.Data;
+
+import java.io.Serializable;
 
 /**
  *
@@ -13,66 +17,42 @@ import lombok.Data;
  */
 @TableName(value ="student_test_info")
 @Data
-public class StudentTestInfo implements Serializable {
+public class StudentTestInfoVo implements Serializable {
     /**
      *
      */
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /**
-     *
-     */
     private String name;
 
-    /**
-     *
-     */
     private String location;
 
-    /**
-     *
-     */
     private String day;
 
-    /**
-     *
-     */
     private String hour;
 
-    /**
-     *
-     */
     private Integer store;
 
-    /**
-     *
-     */
     private Integer orderNum;
 
-    /**
-     *
-     */
     private Integer version;
 
-    /**
-     *
-     */
     private String semester;
 
-    /**
-     *
-     */
-    private Long headid;
-
-    /**
-     *
-     */
-    private String delFlag;
-
-    @TableField(exist = false)
     private TeacherInfo teacherInfo;
 
+    public StudentTestInfoVo(StudentTestInfo studentTestInfo) {
+        this.id = studentTestInfo.getId();
+        this.name = studentTestInfo.getName();
+        this.location = studentTestInfo.getLocation();
+        this.day = studentTestInfo.getDay();
+        this.hour = studentTestInfo.getHour();
+        this.store = studentTestInfo.getStore();
+        this.orderNum = studentTestInfo.getOrderNum();
+        this.version = studentTestInfo.getVersion();
+        this.semester = studentTestInfo.getSemester();
+    }
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

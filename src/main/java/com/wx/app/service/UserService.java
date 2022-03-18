@@ -16,4 +16,7 @@ public interface UserService {
     Result getStudentInfo(Long userId);
 
     Result deleteStudent(Long userId);
+
+    Result getstuInfo();
+
 }

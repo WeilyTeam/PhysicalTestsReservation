@@ -6,6 +6,7 @@ import com.wx.app.service.StudentFreeTestService;
 import com.wx.app.utils.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @Api(value = "免测Controller", tags = "免测相关")
 @RequestMapping("/freeTest")
+@Slf4j
 public class FreeTestController {
 
     @Autowired
@@ -37,7 +39,8 @@ public class FreeTestController {
 
     @PutMapping("/agreeApplication")
     @ApiOperation(value = "同意免测")
-    public Result agreeApplication(@RequestBody Long id){
+    public Result agreeApplication(Long id){
+        log.info("id: {}",id);
         return studentFreeTestService.agreeApplication(id);
     }
 

@@ -4,10 +4,11 @@ package com.wx.app.service.impl;/**
  * @apiNote
  */
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wx.app.dto.OrderDTO;
 import com.wx.app.dto.PageDTO;
-import com.wx.app.entity.LoginUser;
 import com.wx.app.entity.StudentTest;
 import com.wx.app.entity.StudentTestInfo;
 import com.wx.app.enums.CommonCode;
@@ -15,9 +16,8 @@ import com.wx.app.service.OrderService;
 import com.wx.app.service.StudentTestInfoService;
 import com.wx.app.service.StudentTestService;
 import com.wx.app.utils.Result;
+import com.wx.app.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -85,7 +85,7 @@ public class OrderServiceImpl implements OrderService {
         if (studentTestInfo.getStore().equals(studentTestInfo.getOrderNum())){
             throw new RuntimeException("人数已满!!!");
         }
-        Long userId = getUserId();
+        Long userId = UserUtils.getUserId();
         StudentTest studentTest =  studentTestService.checkOrder(userId, studentTestInfo.getSemester());
         if (studentTest != null){
             throw new RuntimeException("本学期已预约");
@@ -103,7 +103,7 @@ public class OrderServiceImpl implements OrderService {
     private Long createOrder(StudentTestInfo studentTestInfo){
         StudentTest studentTest=new StudentTest();
 
-        Long userId = getUserId();
+        Long userId = UserUtils.getUserId();
 
         studentTest.setUserId(userId)
                 .setTestId(studentTestInfo.getId())
@@ -114,11 +114,6 @@ public class OrderServiceImpl implements OrderService {
         return studentTest.getId();
     }
 
-    private Long getUserId(){
-        UsernamePasswordAuthenticationToken authentication = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
-        LoginUser principal = (LoginUser) authentication.getPrincipal();
-        Long id = principal.getUser().getId();
-        return id;
-    }
+
 
 }

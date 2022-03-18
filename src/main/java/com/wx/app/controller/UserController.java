@@ -28,7 +28,7 @@ public class UserController {
      */
     @ApiOperation(value = "重置学生密码")
     @PutMapping("/resetStuPwd")
-    public Result resetStuPwd(@RequestBody Long userId){
+    public Result resetStuPwd(Long userId){
         return userService.resetStuPwd(userId);
     }
 
@@ -65,5 +65,16 @@ public class UserController {
     public Result studentInfo(Long userId){
         Result studentList = userService.getStudentInfo(userId);
         return studentList;
+    }
+
+    /**
+     * 通过token查询学生信息
+     * @param
+     * @return
+     */
+    @ApiOperation(value = "通过学生token获取学生信息")
+    @GetMapping("/stuInfo")
+    public Result stuInfo(){
+        return userService.getstuInfo();
     }
 }

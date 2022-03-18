@@ -11,6 +11,7 @@ import com.wx.app.enums.CommonCode;
 import com.wx.app.mapper.UserMapper;
 import com.wx.app.service.UserService;
 import com.wx.app.utils.Result;
+import com.wx.app.utils.UserUtils;
 import com.wx.app.vo.StudentInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -57,11 +58,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public Result deleteStudent(Long userId) {
         User user = userMapper.selectById(userId);
+        user.setDelFlag(1);
         user.setStatus("1");
         int i = userMapper.updateById(user);
         if (i != 0){
             return new Result(CommonCode.SUCCESS);
         }
         return new Result(CommonCode.FAILURE);
+    }
+
+    @Override
+    public Result getstuInfo() {
+        Long userId = UserUtils.getUserId();
+        StudentInfoVo studentList = userMapper.getStudentInfo(userId);
+        Result ok = new Result(CommonCode.SUCCESS, studentList);
+        return ok;
     }
 }

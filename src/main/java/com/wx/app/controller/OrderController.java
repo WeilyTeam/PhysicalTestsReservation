@@ -10,15 +10,14 @@ import com.wx.app.dto.OrderDTO;
 import com.wx.app.dto.PageDTO;
 import com.wx.app.entity.StudentTest;
 import com.wx.app.entity.StudentTestInfo;
-import com.wx.app.enums.CommonCode;
 import com.wx.app.service.OrderService;
 import com.wx.app.utils.Result;
+import com.wx.app.utils.UserUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @RestController
@@ -78,6 +77,8 @@ public class OrderController {
         return new Result(200,"操作成功",list);
     }
 
+
+
     /**
      * 预约接口
      * @param orderDTO
@@ -90,6 +91,8 @@ public class OrderController {
             System.out.println("当前请求被限流，直接抛弃，无法调用后序逻辑");
             return new Result(500,"当前人数过多，请重试!");
         }
+        Long userId = UserUtils.getUserId();
+        orderDTO.setTestId(userId);
         orderService.orderByid(orderDTO);
         return new Result(200,"操作成功");
     }

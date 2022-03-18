@@ -5,7 +5,6 @@ package com.wx.app.filter;/**
  */
 
 import com.wx.app.entity.LoginUser;
-import com.wx.app.entity.StudentTestInfo;
 import com.wx.app.utils.JwtUtil;
 import com.wx.app.utils.RedisCache;
 import com.wx.app.vo.StudentInfoVo;

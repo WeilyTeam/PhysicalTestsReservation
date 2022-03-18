@@ -7,8 +7,6 @@ import com.wx.app.entity.StudentTest;
 import com.wx.app.entity.StudentTestInfo;
 import com.wx.app.utils.Result;
 
-import java.util.List;
-
 /**
  * @author lingqu
  * @date 2022/3/9
