@@ -55,4 +55,14 @@ public class LoginController {
     public Result logout(){
         return loginService.logout();
     }
+
+    /**
+     * 登出接口
+     * @return
+     */
+    @ApiOperation(value = "刷新token")
+    @GetMapping("refreshToken")
+    public Result refreshToken(){
+        return loginService.refreshToken();
+    }
 }

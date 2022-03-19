@@ -61,7 +61,7 @@ public enum CommonCode {
     /**
      * token非法
      */
-    TOKEN_ILLEGAL(403,"token过期,请重新登录");
+    TOKEN_ILLEGAL(10001,"token过期,请重新登录");
 
     private Integer code;
     private String msg;

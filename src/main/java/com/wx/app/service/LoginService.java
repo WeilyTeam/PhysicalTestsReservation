@@ -14,4 +14,6 @@ public interface LoginService {
 
     Result register(User user);
 
+    Result refreshToken();
+
 }

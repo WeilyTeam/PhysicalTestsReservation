@@ -57,8 +57,8 @@ public class LoginServiceImpl implements LoginService {
         //如果登录成功 生成jwt
         LoginUser loginUser = (LoginUser) authenticate.getPrincipal();
         String userId = loginUser.getUser().getId().toString();
-        String jwt = JwtUtil.createJWT(userId,1000*15L);
-        String refreshToken = JwtUtil.createJWT(userId,1000*60*60L);
+        String jwt = JwtUtil.createJWT(userId,1000*60*60L);
+        String refreshToken = JwtUtil.createJWT(userId,1000*60*60*12L);
         Map<String,String> map = new HashMap<String,String>();
         map.put("token", jwt);
         map.put("refreshToken", refreshToken);
@@ -106,6 +106,15 @@ public class LoginServiceImpl implements LoginService {
         user.setCreateBy(userId);
         userManager.insert(user);
         return new Result(CommonCode.SUCCESS_REGISTRATION);
+    }
+
+    @Override
+    public Result refreshToken() {
+        Long userId = UserUtils.getUserId();
+        String jwt = JwtUtil.createJWT(userId.toString(),1000*60*60L);
+        Map<String,String> map = new HashMap<String,String>();
+        map.put("token", jwt);
+        return new Result(CommonCode.SUCCESS,map);
     }
 
 
