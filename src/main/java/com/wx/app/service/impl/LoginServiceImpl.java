@@ -14,6 +14,7 @@ import com.wx.app.enums.CommonCode;
 import com.wx.app.utils.JwtUtil;
 import com.wx.app.utils.RedisCache;
 import com.wx.app.utils.Result;
+import com.wx.app.utils.UserUtils;
 import com.wx.app.vo.StudentInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -50,20 +51,22 @@ public class LoginServiceImpl implements LoginService {
 
         //登录失败，给出相应提示
         if(Objects.isNull(authenticate)){
-            throw new RuntimeException("登录失败");
+            return new Result(CommonCode.FAILURE);
         }
 
         //如果登录成功 生成jwt
         LoginUser loginUser = (LoginUser) authenticate.getPrincipal();
         String userId = loginUser.getUser().getId().toString();
-        String jwt = JwtUtil.createJWT(userId);
+        String jwt = JwtUtil.createJWT(userId,1000*15L);
+        String refreshToken = JwtUtil.createJWT(userId,1000*60*60L);
         Map<String,String> map = new HashMap<String,String>();
         map.put("token", jwt);
+        map.put("refreshToken", refreshToken);
 
         //把完整用户信息保存到redis
         StudentInfoVo studentInfo = userManager.getStudentInfo(Long.parseLong(userId));
         studentInfo.setLoginUser(loginUser);
-        redisCache.setCacheObject("login:"+userId, studentInfo,1, TimeUnit.HOURS);
+        redisCache.setCacheObject("login:"+userId, studentInfo,12, TimeUnit.HOURS);
 
         return new Result(CommonCode.SUCCESS_LOGIN, map);
     }
@@ -99,10 +102,8 @@ public class LoginServiceImpl implements LoginService {
         user.setPassword(passwordEncoder);
 
         //得到执行人的id(如果可以每个人注册则不需要这个，并且取消注册接口的拦截)
-        UsernamePasswordAuthenticationToken authentication = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
-        LoginUser principal = (LoginUser) authentication.getPrincipal();
-        Long id = principal.getUser().getId();
-        user.setCreateBy(id);
+        Long userId = UserUtils.getUserId();
+        user.setCreateBy(userId);
         userManager.insert(user);
         return new Result(CommonCode.SUCCESS_REGISTRATION);
     }

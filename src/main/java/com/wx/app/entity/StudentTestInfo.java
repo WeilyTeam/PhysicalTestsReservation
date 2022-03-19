@@ -14,65 +14,31 @@ import lombok.Data;
 @TableName(value ="student_test_info")
 @Data
 public class StudentTestInfo implements Serializable {
-    /**
-     *
-     */
+
     @TableId(type = IdType.AUTO)
     private Long id;
-
-    /**
-     *
-     */
     private String name;
 
-    /**
-     *
-     */
     private String location;
 
-    /**
-     *
-     */
     private String day;
 
-    /**
-     *
-     */
     private String hour;
 
-    /**
-     *
-     */
     private Integer store;
 
-    /**
-     *
-     */
     private Integer orderNum;
 
-    /**
-     *
-     */
     private Integer version;
 
-    /**
-     *
-     */
     private String semester;
 
-    /**
-     *
-     */
     private Long headid;
 
-    /**
-     *
-     */
     private String delFlag;
 
     @TableField(exist = false)
     private TeacherInfo teacherInfo;
-
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

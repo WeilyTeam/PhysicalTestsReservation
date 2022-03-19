@@ -6,6 +6,7 @@ package com.wx.app.service.impl;/**
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wx.app.dto.PageDTO;
+import com.wx.app.dto.StuPwdDTO;
 import com.wx.app.entity.User;
 import com.wx.app.enums.CommonCode;
 import com.wx.app.mapper.UserMapper;
@@ -73,5 +74,22 @@ public class UserServiceImpl implements UserService {
         StudentInfoVo studentList = userMapper.getStudentInfo(userId);
         Result ok = new Result(CommonCode.SUCCESS, studentList);
         return ok;
+    }
+
+    @Override
+    public Result updateStuPwd(StuPwdDTO stuPwdDTO) {
+        Long userId = UserUtils.getUserId();
+        User user = userMapper.selectById(userId);
+        //if()
+        //加密密码
+        PasswordEncoder ps = new BCryptPasswordEncoder();
+        if (ps.matches(stuPwdDTO.getPrePassword(),
+                user.getPassword())){
+            String passwordEncoder = ps.encode(stuPwdDTO.getNewPassword());
+            user.setPassword(passwordEncoder);
+            userMapper.updateById(user);
+            return new Result(CommonCode.SUCCESS);
+        }
+        return new Result(CommonCode.FAILURE_TO_CHANGE_PASSWORD);
     }
 }

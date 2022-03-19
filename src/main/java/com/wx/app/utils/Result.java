@@ -1,23 +1,29 @@
 package com.wx.app.utils;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.wx.app.enums.CommonCode;
+import lombok.ToString;
 
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+//@JsonInclude(JsonInclude.Include.NON_NULL)
+@ToString
 public class Result<T> extends JSON {
     /**
      * 状态码
      */
+
     private Integer code;
     /**
      * 提示信息，如果有错误时，前端可以获取该字段进行提示
      */
+
     private String msg;
     /**
      * 查询到的结果数据，
      */
+
     private T data;
 
     public Result(Integer code, String msg) {

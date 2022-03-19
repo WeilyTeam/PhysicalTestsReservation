@@ -27,4 +27,6 @@ public interface OrderService {
 
     Result deleteOrderById(Long id);
 
+    Result getOrderInfo();
+
 }

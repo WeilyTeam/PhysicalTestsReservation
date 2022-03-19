@@ -26,7 +26,7 @@
     </sql>
 
     <update id="updateOrderNum" parameterType="com.wx.app.entity.StudentTestInfo">
-        update student_Test_info set
+        update student_test_info set
             order_num=order_num+1, version=version+1
         where
             id=#{id} and version = #{version}

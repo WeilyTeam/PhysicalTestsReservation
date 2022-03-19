@@ -29,9 +29,19 @@ public enum CommonCode {
     FAILURE(500,"操作失败"),
 
     /**
+     * 旧密码错误，修改密码失败
+     */
+    FAILURE_TO_CHANGE_PASSWORD(500,"旧密码错误，修改密码失败"),
+
+    /**
      * 参数验证失败
      */
     VALIDATE_FAILED(404,"参数验证失败"),
+
+    /**
+     * 登录过期，请重新登录
+     */
+    LOGIN_DATE(401,"登录过期，请重新登录"),
 
     /**
      * 注册失败，该用户已存在
@@ -51,7 +61,7 @@ public enum CommonCode {
     /**
      * token非法
      */
-    TOKEN_ILLEGAL(403,"token非法");
+    TOKEN_ILLEGAL(403,"token过期,请重新登录");
 
     private Integer code;
     private String msg;

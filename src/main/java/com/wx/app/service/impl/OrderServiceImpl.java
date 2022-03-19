@@ -11,7 +11,11 @@ import com.wx.app.dto.OrderDTO;
 import com.wx.app.dto.PageDTO;
 import com.wx.app.entity.StudentTest;
 import com.wx.app.entity.StudentTestInfo;
+import com.wx.app.entity.TeacherInfo;
 import com.wx.app.enums.CommonCode;
+import com.wx.app.mapper.StudentTestInfoMapper;
+import com.wx.app.mapper.StudentTestMapper;
+import com.wx.app.mapper.TeacherInfoMapper;
 import com.wx.app.service.OrderService;
 import com.wx.app.service.StudentTestInfoService;
 import com.wx.app.service.StudentTestService;
@@ -21,6 +25,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @Transactional
 public class OrderServiceImpl implements OrderService {
@@ -29,7 +36,17 @@ public class OrderServiceImpl implements OrderService {
     private StudentTestInfoService studentTestInfoService;
 
     @Autowired
+    private StudentTestInfoMapper StudentTestInfoMapper;
+
+    @Autowired
     private StudentTestService studentTestService;
+
+    @Autowired
+    private StudentTestMapper studentTestMapper;
+
+    @Autowired
+    private TeacherInfoMapper teacherInfoMapper;
+
     @Override
     public void orderByid(OrderDTO orderDTO) {
         //校验库存
@@ -77,6 +94,23 @@ public class OrderServiceImpl implements OrderService {
             return new Result(CommonCode.SUCCESS);
         }
         return new Result(CommonCode.FAILURE);
+    }
+
+    @Override
+    public Result getOrderInfo() {
+        Long userId = UserUtils.getUserId();
+        QueryWrapper<StudentTest> queryWrapper = new QueryWrapper<StudentTest>();
+        queryWrapper.eq("user_id", userId);
+
+        List<StudentTest> studentTests = studentTestMapper.selectList(queryWrapper);
+        List<StudentTestInfo> studentTestInfo = new ArrayList<StudentTestInfo>();
+        for(StudentTest studentTest:studentTests){
+            StudentTestInfo studentTestInfo1 = StudentTestInfoMapper.selectById(studentTest.getTestId());
+            TeacherInfo teacherInfo = teacherInfoMapper.selectById(studentTestInfo1.getHeadid());
+            studentTestInfo1.setTeacherInfo(teacherInfo);
+            studentTestInfo.add(studentTestInfo1);
+        }
+        return new Result(CommonCode.SUCCESS,studentTestInfo);
     }
 
     //校验库存

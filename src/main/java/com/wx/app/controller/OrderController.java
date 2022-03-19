@@ -44,6 +44,17 @@ public class OrderController {
     }
 
     /**
+     * 根据token获取体测信息
+     * @param
+     * @return
+     */
+    @ApiOperation(value = "根据token获取体测信息")
+    @GetMapping("/orderInfo")
+    public Result getOrderInfo() {
+        return orderService.getOrderInfo();
+    }
+
+    /**
      * 添加体测信息
      * @param studentTestInfo
      * @return

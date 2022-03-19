@@ -1,6 +1,7 @@
 package com.wx.app.service;
 
 import com.wx.app.dto.PageDTO;
+import com.wx.app.dto.StuPwdDTO;
 import com.wx.app.utils.Result;
 
 /**
@@ -19,4 +20,5 @@ public interface UserService {
 
     Result getstuInfo();
 
+    Result updateStuPwd(StuPwdDTO stuPwdDTO);
 }
