@@ -11,4 +11,6 @@ import com.wx.app.utils.Result;
 public interface TeacherInfoService extends IService<TeacherInfo> {
 
     Result getTeacherList(PageDTO pageDTO);
+
+    Result addTeacher(TeacherInfo teacherInfo);
 }

@@ -28,9 +28,9 @@ public class AccessDeniedHandlerImpl implements AccessDeniedHandler {
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
 
-        Map<String, String> map = new HashMap<>();
-        map.put("data", CommonCode.FORBIDDEN.getmsg());
-        map.put("msg", CommonCode.FORBIDDEN.getCode().toString());
+        Map<String, Object> map = new HashMap<>();
+        map.put("code", CommonCode.FORBIDDEN.getCode());
+        map.put("msg", CommonCode.FORBIDDEN.getmsg());
         String json = JSON.toJSONString(map);
         log.info("json::{}",json);
         WebUtils.renderString(response,json);

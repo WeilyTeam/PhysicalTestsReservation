@@ -30,6 +30,7 @@ public class StudentFreeTestVo implements Serializable {
 
     @ColumnWidth(10)
     @ExcelProperty("姓名")
+    @ExcelIgnore
     private String name;
 
 

@@ -47,20 +47,21 @@ public class LoginServiceImpl implements LoginService {
     public Result login(User user) {
         //使用Authentication authenticate认证
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getUserName(),user.getPassword());
-        Authentication authenticate = authenticationManager.authenticate(authenticationToken);
-
-        //登录失败，给出相应提示
-        if(Objects.isNull(authenticate)){
-            return new Result(CommonCode.FAILURE);
+        Authentication authenticate;
+        try {
+            authenticate = authenticationManager.authenticate(authenticationToken);
+        }catch (Exception e){
+            return new Result(CommonCode.FAILURE_TO_LOGIN);
         }
+
 
         //如果登录成功 生成jwt
         LoginUser loginUser = (LoginUser) authenticate.getPrincipal();
         String userId = loginUser.getUser().getId().toString();
-        String jwt = JwtUtil.createJWT(userId,1000*60*60L);
-        String refreshToken = JwtUtil.createJWT(userId,1000*60*60*12L);
+        String token = JwtUtil.createJWT(userId,1000*60*60L);
+        String refreshToken = JwtUtil.createJWT(userId,1000*60*60*24*5L);
         Map<String,String> map = new HashMap<String,String>();
-        map.put("token", jwt);
+        map.put("token", token);
         map.put("refreshToken", refreshToken);
 
         //把完整用户信息保存到redis
@@ -111,11 +112,10 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public Result refreshToken() {
         Long userId = UserUtils.getUserId();
-        String jwt = JwtUtil.createJWT(userId.toString(),1000*60*60L);
+        String token = JwtUtil.createJWT(userId.toString(),1000*60*60L);
         Map<String,String> map = new HashMap<String,String>();
-        map.put("token", jwt);
+        map.put("token", token);
         return new Result(CommonCode.SUCCESS,map);
     }
-
 
 }

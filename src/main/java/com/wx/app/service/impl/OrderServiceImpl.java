@@ -4,7 +4,6 @@ package com.wx.app.service.impl;/**
  * @apiNote
  */
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wx.app.dto.OrderDTO;
@@ -48,13 +47,20 @@ public class OrderServiceImpl implements OrderService {
     private TeacherInfoMapper teacherInfoMapper;
 
     @Override
-    public void orderByid(OrderDTO orderDTO) {
+    public Result orderByid(OrderDTO orderDTO) {
         //校验库存
-        StudentTestInfo studentTestInfo = checkStock(orderDTO.getTestId());
+        StudentTestInfo studentTestInfo = null;
+        try {
+            studentTestInfo = checkStock(orderDTO.getTestId());
+        } catch (RuntimeException e) {
+            String message = e.getMessage();
+            return new Result(500,message);
+        }
         //扣除库存
         updateSale(studentTestInfo);
         //创建订单
         Long order = createOrder(studentTestInfo);
+        return new Result(CommonCode.SUCCESS);
     }
 
     @Override
@@ -111,6 +117,15 @@ public class OrderServiceImpl implements OrderService {
             studentTestInfo.add(studentTestInfo1);
         }
         return new Result(CommonCode.SUCCESS,studentTestInfo);
+    }
+
+    @Override
+    public Result updateTest(StudentTestInfo studentTestInfo) {
+        int i = StudentTestInfoMapper.updateById(studentTestInfo);
+        if (i>0){
+            return new Result(CommonCode.SUCCESS);
+        }
+        return new Result(CommonCode.FAILURE);
     }
 
     //校验库存

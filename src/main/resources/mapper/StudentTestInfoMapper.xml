@@ -31,4 +31,7 @@
         where
             id=#{id} and version = #{version}
     </update>
+
+    <!--select *  FROM `student_test_info` where date(day) >= date('2019-09-30')-->
+
 </mapper>

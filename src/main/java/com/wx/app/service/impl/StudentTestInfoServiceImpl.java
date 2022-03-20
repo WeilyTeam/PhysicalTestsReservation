@@ -33,6 +33,7 @@ public class StudentTestInfoServiceImpl extends ServiceImpl<StudentTestInfoMappe
         List<StudentTestInfo> records = studentTestInfos.getRecords();
         for (StudentTestInfo record:records){
             TeacherInfo teacherInfo = teacherInfoMapper.selectById(record.getHeadid());
+            record.setIsFull(record.getOrderNum().equals(record.getStore()));
             record.setTeacherInfo(teacherInfo);
         }
         studentTestInfos.setRecords(records);

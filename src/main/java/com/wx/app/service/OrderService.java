@@ -15,7 +15,7 @@ import com.wx.app.utils.Result;
 
 
 public interface OrderService {
-    void orderByid(OrderDTO orderDTO);
+    Result orderByid(OrderDTO orderDTO);
 
     Page<StudentTestInfo> testList(PageDTO pageDTO);
 
@@ -29,4 +29,5 @@ public interface OrderService {
 
     Result getOrderInfo();
 
+    Result updateTest(StudentTestInfo studentTestInfo);
 }

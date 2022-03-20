@@ -29,9 +29,24 @@ public enum CommonCode {
     FAILURE(500,"操作失败"),
 
     /**
+     * 操作失败，人数已满!!!"
+     */
+    NUMBER_OF_FULL(500,"操作失败,人数已满!!!"),
+
+    /**
+     * 操作失败
+     */
+    FAILURE_TO_LOGIN(500,"登录失败，学号或者密码错误"),
+
+    /**
+     * 当前人数过多，请重试!
+     */
+    FAILURE_TO_ORDER(500,"当前人数过多，请重试!"),
+
+    /**
      * 旧密码错误，修改密码失败
      */
-    FAILURE_TO_CHANGE_PASSWORD(500,"旧密码错误，修改密码失败"),
+    FAILURE_TO_CHANGE_PASSWORD(500,"修改密码失败，旧密码错误"),
 
     /**
      * 参数验证失败

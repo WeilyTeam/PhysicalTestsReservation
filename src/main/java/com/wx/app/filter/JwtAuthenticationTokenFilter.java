@@ -51,9 +51,9 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             Claims claims = JwtUtil.parseJWT(token);
             userId = claims.getSubject();
         } catch (Exception e) {
-            Map<String, String> map = new HashMap<>();
-            map.put("data", CommonCode.TOKEN_ILLEGAL.getmsg());
-            map.put("msg", CommonCode.TOKEN_ILLEGAL.getCode().toString());
+            Map<String, Object> map = new HashMap<>();
+            map.put("code", CommonCode.TOKEN_ILLEGAL.getCode());
+            map.put("msg", CommonCode.TOKEN_ILLEGAL.getmsg());
             String json = JSON.toJSONString(map);
             WebUtils.renderString(response,json);
             return;
@@ -63,9 +63,9 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         String redisKey = "login:" + userId;
         StudentInfoVo studentTestInfo = redisCache.getCacheObject(redisKey);
         if (studentTestInfo == null){
-            Map<String, String> map = new HashMap<>();
-            map.put("data", CommonCode.LOGIN_DATE.getmsg());
-            map.put("msg", CommonCode.LOGIN_DATE.getCode().toString());
+            Map<String, Object> map = new HashMap<>();
+            map.put("code", CommonCode.LOGIN_DATE.getCode());
+            map.put("msg", CommonCode.LOGIN_DATE.getmsg());
             String json = JSON.toJSONString(map);
             WebUtils.renderString(response,json);
             return;

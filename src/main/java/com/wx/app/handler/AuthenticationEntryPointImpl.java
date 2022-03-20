@@ -28,9 +28,9 @@ public class AuthenticationEntryPointImpl implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
 
-        Map<String, String> map = new HashMap<>();
-        map.put("data", CommonCode.TOKEN_ILLEGAL.getmsg());
-        map.put("msg", CommonCode.TOKEN_ILLEGAL.getCode().toString());
+        Map<String, Object> map = new HashMap<>();
+        map.put("code", CommonCode.TOKEN_ILLEGAL.getCode());
+        map.put("msg", CommonCode.TOKEN_ILLEGAL.getmsg());
         String json = JSON.toJSONString(map);
         log.info("json::{}",json);
         WebUtils.renderString(response,json);

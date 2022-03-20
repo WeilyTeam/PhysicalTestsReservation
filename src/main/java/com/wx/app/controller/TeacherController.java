@@ -1,6 +1,7 @@
 package com.wx.app.controller;
 
 import com.wx.app.dto.PageDTO;
+import com.wx.app.entity.TeacherInfo;
 import com.wx.app.service.TeacherInfoService;
 import com.wx.app.utils.Result;
 import io.swagger.annotations.Api;
@@ -32,5 +33,16 @@ public class TeacherController {
     @GetMapping("/list")
     public Result teacherList(PageDTO pageDTO) {
         return teacherInfoService.getTeacherList(pageDTO);
+    }
+
+    /**
+     * 老师列表
+     * @param
+     * @return
+     */
+    @ApiOperation(value = "负责老师列表")
+    @PostMapping("/add")
+    public Result teacherList(@RequestBody TeacherInfo teacherInfo) {
+        return teacherInfoService.addTeacher(teacherInfo);
     }
 }

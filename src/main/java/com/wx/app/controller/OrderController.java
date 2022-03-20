@@ -10,11 +10,13 @@ import com.wx.app.dto.OrderDTO;
 import com.wx.app.dto.PageDTO;
 import com.wx.app.entity.StudentTest;
 import com.wx.app.entity.StudentTestInfo;
+import com.wx.app.enums.CommonCode;
 import com.wx.app.service.OrderService;
 import com.wx.app.utils.Result;
 import com.wx.app.utils.UserUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +25,7 @@ import java.util.concurrent.TimeUnit;
 @RestController
 @Api(value = "预约Controller", tags = "预约相关")
 @RequestMapping("/reserve")
+@Slf4j
 public class OrderController {
 
     @Autowired
@@ -41,6 +44,18 @@ public class OrderController {
     public Result testList(PageDTO pageDTO) {
         Page<StudentTestInfo> list = orderService.testList(pageDTO);
         return new Result(200,"操作成功",list);
+    }
+
+    /**
+     * 获取体测列表
+     * @param
+     * @return
+     */
+    @ApiOperation(value = "修改体测信息")
+    @PutMapping("/updateTest")
+    public Result updateTest(@RequestBody StudentTestInfo studentTestInfo) {
+        log.info("studentTestInfo{}",studentTestInfo.toString());
+        return orderService.updateTest(studentTestInfo);
     }
 
     /**
@@ -99,13 +114,13 @@ public class OrderController {
     @PostMapping("/order")
     public Result order(@RequestBody OrderDTO orderDTO) {
         if (!rateLimiter.tryAcquire(3, TimeUnit.SECONDS)){
-            System.out.println("当前请求被限流，直接抛弃，无法调用后序逻辑");
-            return new Result(500,"当前人数过多，请重试!");
+            log.info("当前请求被限流，直接抛弃，无法调用后序逻辑");
+            return new Result(CommonCode.FAILURE_TO_ORDER);
         }
         Long userId = UserUtils.getUserId();
         orderDTO.setTestId(userId);
-        orderService.orderByid(orderDTO);
-        return new Result(200,"操作成功");
+
+        return orderService.orderByid(orderDTO);
     }
 
     /**
