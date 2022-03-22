@@ -1,6 +1,9 @@
 package com.wx.app.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,8 +24,9 @@ public class StudentTest implements Serializable {
      *
      */
     @TableId
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
-
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long userId;
 
     private String semester;

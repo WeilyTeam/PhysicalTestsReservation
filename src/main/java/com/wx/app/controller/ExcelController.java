@@ -62,7 +62,7 @@ public class ExcelController {
      * 2. 由于默认一行行的读取excel，所以需要创建excel一行一行的回调监听器
      * 3. 直接读即可
      */
-    @PostMapping("upload")
+    @PostMapping("uploadFreeTestStudent")
     @ApiOperation(value = "Excel上传")
     public Result upload(MultipartFile file) throws IOException {
         EasyExcel.read(file.getInputStream(), StudentFreeTestVo.class, new ReadListener<StudentFreeTestVo>() {

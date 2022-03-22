@@ -5,6 +5,8 @@ import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.write.style.ColumnWidth;
 import com.alibaba.excel.annotation.write.style.ContentRowHeight;
 import com.alibaba.excel.annotation.write.style.HeadRowHeight;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -21,7 +23,6 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-//@Accessors(chain = true)
 @EqualsAndHashCode
 @ContentRowHeight(20)
 @HeadRowHeight(20)
@@ -30,7 +31,6 @@ public class StudentFreeTestVo implements Serializable {
 
     @ColumnWidth(10)
     @ExcelProperty("姓名")
-    @ExcelIgnore
     private String name;
 
 
@@ -74,8 +74,10 @@ public class StudentFreeTestVo implements Serializable {
 
 
     @ExcelIgnore
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
     @ExcelIgnore
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long userId;
     @ExcelIgnore
     private String isPass;

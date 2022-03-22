@@ -1,7 +1,10 @@
 package com.wx.app.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,6 +29,7 @@ public class User implements Serializable {
     * 主键
     */
     @TableId
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
     /**
     * 用户名
@@ -46,6 +50,7 @@ public class User implements Serializable {
     /**
     * 创建人的用户id
     */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long createBy;
     /**
     * 创建时间
@@ -54,6 +59,7 @@ public class User implements Serializable {
     /**
     * 更新人
     */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long updateBy;
     /**
     * 更新时间

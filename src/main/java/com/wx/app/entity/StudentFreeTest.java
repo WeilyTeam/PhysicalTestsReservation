@@ -1,5 +1,8 @@
 package com.wx.app.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,11 +22,13 @@ public class StudentFreeTest implements Serializable {
     /**
      *
      */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
 
     /**
      *
      */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long userId;
 
     /**

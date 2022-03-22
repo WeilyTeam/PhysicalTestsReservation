@@ -20,6 +20,7 @@ import com.wx.app.service.StudentTestInfoService;
 import com.wx.app.service.StudentTestService;
 import com.wx.app.utils.Result;
 import com.wx.app.utils.UserUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +30,7 @@ import java.util.List;
 
 @Service
 @Transactional
+@Slf4j
 public class OrderServiceImpl implements OrderService {
 
     @Autowired
@@ -122,7 +124,8 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Result updateTest(StudentTestInfo studentTestInfo) {
         int i = StudentTestInfoMapper.updateById(studentTestInfo);
-        if (i>0){
+        log.info("updateById  {}",i);
+        if (i > 0){
             return new Result(CommonCode.SUCCESS);
         }
         return new Result(CommonCode.FAILURE);
