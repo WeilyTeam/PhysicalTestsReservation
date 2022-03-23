@@ -99,8 +99,9 @@ public class OrderController {
     @ApiOperation(value = "获取已预约列表")
     @GetMapping("/orderList")
     public Result orderList(PageDTO pageDTO, Long id) {
-        Page<StudentTest> list = orderService.orderList(pageDTO, id);
-        return new Result(200,"操作成功",list);
+        log.info("pageDTO{}",pageDTO.toString());
+        log.info("id{}",id);
+        return orderService.orderList(pageDTO, id);
     }
 
 

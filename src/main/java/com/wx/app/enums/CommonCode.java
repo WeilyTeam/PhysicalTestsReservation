@@ -19,7 +19,7 @@ public enum CommonCode {
     SUCCESS_LOGOUT(200,"注销成功"),
 
     /**
-     * 注册失败，该用户已存在
+     * 注册成功"
      */
     SUCCESS_REGISTRATION(200,"注册成功"),
 
@@ -34,7 +34,7 @@ public enum CommonCode {
     NUMBER_OF_FULL(500,"操作失败,人数已满!!!"),
 
     /**
-     * 操作失败
+     * 登录失败，学号或者密码错误
      */
     FAILURE_TO_LOGIN(500,"登录失败，学号或者密码错误"),
 
@@ -64,7 +64,7 @@ public enum CommonCode {
     FAILED_REGISTRATION(406,"注册失败，该用户已存在"),
 
     /**
-     * 未登录或token已过期
+     * 认证失败请重新登录
      */
     UNAUTHORIZED(401,"认证失败请重新登录"),
 
@@ -74,7 +74,7 @@ public enum CommonCode {
     FORBIDDEN(403,"没有操作权限"),
 
     /**
-     * token非法
+     * token过期,请重新登录
      */
     TOKEN_ILLEGAL(10001,"token过期,请重新登录");
 

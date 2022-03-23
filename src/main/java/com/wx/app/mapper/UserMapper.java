@@ -9,5 +9,8 @@ import org.apache.ibatis.annotations.Param;
 public interface UserMapper extends BaseMapper<User> {
     Page<StudentInfoVo> getStudentList (@Param("page") Page<StudentInfoVo> page);
 
+
     StudentInfoVo getStudentInfo(Long userId);
+
+    Page<StudentInfoVo> getStudentById(@Param("page") Page<StudentInfoVo> page, @Param("id") Long id);
 }

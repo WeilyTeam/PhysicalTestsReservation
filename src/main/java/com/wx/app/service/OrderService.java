@@ -3,7 +3,6 @@ package com.wx.app.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wx.app.dto.OrderDTO;
 import com.wx.app.dto.PageDTO;
-import com.wx.app.entity.StudentTest;
 import com.wx.app.entity.StudentTestInfo;
 import com.wx.app.utils.Result;
 
@@ -19,7 +18,7 @@ public interface OrderService {
 
     Page<StudentTestInfo> testList(PageDTO pageDTO);
 
-    Page<StudentTest> orderList(PageDTO pageDTO, Long id);
+    Result orderList(PageDTO pageDTO, Long id);
 
     Result addTest(StudentTestInfo studentTestInfo);
 

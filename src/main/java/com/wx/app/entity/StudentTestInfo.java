@@ -43,6 +43,8 @@ public class StudentTestInfo implements Serializable {
 
     private String delFlag;
 
+    private String description;
+
     @TableField(exist = false)
     private Boolean isFull;
 

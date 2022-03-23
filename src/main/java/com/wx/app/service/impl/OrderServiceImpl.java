@@ -72,8 +72,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Page<StudentTest> orderList(PageDTO pageDTO, Long id) {
-        Page<StudentTest> studentTest = studentTestService.getTestList(pageDTO, id);
+    public Result orderList(PageDTO pageDTO, Long id) {
+        Result studentTest = studentTestService.getTestList(pageDTO, id);
+
         return studentTest;
     }
 

@@ -1,11 +1,9 @@
 package com.wx.app.service;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.wx.app.dto.PageDTO;
 import com.wx.app.entity.StudentTest;
-
-import java.util.List;
+import com.wx.app.utils.Result;
 
 /**
 *
@@ -16,6 +14,6 @@ public interface StudentTestService extends IService<StudentTest> {
 
     StudentTest checkOrder(Long id, String semester);
 
-    Page<StudentTest> getTestList(PageDTO pageDTO, Long id);
+    Result getTestList(PageDTO pageDTO, Long id);
 
 }
