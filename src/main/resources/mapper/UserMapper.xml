@@ -46,5 +46,6 @@
             sys_user.id = student_info.user_id
         WHERE
             student_test.test_id = #{id} and sys_user.status = 0
+
     </select>
 </mapper>

@@ -7,6 +7,7 @@ package com.wx.app.service.impl;/**
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wx.app.dto.OrderDTO;
+import com.wx.app.dto.TestListCondition;
 import com.wx.app.dto.PageDTO;
 import com.wx.app.entity.StudentTest;
 import com.wx.app.entity.StudentTestInfo;
@@ -66,8 +67,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Page<StudentTestInfo> testList(PageDTO pageDTO) {
-        Page<StudentTestInfo> studentTestInfo = studentTestInfoService.getTestList(pageDTO);
+    public Page<StudentTestInfo> testList(PageDTO pageDTO, TestListCondition testListCondition) {
+        Page<StudentTestInfo> studentTestInfo = studentTestInfoService.getTestList(pageDTO, testListCondition);
         return studentTestInfo;
     }
 

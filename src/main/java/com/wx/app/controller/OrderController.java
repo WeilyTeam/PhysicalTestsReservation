@@ -6,9 +6,9 @@ package com.wx.app.controller;/**
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.common.util.concurrent.RateLimiter;
+import com.wx.app.dto.TestListCondition;
 import com.wx.app.dto.OrderDTO;
 import com.wx.app.dto.PageDTO;
-import com.wx.app.entity.StudentTest;
 import com.wx.app.entity.StudentTestInfo;
 import com.wx.app.enums.CommonCode;
 import com.wx.app.service.OrderService;
@@ -41,8 +41,8 @@ public class OrderController {
      */
     @ApiOperation(value = "获取体测列表")
     @GetMapping("/testList")
-    public Result testList(PageDTO pageDTO) {
-        Page<StudentTestInfo> list = orderService.testList(pageDTO);
+    public Result testList(PageDTO pageDTO, TestListCondition testListCondition) {
+        Page<StudentTestInfo> list = orderService.testList(pageDTO, testListCondition);
         return new Result(200,"操作成功",list);
     }
 
