@@ -2,6 +2,7 @@ package com.wx.app.service;
 
 import com.wx.app.dto.PageDTO;
 import com.wx.app.dto.StuPwdDTO;
+import com.wx.app.dto.StudentInfoDTO;
 import com.wx.app.utils.Result;
 
 /**
@@ -12,7 +13,7 @@ import com.wx.app.utils.Result;
 public interface UserService {
     Result resetStuPwd(Long id);
 
-    Result getStudentList(PageDTO pageDTO);
+    Result getStudentList(PageDTO pageDTO, StudentInfoDTO studentTestInfo);
 
     Result getStudentInfo(Long userId);
 

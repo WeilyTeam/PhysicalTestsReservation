@@ -1,14 +1,13 @@
 package com.wx.app.entity;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.wx.app.dto.StudentFreeTestDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.util.Arrays;
 
 /**
  *
@@ -48,4 +47,11 @@ public class StudentFreeTest implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+
+
+    public StudentFreeTest(StudentFreeTestDTO studentFreeTestDTO, Long userId) {
+        this.reason = studentFreeTestDTO.getReason();
+        this.semester = studentFreeTestDTO.getSemester();
+        this.userId = userId;
+    }
 }

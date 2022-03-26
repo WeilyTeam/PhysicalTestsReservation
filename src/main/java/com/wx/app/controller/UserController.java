@@ -6,6 +6,7 @@ package com.wx.app.controller;/**
 
 import com.wx.app.dto.PageDTO;
 import com.wx.app.dto.StuPwdDTO;
+import com.wx.app.dto.StudentInfoDTO;
 import com.wx.app.service.UserService;
 import com.wx.app.utils.Result;
 import io.swagger.annotations.Api;
@@ -65,8 +66,8 @@ public class UserController {
      */
     @ApiOperation(value = "获取学生列表")
     @GetMapping("/studentList")
-    public Result studentList(PageDTO pageDTO){
-        Result studentList = userService.getStudentList(pageDTO);
+    public Result studentList(PageDTO pageDTO, StudentInfoDTO studentTestInfo){
+        Result studentList = userService.getStudentList(pageDTO, studentTestInfo);
         return studentList;
     }
 

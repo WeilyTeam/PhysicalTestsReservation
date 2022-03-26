@@ -6,6 +6,7 @@ package com.wx.app.controller;/**
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.common.util.concurrent.RateLimiter;
+import com.wx.app.dto.StudentInfoDTO;
 import com.wx.app.dto.TestListCondition;
 import com.wx.app.dto.OrderDTO;
 import com.wx.app.dto.PageDTO;
@@ -98,10 +99,10 @@ public class OrderController {
      */
     @ApiOperation(value = "获取已预约列表")
     @GetMapping("/orderList")
-    public Result orderList(PageDTO pageDTO, Long id) {
+    public Result orderList(PageDTO pageDTO, Long id, StudentInfoDTO studentTestInfo) {
         log.info("pageDTO{}",pageDTO.toString());
         log.info("id{}",id);
-        return orderService.orderList(pageDTO, id);
+        return orderService.orderList(pageDTO, id, studentTestInfo);
     }
 
 

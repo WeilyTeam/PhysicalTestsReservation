@@ -7,6 +7,8 @@ package com.wx.app.service.impl;/**
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wx.app.dto.PageDTO;
 import com.wx.app.dto.StuPwdDTO;
+import com.wx.app.dto.StudentInfoDTO;
+import com.wx.app.entity.LoginUser;
 import com.wx.app.entity.User;
 import com.wx.app.enums.CommonCode;
 import com.wx.app.mapper.UserMapper;
@@ -15,11 +17,11 @@ import com.wx.app.utils.Result;
 import com.wx.app.utils.UserUtils;
 import com.wx.app.vo.StudentInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Date;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -41,10 +43,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Result getStudentList(PageDTO pageDTO) {
+    public Result getStudentList(PageDTO pageDTO, StudentInfoDTO studentTestInfo) {
         Page<StudentInfoVo> page = new Page<>(pageDTO.getCurrent(),pageDTO.getSize());
 
-        Page<StudentInfoVo> studentList = userMapper.getStudentList(page);
+        Page<StudentInfoVo> studentList = userMapper.getStudentList(page,studentTestInfo);
         Result ok = new Result(CommonCode.SUCCESS, studentList);
         return ok;
     }
@@ -79,10 +81,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public Result updateStuPwd(StuPwdDTO stuPwdDTO) {
         Long userId = UserUtils.getUserId();
-        User user = userMapper.selectById(userId);
+        UsernamePasswordAuthenticationToken authentication = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+        LoginUser principal = (LoginUser) authentication.getPrincipal();
+        User user = principal.getUser();
+        //User user = userMapper.selectById(userId);
         //if()
-        //加密密码
+        //新密码与旧密码比较
         PasswordEncoder ps = new BCryptPasswordEncoder();
+        if (ps.matches(stuPwdDTO.getNewPassword(),
+                user.getPassword())){
+            return new Result(CommonCode.OLD_PASSWORD_EQULS_NEW);
+        }
+        //加密密码
         if (ps.matches(stuPwdDTO.getPrePassword(),
                 user.getPassword())){
             String passwordEncoder = ps.encode(stuPwdDTO.getNewPassword());

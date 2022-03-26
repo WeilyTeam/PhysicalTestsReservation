@@ -14,7 +14,30 @@
             sys_user.id = student_info.user_id
         where
             sys_user.status = 0
-
+        <if test="condition.userName != null">
+            and user_name LIKE #{condition.userName}
+        </if>
+        <if test="condition.name != null">
+            and name LIKE #{condition.name}
+        </if>
+        <if test="condition.schoolClass != null">
+            and school_class LIKE #{condition.schoolClass}
+        </if>
+        <if test="condition.sex != null">
+            and sex LIKE #{condition.sex}
+        </if>
+        <if test="condition.grade != null">
+            and grade LIKE #{condition.grade}
+        </if>
+        <if test="condition.specialty != null">
+            and specialty LIKE #{condition.specialty}
+        </if>
+        <if test="condition.college != null">
+            and college LIKE #{condition.college}
+        </if>
+        <if test="condition.specialtyDirection != null">
+            and specialty_direction LIKE #{condition.specialtyDirection}
+        </if>
     </select>
 
 
@@ -33,7 +56,7 @@
 
     <select id="getStudentById" resultType="com.wx.app.vo.StudentInfoVo">
         SELECT
-            info_id, student_info.user_id, name, school_class, sex, grade, specialty, college, specialty_direction, user_name
+        student_test.id, info_id, student_info.user_id, name, school_class, sex, grade, specialty, college, specialty_direction, user_name
         FROM
             `student_test`
         LEFT JOIN
@@ -46,6 +69,29 @@
             sys_user.id = student_info.user_id
         WHERE
             student_test.test_id = #{id} and sys_user.status = 0
-
+        <if test="condition.userName != null">
+            and user_name LIKE #{condition.userName}
+        </if>
+        <if test="condition.name != null">
+            and name LIKE #{condition.name}
+        </if>
+        <if test="condition.schoolClass != null">
+            and school_class LIKE #{condition.schoolClass}
+        </if>
+        <if test="condition.sex != null">
+            and sex LIKE #{condition.sex}
+        </if>
+        <if test="condition.grade != null">
+            and grade LIKE #{condition.grade}
+        </if>
+        <if test="condition.specialty != null">
+            and specialty LIKE #{condition.specialty}
+        </if>
+        <if test="condition.college != null">
+            and college LIKE #{condition.college}
+        </if>
+        <if test="condition.specialtyDirection != null">
+            and specialty_direction LIKE #{condition.specialtyDirection}
+        </if>
     </select>
 </mapper>

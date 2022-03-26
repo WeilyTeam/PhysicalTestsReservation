@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wx.app.mapper.ImgFreeTestMapper">
+
+    <resultMap id="BaseResultMap" type="com.wx.app.entity.ImgFreeTest">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="imageRoute" column="image_route" jdbcType="VARCHAR"/>
+            <result property="freeTestId" column="free_test_id" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,image_route,free_test_id
+    </sql>
+
+    <insert id="insertImages">
+        insert into
+            img_free_test(image_route, free_test_id)
+        VALUES
+            <foreach collection="images" item="image" separator=",">
+                (
+                    #{image}, #{testId}
+                )
+            </foreach>
+    </insert>
+
+    <select id="selectListById" resultType="string">
+        SELECT
+            image_route
+        FROM
+            `img_free_test`
+        WHERE
+            free_test_id = #{id}
+    </select>
+</mapper>

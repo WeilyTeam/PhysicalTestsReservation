@@ -32,3 +32,8 @@ spring:
         min-idle: 0
         # 从连接池中获取连接最大等待时间（默认为-1，单位为毫秒，负数表示无限）
         max-wait: -1
+  web:
+    resources:
+      static-locations: file:E:\\学习\\web前后端\\预学生约系统\\新建文件夹\\physical-fitness\\images
+#      static-locations: file:/opt/reserveApp/images
+

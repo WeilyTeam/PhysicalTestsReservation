@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wx.app.dto.PageDTO;
+import com.wx.app.dto.StudentInfoDTO;
 import com.wx.app.entity.StudentTest;
 import com.wx.app.enums.CommonCode;
 import com.wx.app.mapper.UserMapper;
@@ -41,9 +42,9 @@ public class StudentTestServiceImpl extends ServiceImpl<StudentTestMapper, Stude
     }
 
     @Override
-    public Result getTestList(PageDTO pageDTO, Long id) {
+    public Result getTestList(PageDTO pageDTO, Long id, StudentInfoDTO studentTestInfo) {
         Page<StudentInfoVo> page = new Page<StudentInfoVo>(pageDTO.getCurrent(),pageDTO.getSize());
-        Page<StudentInfoVo> studentById = userMapper.getStudentById(page, id);
+        Page<StudentInfoVo> studentById = userMapper.getStudentById(page, id, studentTestInfo);
         return new Result(CommonCode.SUCCESS,studentById);
     }
 }

@@ -5,15 +5,16 @@ import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.write.style.ColumnWidth;
 import com.alibaba.excel.annotation.write.style.ContentRowHeight;
 import com.alibaba.excel.annotation.write.style.HeadRowHeight;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  *
@@ -29,9 +30,18 @@ import java.io.Serializable;
 public class StudentFreeTestVo implements Serializable {
 
 
+    @ExcelIgnore
+    @JsonSerialize(using = ToStringSerializer.class)
+    private Long id;
+
     @ColumnWidth(10)
     @ExcelProperty("姓名")
     private String name;
+
+    @ColumnWidth(10)
+    @ExcelProperty("学号")
+    @TableField(exist = false)
+    private String userName;
 
 
     @ColumnWidth(15)
@@ -74,14 +84,13 @@ public class StudentFreeTestVo implements Serializable {
 
 
     @ExcelIgnore
-    @JsonSerialize(using = ToStringSerializer.class)
-    private Long id;
-    @ExcelIgnore
-    @JsonSerialize(using = ToStringSerializer.class)
-    private Long userId;
-    @ExcelIgnore
     private String isPass;
+
     @ExcelIgnore
+    @TableField(exist = false)
+    private List<String> images;
+    @ExcelIgnore
+    @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 
 }

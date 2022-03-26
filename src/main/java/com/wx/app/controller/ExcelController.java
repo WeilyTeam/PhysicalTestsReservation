@@ -145,7 +145,7 @@ public class ExcelController {
             String fileName = URLEncoder.encode("免测学生", "UTF-8").replaceAll("\\+", "%20");
             response.setHeader("Content-disposition", "attachment;filename*=utf-8''" + fileName + ".xlsx");
             // 这里需要设置不关闭流
-            Result result = studentFreeTestService.freeTestList(pageDTO);
+            Result result = studentFreeTestService.freeTestList(pageDTO, null);
             Page<StudentFreeTestVo> data = (Page<StudentFreeTestVo>)result.getData();
             List<StudentFreeTestVo> records = data.getRecords();
             EasyExcel.write(response.getOutputStream(), StudentFreeTestVo.class).autoCloseStream(Boolean.FALSE).sheet("免测学生")
@@ -174,7 +174,7 @@ public class ExcelController {
             response.setHeader("Content-disposition", "attachment;filename*=utf-8''" + fileName + ".xlsx");
             // 这里需要设置不关闭流
             Page<StudentInfoVo> page = new Page<>(pageDTO.getCurrent(),pageDTO.getSize());
-            Page<StudentInfoVo> data = userMapper.getStudentList(page);
+            Page<StudentInfoVo> data = userMapper.getStudentList(page, null);
             List<StudentInfoVo> records = data.getRecords();
             EasyExcel.write(response.getOutputStream(), StudentInfoVo.class).autoCloseStream(Boolean.FALSE).sheet("学生信息")
                     .doWrite(records);

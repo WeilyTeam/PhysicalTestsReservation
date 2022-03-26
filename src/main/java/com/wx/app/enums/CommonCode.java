@@ -29,6 +29,11 @@ public enum CommonCode {
     FAILURE(500,"操作失败"),
 
     /**
+     * 图片上传失败
+     */
+    FAILURE_UPLOAD_IMG(500,"图片上传失败"),
+
+    /**
      * 操作失败，人数已满!!!"
      */
     NUMBER_OF_FULL(500,"操作失败,人数已满!!!"),
@@ -47,6 +52,11 @@ public enum CommonCode {
      * 旧密码错误，修改密码失败
      */
     FAILURE_TO_CHANGE_PASSWORD(500,"修改密码失败，旧密码错误"),
+
+    /**
+     * 新密码与旧密码相同
+     */
+    OLD_PASSWORD_EQULS_NEW(500,"新密码与旧密码相同"),
 
     /**
      * 参数验证失败
