@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
     public Result resetStuPwd(Long id) {
         User user = userMapper.selectById(id);
 
-        //加密密码
+        //加密密码，密码未用户名(学号)
         PasswordEncoder ps = new BCryptPasswordEncoder();
         String passwordEncoder = ps.encode(user.getUserName());
         user.setPassword(passwordEncoder);
@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Result getStudentList(PageDTO pageDTO, StudentInfoDTO studentTestInfo) {
         Page<StudentInfoVo> page = new Page<>(pageDTO.getCurrent(),pageDTO.getSize());
-
+        //查询学生信息
         Page<StudentInfoVo> studentList = userMapper.getStudentList(page,studentTestInfo);
         Result ok = new Result(CommonCode.SUCCESS, studentList);
         return ok;
@@ -53,6 +53,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Result getStudentInfo(Long userId) {
+        //通过学生id获取学生信息
         StudentInfoVo studentList = userMapper.getStudentInfo(userId);
         Result ok = new Result(CommonCode.SUCCESS, studentList);
         return ok;
@@ -60,6 +61,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Result deleteStudent(Long userId) {
+        //逻辑删除学生
         User user = userMapper.selectById(userId);
         user.setDelFlag(1);
         user.setStatus("1");
@@ -72,6 +74,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Result getstuInfo() {
+        //从token中获取userId，获取学生信息
         Long userId = UserUtils.getUserId();
         StudentInfoVo studentList = userMapper.getStudentInfo(userId);
         Result ok = new Result(CommonCode.SUCCESS, studentList);

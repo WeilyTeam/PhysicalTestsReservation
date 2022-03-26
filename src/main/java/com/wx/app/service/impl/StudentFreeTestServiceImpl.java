@@ -37,9 +37,12 @@ implements StudentFreeTestService{
 
     @Override
     public Result freeTestList(PageDTO pageDTO, StudentInfoDTO studentTestInfo) {
+        //分页插件，查询StudentFreeTestVo列表
         Page<StudentFreeTestVo> page = new Page<StudentFreeTestVo>(pageDTO.getCurrent(),pageDTO.getSize());
         Page<StudentFreeTestVo> studentFreeTestPage = studentFreeTestMapper.selectFreeList(page, studentTestInfo);
         List<StudentFreeTestVo> newStudentFreeTestVo = new ArrayList<>();
+
+        //查询图片路由
         for (StudentFreeTestVo studentFreeTestVo:studentFreeTestPage.getRecords()){
             List<String> imgFreeTests = imgFreeTestMapper.selectListById(studentFreeTestVo.getId());
             studentFreeTestVo.setImages(imgFreeTests);
@@ -54,18 +57,22 @@ implements StudentFreeTestService{
         Long userId = UserUtils.getUserId();
         StudentFreeTest studentFreeTest = new StudentFreeTest(studentFreeTestDTO,userId);
 
+        //插入免测申请数据
         int insert = studentFreeTestMapper.insert(studentFreeTest);
         log.info("studentFreeTest的id {}",studentFreeTest.getId());
         if (insert == 0){
             return new Result(CommonCode.FAILURE);
         }
+        //插入免测申请的图片路由
         imgFreeTestMapper.insertImages(studentFreeTestDTO.getImages(),studentFreeTest.getId());
         return new Result(CommonCode.SUCCESS);
     }
 
     @Override
     public Result agreeApplication(Long id) {
+        //通过查询id查询studentFreeTest信息
         StudentFreeTest studentFreeTest = studentFreeTestMapper.selectById(id);
+        //设置为通过，并更新数据库
         studentFreeTest.setIsPass("1");
         int i = studentFreeTestMapper.updateById(studentFreeTest);
         if (i > 0){
@@ -76,6 +83,7 @@ implements StudentFreeTestService{
 
     @Override
     public Result deleteFreeTest(Long id) {
+        //删除数据
         int i = studentFreeTestMapper.deleteById(id);
         if (i > 0){
             return new Result(CommonCode.SUCCESS);

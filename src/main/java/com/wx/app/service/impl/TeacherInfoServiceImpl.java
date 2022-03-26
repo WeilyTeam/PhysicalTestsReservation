@@ -26,13 +26,15 @@ public class TeacherInfoServiceImpl extends ServiceImpl<TeacherInfoMapper, Teach
     @Override
     public Result getTeacherList(PageDTO pageDTO) {
         Page<TeacherInfo> page;
-        Page<TeacherInfo> TeacherInfoPage = null;
+        Page<TeacherInfo> teacherInfoPage = null;
+
+        //未传page参数则查询全部
         if (pageDTO.getCurrent() == null || pageDTO.getSize() == null){
-            page = new Page<TeacherInfo>();
+            page = new Page<>();
         }else {
             page = new Page<TeacherInfo>(pageDTO.getCurrent(),pageDTO.getSize());
-            TeacherInfoPage = teacherInfoMapper.selectPage(page, null);
-            return new Result(CommonCode.SUCCESS,TeacherInfoPage);
+            teacherInfoPage = teacherInfoMapper.selectPage(page, null);
+            return new Result(CommonCode.SUCCESS,teacherInfoPage);
         }
         List<TeacherInfo> teacherInfos = teacherInfoMapper.selectList(null);
         return new Result(CommonCode.SUCCESS,teacherInfos);
@@ -40,6 +42,7 @@ public class TeacherInfoServiceImpl extends ServiceImpl<TeacherInfoMapper, Teach
 
     @Override
     public Result addTeacher(TeacherInfo teacherInfo) {
+        //添加老师
         int insert = teacherInfoMapper.insert(teacherInfo);
         if (insert > 0){
             return new Result(CommonCode.SUCCESS);

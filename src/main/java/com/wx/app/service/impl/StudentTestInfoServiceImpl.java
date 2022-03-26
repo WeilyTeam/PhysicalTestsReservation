@@ -28,6 +28,8 @@ public class StudentTestInfoServiceImpl extends ServiceImpl<StudentTestInfoMappe
     @Override
     public Page<StudentTestInfo> getTestList(PageDTO pageDTO, TestListCondition testListCondition) {
         Page<StudentTestInfo> page = new Page<StudentTestInfo>(pageDTO.getCurrent(),pageDTO.getSize());
+
+        //创建QueryWrapper作为查询条件
         QueryWrapper<StudentTestInfo> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("del_flag", 0);
         if(testListCondition.getLocation() != null){
@@ -41,9 +43,11 @@ public class StudentTestInfoServiceImpl extends ServiceImpl<StudentTestInfoMappe
         }if(testListCondition.getSemester() != null){
             queryWrapper.like("semester", testListCondition.getSemester());
         }
+        //查询StudentTestInfo列表信息
         Page<StudentTestInfo> studentTestInfos = studentTestInfoMapper.selectPage(page,queryWrapper);
         List<StudentTestInfo> records = studentTestInfos.getRecords();
         for (StudentTestInfo record:records){
+            //遍历查询老师信息
             TeacherInfo teacherInfo = teacherInfoMapper.selectById(record.getHeadid());
             record.setIsFull(record.getOrderNum().equals(record.getStore()));
             record.setTeacherInfo(teacherInfo);
@@ -54,13 +58,14 @@ public class StudentTestInfoServiceImpl extends ServiceImpl<StudentTestInfoMappe
 
     @Override
     public StudentTestInfo checkStockById(Long id) {
-
+        //通过id获取StudentTestInfo
         StudentTestInfo studentTestInfo = studentTestInfoMapper.selectById(id);
         return studentTestInfo;
     }
 
     @Override
     public void updateOrderNum(StudentTestInfo studentTestInfo) {
+        //减库存
         studentTestInfoMapper.updateOrderNum(studentTestInfo);
     }
 }
