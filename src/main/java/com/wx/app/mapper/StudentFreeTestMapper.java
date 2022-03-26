@@ -7,10 +7,13 @@ import com.wx.app.entity.StudentFreeTest;
 import com.wx.app.vo.StudentFreeTestVo;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
 * @Entity com.wx.app.entity.StudentFreeTest
 */
 public interface StudentFreeTestMapper extends BaseMapper<StudentFreeTest> {
 
     Page<StudentFreeTestVo> selectFreeList(@Param("page") Page<StudentFreeTestVo> page, @Param("condition") StudentInfoDTO studentTestInfo);
+    List<StudentFreeTestVo> selectFreeList(@Param("condition") StudentInfoDTO studentTestInfo);
 }

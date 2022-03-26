@@ -6,11 +6,13 @@ import com.alibaba.excel.read.listener.ReadListener;
 import com.alibaba.excel.util.ListUtils;
 import com.alibaba.excel.util.MapUtils;
 import com.alibaba.fastjson.JSON;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wx.app.dto.PageDTO;
+import com.wx.app.dto.StudentInfoDTO;
 import com.wx.app.enums.CommonCode;
 import com.wx.app.excel.DemoDAO;
 import com.wx.app.excel.DemoData;
+import com.wx.app.mapper.ImgFreeTestMapper;
+import com.wx.app.mapper.StudentFreeTestMapper;
 import com.wx.app.mapper.UserMapper;
 import com.wx.app.service.StudentFreeTestService;
 import com.wx.app.utils.Result;
@@ -29,6 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -54,6 +57,12 @@ public class ExcelController {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private StudentFreeTestMapper studentFreeTestMapper;
+
+    @Autowired
+    private ImgFreeTestMapper imgFreeTestMapper;
 
 
     /**
@@ -134,7 +143,7 @@ public class ExcelController {
         }
     }
 
-    @GetMapping("downloadFreeTestStudent")
+        @GetMapping("downloadFreeTestStudent")
     @ApiOperation(value = "免测学生Excel下载")
     public void downloadFreeTestStudent(PageDTO pageDTO, HttpServletResponse response) throws IOException {
         // 这里注意 有同学反应使用swagger 会导致各种问题，请直接用浏览器或者用postman
@@ -145,11 +154,18 @@ public class ExcelController {
             String fileName = URLEncoder.encode("免测学生", "UTF-8").replaceAll("\\+", "%20");
             response.setHeader("Content-disposition", "attachment;filename*=utf-8''" + fileName + ".xlsx");
             // 这里需要设置不关闭流
-            Result result = studentFreeTestService.freeTestList(pageDTO, null);
-            Page<StudentFreeTestVo> data = (Page<StudentFreeTestVo>)result.getData();
-            List<StudentFreeTestVo> records = data.getRecords();
+            List<StudentFreeTestVo> studentFreeTestPage = studentFreeTestMapper.selectFreeList(new StudentInfoDTO());
+            List<StudentFreeTestVo> newStudentFreeTestVo = new ArrayList<>();
+
+            //查询图片路由
+            for (StudentFreeTestVo studentFreeTestVo:studentFreeTestPage){
+                List<String> imgFreeTests = imgFreeTestMapper.selectListById(studentFreeTestVo.getId());
+                studentFreeTestVo.setImages(imgFreeTests);
+                newStudentFreeTestVo.add(studentFreeTestVo);
+            }
+
             EasyExcel.write(response.getOutputStream(), StudentFreeTestVo.class).autoCloseStream(Boolean.FALSE).sheet("免测学生")
-                    .doWrite(records);
+                    .doWrite(newStudentFreeTestVo);
         } catch (Exception e) {
             // 重置response
             response.reset();
@@ -164,7 +180,7 @@ public class ExcelController {
 
     @GetMapping("downloadStudentList")
     @ApiOperation(value = "学生信息Excel下载")
-    public void downloadStudentList(PageDTO pageDTO, HttpServletResponse response) throws IOException {
+    public void downloadStudentList(HttpServletResponse response) throws IOException {
         // 这里注意 有同学反应使用swagger 会导致各种问题，请直接用浏览器或者用postman
         try {
             response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
@@ -173,11 +189,9 @@ public class ExcelController {
             String fileName = URLEncoder.encode("学生信息", "UTF-8").replaceAll("\\+", "%20");
             response.setHeader("Content-disposition", "attachment;filename*=utf-8''" + fileName + ".xlsx");
             // 这里需要设置不关闭流
-            Page<StudentInfoVo> page = new Page<>(pageDTO.getCurrent(),pageDTO.getSize());
-            Page<StudentInfoVo> data = userMapper.getStudentList(page, null);
-            List<StudentInfoVo> records = data.getRecords();
+            List<StudentInfoVo> data = userMapper.getStudentList(new StudentInfoDTO());
             EasyExcel.write(response.getOutputStream(), StudentInfoVo.class).autoCloseStream(Boolean.FALSE).sheet("学生信息")
-                    .doWrite(records);
+                    .doWrite(data);
         } catch (Exception e) {
             // 重置response
             response.reset();
@@ -232,6 +246,40 @@ public class ExcelController {
         }).sheet().doRead();
         //EasyExcel.read(file.getInputStream(), StudentInfoVo.class, new DemoDataListener(demoDAO)).sheet().doRead();
         return new Result(CommonCode.SUCCESS);
+    }
+
+
+
+
+
+
+
+
+    @GetMapping("downloadStudentListFormTest")
+    @ApiOperation(value = "体测学生信息Excel下载")
+    public void downloadStudentListFormTest(Long id, StudentInfoDTO studentTestInfo, HttpServletResponse response) throws IOException {
+        // 这里注意 有同学反应使用swagger 会导致各种问题，请直接用浏览器或者用postman
+        try {
+            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            response.setCharacterEncoding("utf-8");
+            // 这里URLEncoder.encode可以防止中文乱码 当然和easyexcel没有关系
+            String fileName = URLEncoder.encode("体测学生信息", "UTF-8").replaceAll("\\+", "%20");
+            response.setHeader("Content-disposition", "attachment;filename*=utf-8''" + fileName + ".xlsx");
+            // 这里需要设置不关闭流
+
+            List<StudentInfoVo> studentById = userMapper.getStudentById(id, studentTestInfo);
+            EasyExcel.write(response.getOutputStream(), StudentInfoVo.class).autoCloseStream(Boolean.FALSE).sheet("已预约学生信息")
+                    .doWrite(studentById);
+        } catch (Exception e) {
+            // 重置response
+            response.reset();
+            response.setContentType("application/json");
+            response.setCharacterEncoding("utf-8");
+            Map<String, String> map = MapUtils.newHashMap();
+            map.put("status", "failure");
+            map.put("message", "下载文件失败" + e.getMessage());
+            response.getWriter().println(JSON.toJSONString(map));
+        }
     }
 
 
