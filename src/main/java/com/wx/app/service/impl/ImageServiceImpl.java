@@ -30,7 +30,9 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public Result uploadImage(MultipartFile file) {
-        String PATH = "E:\\学习\\web前后端\\预学生约系统\\新建文件夹\\physical-fitness\\images" ;
+        File absolutePath = new File("images");
+        log.info("绝对地址：{}",absolutePath.getAbsolutePath());
+        String PATH =  absolutePath.getAbsolutePath();
         //String PATH = "/opt/reserveApp/images";
         //获取文件名
         String fileName = file.getOriginalFilename();
@@ -44,8 +46,8 @@ public class ImageServiceImpl implements ImageService {
         log.info("图片访问保存到数据库去：{}", urlPath);
 
         File saveFile = new File(savePath);
-        if (!saveFile.exists()){
-            saveFile.mkdirs();
+        if (!absolutePath.exists()){
+            absolutePath.mkdirs();
         }
         try {
             //将临时存储的文件移动到真实存储路径下

@@ -34,6 +34,8 @@ public class FreeTestController {
     @GetMapping("/list")
     @ApiOperation(value = "获取免测列表")
     public Result freeTestList(PageDTO pageDTO, StudentInfoDTO studentTestInfo){
+        log.info("pageDTO: {}",pageDTO.toString());
+        log.info("studentTestInfo: {}",studentTestInfo.toString());
         return studentFreeTestService.freeTestList(pageDTO, studentTestInfo);
     }
 
@@ -67,6 +69,7 @@ public class FreeTestController {
     @DeleteMapping("/delete")
     @ApiOperation(value = "删除免测资格")
     public Result deleteFreeTest(Long id){
+        log.info("id: {}",id);
         return studentFreeTestService.deleteFreeTest(id);
     }
 }

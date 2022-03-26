@@ -6,6 +6,7 @@ import com.wx.app.service.TeacherInfoService;
 import com.wx.app.utils.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @Api(value = "负责老师Controller", tags = "负责老师")
 @RequestMapping("/teacher")
+@Slf4j
 public class TeacherController {
 
     @Autowired
@@ -32,6 +34,8 @@ public class TeacherController {
     @ApiOperation(value = "负责老师列表")
     @GetMapping("/list")
     public Result teacherList(PageDTO pageDTO) {
+        log.info("pageDTO: {}",pageDTO.toString());
+
         return teacherInfoService.getTeacherList(pageDTO);
     }
 
@@ -43,6 +47,7 @@ public class TeacherController {
     @ApiOperation(value = "负责老师列表")
     @PostMapping("/add")
     public Result teacherList(@RequestBody TeacherInfo teacherInfo) {
+        log.info("teacherInfo: {}",teacherInfo.toString());
         return teacherInfoService.addTeacher(teacherInfo);
     }
 }

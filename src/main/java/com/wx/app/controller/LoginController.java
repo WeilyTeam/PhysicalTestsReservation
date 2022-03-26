@@ -43,6 +43,7 @@ public class LoginController {
     @ApiOperation(value = "注册接口")
     @PostMapping("register")
     public Result register(@RequestBody User user){
+        log.info("user: {}",user.toString());
         return loginService.register(user);
     }
 

@@ -33,6 +33,8 @@ public class UserController {
     @ApiOperation(value = "重置学生密码")
     @PutMapping("/resetStuPwd")
     public Result resetStuPwd(Long userId){
+        log.info("userId: {}",userId);
+
         return userService.resetStuPwd(userId);
     }
 
@@ -56,6 +58,7 @@ public class UserController {
     @ApiOperation(value = "删除学生")
     @DeleteMapping("/deleteStudent")
     public Result deleteStudent(Long userId){
+        log.info("userId: {}",userId);
         return userService.deleteStudent(userId);
     }
 
@@ -67,6 +70,9 @@ public class UserController {
     @ApiOperation(value = "获取学生列表")
     @GetMapping("/studentList")
     public Result studentList(PageDTO pageDTO, StudentInfoDTO studentTestInfo){
+        log.info("pageDTO: {}",pageDTO.toString());
+        log.info("studentTestInfo: {}",studentTestInfo.toString());
+
         Result studentList = userService.getStudentList(pageDTO, studentTestInfo);
         return studentList;
     }
@@ -79,6 +85,8 @@ public class UserController {
     @ApiOperation(value = "通过学生id获取学生信息")
     @GetMapping("/studentInfo")
     public Result studentInfo(Long userId){
+        log.info("userId: {}",userId);
+
         Result studentList = userService.getStudentInfo(userId);
         return studentList;
     }

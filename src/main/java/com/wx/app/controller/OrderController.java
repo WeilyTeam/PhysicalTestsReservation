@@ -43,6 +43,9 @@ public class OrderController {
     @ApiOperation(value = "获取体测列表")
     @GetMapping("/testList")
     public Result testList(PageDTO pageDTO, TestListCondition testListCondition) {
+        log.info("pageDTO: {}",pageDTO.toString());
+        log.info("testListCondition: {}",testListCondition.toString());
+
         Page<StudentTestInfo> list = orderService.testList(pageDTO, testListCondition);
         return new Result(200,"操作成功",list);
     }
@@ -55,7 +58,7 @@ public class OrderController {
     @ApiOperation(value = "修改体测信息")
     @PutMapping("/updateTest")
     public Result updateTest(@RequestBody StudentTestInfo studentTestInfo) {
-        log.info("studentTestInfo{}",studentTestInfo.toString());
+        log.info("studentTestInfo: {}",studentTestInfo.toString());
         return orderService.updateTest(studentTestInfo);
     }
 
@@ -78,6 +81,7 @@ public class OrderController {
     @ApiOperation(value = "添加体测信息")
     @PostMapping("/addTest")
     public Result addTest(@RequestBody StudentTestInfo studentTestInfo) {
+        log.info("studentTestInfo: {}",studentTestInfo.toString());
         return orderService.addTest(studentTestInfo);
     }
 
@@ -89,6 +93,7 @@ public class OrderController {
     @ApiOperation(value = "删除体测信息")
     @DeleteMapping("/deleteTestById")
     public Result deleteTest(Long id) {
+        log.info("id: {}",id);
         return orderService.deleteTestById(id);
     }
 
@@ -100,8 +105,9 @@ public class OrderController {
     @ApiOperation(value = "获取已预约列表")
     @GetMapping("/orderList")
     public Result orderList(PageDTO pageDTO, Long id, StudentInfoDTO studentTestInfo) {
-        log.info("pageDTO{}",pageDTO.toString());
-        log.info("id{}",id);
+        log.info("pageDTO: {}",pageDTO.toString());
+        log.info("id: {}",id);
+        log.info("studentTestInfo: {}",studentTestInfo);
         return orderService.orderList(pageDTO, id, studentTestInfo);
     }
 
@@ -115,6 +121,8 @@ public class OrderController {
     @ApiOperation(value = "预约接口")
     @PostMapping("/order")
     public Result order(@RequestBody OrderDTO orderDTO) {
+        log.info("orderDTO: {}",orderDTO.toString());
+
         if (!rateLimiter.tryAcquire(3, TimeUnit.SECONDS)){
             log.info("当前请求被限流，直接抛弃，无法调用后序逻辑");
             return new Result(CommonCode.FAILURE_TO_ORDER);
@@ -133,6 +141,7 @@ public class OrderController {
     @ApiOperation(value = "删除已预约信息")
     @DeleteMapping("/deleteOrderById")
     public Result deleteOrderById(Long id) {
+        log.info("id: {}",id);
         return orderService.deleteOrderById(id);
     }
 }
