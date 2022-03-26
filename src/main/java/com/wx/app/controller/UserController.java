@@ -99,6 +99,7 @@ public class UserController {
     @ApiOperation(value = "通过学生token获取学生信息")
     @GetMapping("/stuInfo")
     public Result stuInfo(){
+
         return userService.getstuInfo();
     }
 }
