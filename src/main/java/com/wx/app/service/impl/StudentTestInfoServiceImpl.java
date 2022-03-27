@@ -32,6 +32,7 @@ public class StudentTestInfoServiceImpl extends ServiceImpl<StudentTestInfoMappe
         //创建QueryWrapper作为查询条件
         QueryWrapper<StudentTestInfo> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("del_flag", 0);
+        //queryWrapper.("", 0);
         if(testListCondition.getLocation() != null){
             queryWrapper.like("location", testListCondition.getLocation());
         }

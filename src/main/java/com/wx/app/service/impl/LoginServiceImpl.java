@@ -5,6 +5,7 @@ package com.wx.app.service.impl;/**
  */
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.wx.app.dto.NicknameDTO;
 import com.wx.app.entity.LoginUser;
 import com.wx.app.entity.User;
 import com.wx.app.enums.CommonCode;
@@ -53,7 +54,6 @@ public class LoginServiceImpl implements LoginService {
             return new Result(CommonCode.FAILURE_TO_LOGIN);
         }
 
-
         //如果登录成功 生成jwt
         LoginUser loginUser = (LoginUser) authenticate.getPrincipal();
         String userId = loginUser.getUser().getId().toString();
@@ -62,6 +62,7 @@ public class LoginServiceImpl implements LoginService {
         Map<String,String> map = new HashMap<String,String>();
         map.put("token", token);
         map.put("refreshToken", refreshToken);
+        map.put("nickname", loginUser.getUser().getNickName());
 
         //把完整用户信息保存到redis
         StudentInfoVo studentInfo = userManager.getStudentInfo(Long.parseLong(userId));
@@ -115,6 +116,16 @@ public class LoginServiceImpl implements LoginService {
         Map<String,String> map = new HashMap<String,String>();
         map.put("token", token);
         return new Result(CommonCode.SUCCESS,map);
+    }
+
+    @Override
+    public Result updateNickname(NicknameDTO nicknameDTO) {
+        User user = new User();
+        Long userId = UserUtils.getUserId();
+        user.setId(userId);
+        user.setNickName(nicknameDTO.getNickname());
+        userManager.updateById(user);
+        return new Result(CommonCode.SUCCESS);
     }
 
 }

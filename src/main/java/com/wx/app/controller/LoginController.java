@@ -4,6 +4,7 @@ package com.wx.app.controller;/**
  * @apiNote
  */
 
+import com.wx.app.dto.NicknameDTO;
 import com.wx.app.entity.User;
 import com.wx.app.service.LoginService;
 import com.wx.app.utils.Result;
@@ -65,5 +66,15 @@ public class LoginController {
     @GetMapping("refreshToken")
     public Result refreshToken(){
         return loginService.refreshToken();
+    }
+
+    /**
+     * 修改昵称
+     * @return
+     */
+    @ApiOperation(value = "昵称修改")
+    @PutMapping("nickname")
+    public Result updateNickname(@RequestBody NicknameDTO nicknameDTO){
+        return loginService.updateNickname(nicknameDTO);
     }
 }

@@ -6,10 +6,8 @@ package com.wx.app.handler;/**
 
 import com.alibaba.fastjson.JSON;
 import com.wx.app.enums.CommonCode;
-import com.wx.app.utils.Result;
 import com.wx.app.utils.WebUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
@@ -27,13 +25,13 @@ import java.util.Map;
 public class AuthenticationEntryPointImpl implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-
+        StringBuffer requestURL = request.getRequestURL();
+        log.info("requestURL {}",requestURL);
         Map<String, Object> map = new HashMap<>();
-        map.put("code", CommonCode.TOKEN_ILLEGAL.getCode());
-        map.put("msg", CommonCode.TOKEN_ILLEGAL.getmsg());
+        map.put("code", CommonCode.FAILED_AUTHORIZED.getCode());
+        map.put("msg", CommonCode.FAILED_AUTHORIZED.getmsg());
         String json = JSON.toJSONString(map);
         log.info("json::{}",json);
         WebUtils.renderString(response,json);
-
     }
 }

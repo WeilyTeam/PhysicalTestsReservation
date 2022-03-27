@@ -96,7 +96,11 @@ public enum CommonCode {
     /**
      * token过期,请重新登录
      */
-    TOKEN_ILLEGAL(10001,"token过期,请重新登录");
+    TOKEN_ILLEGAL(10001,"token过期,请重新登录"),
+    /**
+     * token过期,请重新登录
+     */
+    FAILED_AUTHORIZED(500,"授权失败");
 
     private Integer code;
     private String msg;

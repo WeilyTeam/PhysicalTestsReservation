@@ -12,6 +12,7 @@ import com.wx.app.utils.RedisCache;
 import com.wx.app.utils.WebUtils;
 import com.wx.app.vo.StudentInfoVo;
 import io.jsonwebtoken.Claims;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,9 +27,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 @Component
+@Slf4j
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
     @Autowired
@@ -51,6 +52,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             Claims claims = JwtUtil.parseJWT(token);
             userId = claims.getSubject();
         } catch (Exception e) {
+
             Map<String, Object> map = new HashMap<>();
             map.put("code", CommonCode.TOKEN_ILLEGAL.getCode());
             map.put("msg", CommonCode.TOKEN_ILLEGAL.getmsg());

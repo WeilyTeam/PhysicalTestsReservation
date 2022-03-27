@@ -1,6 +1,5 @@
 package com.wx.app.entity;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -35,6 +34,11 @@ public class User implements Serializable {
     * 用户名
     */
     private String userName;
+
+    /**
+    * 用户名
+    */
+    private String nickName;
     /**
     * 密码
     */

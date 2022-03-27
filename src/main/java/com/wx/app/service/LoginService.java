@@ -4,6 +4,7 @@ package com.wx.app.service;/**
  * @apiNote
  */
 
+import com.wx.app.dto.NicknameDTO;
 import com.wx.app.entity.User;
 import com.wx.app.utils.Result;
 
@@ -16,4 +17,5 @@ public interface LoginService {
 
     Result refreshToken();
 
+    Result updateNickname(NicknameDTO nicknameDTO);
 }
