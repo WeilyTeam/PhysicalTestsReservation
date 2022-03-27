@@ -10,7 +10,6 @@ import com.wx.app.entity.User;
 import com.wx.app.enums.CommonCode;
 import com.wx.app.mapper.UserMapper;
 import com.wx.app.service.LoginService;
-import com.wx.app.enums.CommonCode;
 import com.wx.app.utils.JwtUtil;
 import com.wx.app.utils.RedisCache;
 import com.wx.app.utils.Result;
@@ -58,8 +57,8 @@ public class LoginServiceImpl implements LoginService {
         //如果登录成功 生成jwt
         LoginUser loginUser = (LoginUser) authenticate.getPrincipal();
         String userId = loginUser.getUser().getId().toString();
-        String token = JwtUtil.createJWT(userId,1000*60*60L);
-        String refreshToken = JwtUtil.createJWT(userId,1000*60*60*24*5L);
+        String token = JwtUtil.createJWT(userId,1000*60*60*24*31L);
+        String refreshToken = JwtUtil.createJWT(userId,1000*60*60*24*31L);
         Map<String,String> map = new HashMap<String,String>();
         map.put("token", token);
         map.put("refreshToken", refreshToken);
@@ -67,7 +66,7 @@ public class LoginServiceImpl implements LoginService {
         //把完整用户信息保存到redis
         StudentInfoVo studentInfo = userManager.getStudentInfo(Long.parseLong(userId));
         studentInfo.setLoginUser(loginUser);
-        redisCache.setCacheObject("login:"+userId, studentInfo,12, TimeUnit.HOURS);
+        redisCache.setCacheObject("login:"+userId, studentInfo,24*31, TimeUnit.HOURS);
 
         return new Result(CommonCode.SUCCESS_LOGIN, map);
     }

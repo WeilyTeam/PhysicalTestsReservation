@@ -29,6 +29,16 @@ public enum CommonCode {
     FAILURE(500,"操作失败"),
 
     /**
+     * 操作失败
+     */
+    FAILURE_APPLICATION(500,"操作失败,本学期已申请"),
+
+    /**
+     * 操作失败
+     */
+    FAILURE_SEMESTER_EXIST(500,"操作失败,该学期已存在"),
+
+    /**
      * 图片上传失败
      */
     FAILURE_UPLOAD_IMG(500,"图片上传失败"),

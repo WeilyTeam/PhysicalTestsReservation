@@ -34,5 +34,5 @@ spring:
         max-wait: -1
   web:
     resources:
-      static-locations: file:E:\\学习\\web前后端\\预学生约系统\\新建文件夹\\physical-fitness\\images
-#      static-locations: file:/opt/reserveApp/images
+#      static-locations: file:E:\\学习\\web前后端\\预学生约系统\\新建文件夹\\physical-fitness\\images
+      static-locations: file:/opt/reserveApp/images

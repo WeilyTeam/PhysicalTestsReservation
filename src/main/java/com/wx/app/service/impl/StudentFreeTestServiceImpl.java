@@ -1,5 +1,6 @@
 package com.wx.app.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wx.app.dto.PageDTO;
@@ -57,6 +58,12 @@ implements StudentFreeTestService{
 
     @Override
     public Result freeTestApplication(StudentFreeTestDTO studentFreeTestDTO) {
+        QueryWrapper<StudentFreeTest> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("semester", studentFreeTestDTO.getSemester());
+        List<StudentFreeTest> studentFreeTests = studentFreeTestMapper.selectList(queryWrapper);
+        if (studentFreeTests != null){
+            return new Result(CommonCode.FAILURE_APPLICATION);
+        }
         Long userId = UserUtils.getUserId();
         StudentFreeTest studentFreeTest = new StudentFreeTest(studentFreeTestDTO,userId);
 

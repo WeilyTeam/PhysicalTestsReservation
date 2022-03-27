@@ -13,6 +13,7 @@ import com.wx.app.entity.User;
 import com.wx.app.enums.CommonCode;
 import com.wx.app.mapper.UserMapper;
 import com.wx.app.service.UserService;
+import com.wx.app.utils.RedisCache;
 import com.wx.app.utils.Result;
 import com.wx.app.utils.UserUtils;
 import com.wx.app.vo.StudentInfoVo;
@@ -23,11 +24,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.concurrent.TimeUnit;
+
 @Service
 public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private RedisCache redisCache;
 
     @Override
     public Result resetStuPwd(Long id) {
@@ -84,11 +89,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Result updateStuPwd(StuPwdDTO stuPwdDTO) {
         Long userId = UserUtils.getUserId();
-        UsernamePasswordAuthenticationToken authentication = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
-        LoginUser principal = (LoginUser) authentication.getPrincipal();
-        User user = principal.getUser();
-        //User user = userMapper.selectById(userId);
-        //if()
+        User user = userMapper.selectById(userId);
         //新密码与旧密码比较
         PasswordEncoder ps = new BCryptPasswordEncoder();
         if (ps.matches(stuPwdDTO.getNewPassword(),
@@ -101,6 +102,14 @@ public class UserServiceImpl implements UserService {
             String passwordEncoder = ps.encode(stuPwdDTO.getNewPassword());
             user.setPassword(passwordEncoder);
             userMapper.updateById(user);
+            //刷新缓存
+            UsernamePasswordAuthenticationToken authentication = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+            LoginUser principal = (LoginUser) authentication.getPrincipal();
+            principal.getUser().setPassword(passwordEncoder);
+            StudentInfoVo studentInfo = userMapper.getStudentInfo(userId);
+            studentInfo.setLoginUser(principal);
+            //存入redis
+            redisCache.setCacheObject("login:"+userId, studentInfo,24*31, TimeUnit.HOURS);
             return new Result(CommonCode.SUCCESS);
         }
         return new Result(CommonCode.FAILURE_TO_CHANGE_PASSWORD);

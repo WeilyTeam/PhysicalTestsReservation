@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wx.app.mapper.StudetnSemesterMapper">
+
+    <resultMap id="BaseResultMap" type="com.wx.app.entity.StudetnSemester">
+            <result property="semesterName" column="semester_name" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        semester_name
+    </sql>
+    <select id="getList" resultType="java.lang.String">
+        SELECT semester_name FROM `studetn_semester`
+    </select>
+</mapper>
