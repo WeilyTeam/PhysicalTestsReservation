@@ -24,26 +24,16 @@ public class StudentFreeTest implements Serializable {
     @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
 
-    /**
-     *
-     */
     @JsonSerialize(using = ToStringSerializer.class)
     private Long userId;
 
-    /**
-     *
-     */
     private String semester;
 
-    /**
-     *
-     */
     private String reason;
 
-    /**
-     *
-     */
     private String isPass;
+    private String auditTime;
+    private String auditMessage;
 
     private static final long serialVersionUID = 1L;
 

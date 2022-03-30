@@ -3,9 +3,7 @@ package com.wx.app.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.wx.app.dto.PageDTO;
-import com.wx.app.dto.StudentFreeTestDTO;
-import com.wx.app.dto.StudentInfoDTO;
+import com.wx.app.dto.*;
 import com.wx.app.entity.StudentFreeTest;
 import com.wx.app.enums.CommonCode;
 import com.wx.app.mapper.ImgFreeTestMapper;
@@ -19,8 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
 *
@@ -37,10 +35,21 @@ implements StudentFreeTestService{
     private ImgFreeTestMapper imgFreeTestMapper;
 
     @Override
-    public Result freeTestList(PageDTO pageDTO, StudentInfoDTO studentTestInfo) {
+    public Result freeTestList(PageDTO pageDTO, StudentInfoDTO studentTestInfo, AuditDOT auditDOT) {
+        String isPass = null;
+        if(auditDOT.getIsPass() != null){
+            if ("1".equals(auditDOT.getIsPass())){
+                isPass = "1";
+            }else if ("2".equals(auditDOT.getIsPass())){
+                isPass = "2";
+            }else if ("0".equals(auditDOT.getIsPass())){
+                isPass = "0";
+            }
+        }
+        String semester = auditDOT.getSemester();
         //分页插件，查询StudentFreeTestVo列表
         Page<StudentFreeTestVo> page = new Page<StudentFreeTestVo>(pageDTO.getCurrent(),pageDTO.getSize());
-        Page<StudentFreeTestVo> studentFreeTestPage = studentFreeTestMapper.selectFreeList(page, studentTestInfo);
+        Page<StudentFreeTestVo> studentFreeTestPage = studentFreeTestMapper.selectFreeList(page, studentTestInfo, isPass, semester);
         List<StudentFreeTestVo> newStudentFreeTestVo = new ArrayList<>();
 
         //查询图片路由
@@ -59,12 +68,15 @@ implements StudentFreeTestService{
     @Override
     public Result freeTestApplication(StudentFreeTestDTO studentFreeTestDTO) {
         QueryWrapper<StudentFreeTest> queryWrapper = new QueryWrapper<>();
+        Long userId = UserUtils.getUserId();
         queryWrapper.eq("semester", studentFreeTestDTO.getSemester());
+        queryWrapper.eq("user_id", userId);
         List<StudentFreeTest> studentFreeTests = studentFreeTestMapper.selectList(queryWrapper);
-        if (studentFreeTests != null){
+
+        if (studentFreeTests.size() != 0){
             return new Result(CommonCode.FAILURE_APPLICATION);
         }
-        Long userId = UserUtils.getUserId();
+
         StudentFreeTest studentFreeTest = new StudentFreeTest(studentFreeTestDTO,userId);
 
         //插入免测申请数据
@@ -79,11 +91,15 @@ implements StudentFreeTestService{
     }
 
     @Override
-    public Result agreeApplication(Long id) {
+    public Result agreeApplication(FreeTestDTO freeTestDTO) {
         //通过查询id查询studentFreeTest信息
-        StudentFreeTest studentFreeTest = studentFreeTestMapper.selectById(id);
+        StudentFreeTest studentFreeTest = studentFreeTestMapper.selectById(freeTestDTO.getId());
         //设置为通过，并更新数据库
         studentFreeTest.setIsPass("1");
+        studentFreeTest.setAuditMessage(freeTestDTO.getAuditMessage());
+        Date data = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        studentFreeTest.setAuditTime(sdf.format(data));
         int i = studentFreeTestMapper.updateById(studentFreeTest);
         if (i > 0){
             return new Result(CommonCode.SUCCESS);
@@ -93,8 +109,41 @@ implements StudentFreeTestService{
 
     @Override
     public Result deleteFreeTest(Long id) {
-        //删除数据
+
         int i = studentFreeTestMapper.deleteById(id);
+        if (i > 0){
+            return new Result(CommonCode.SUCCESS);
+        }
+        return new Result(CommonCode.FAILURE);
+    }
+
+    @Override
+    public Result freeTestByToken(Long userId) {
+        QueryWrapper<StudentFreeTest> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_id", userId);
+        List<StudentFreeTest> studentFreeTests = studentFreeTestMapper.selectList(queryWrapper);
+        List<Map<String,Object>> res = new ArrayList<>();
+        for(StudentFreeTest studentFreeTest : studentFreeTests){
+            Map<String,Object> data = new HashMap<>();
+            List<String> list = imgFreeTestMapper.selectListById(studentFreeTest.getId());
+            data.put("studentFreeTest",studentFreeTest);
+            data.put("images",list);
+            res.add(data);
+        }
+        return new Result(CommonCode.SUCCESS,res);
+    }
+
+    @Override
+    public Result rejectApplication(FreeTestDTO freeTestDTO) {
+        //通过查询id查询studentFreeTest信息
+        StudentFreeTest studentFreeTest = studentFreeTestMapper.selectById(freeTestDTO.getId());
+        //设置为不通过，并更新数据库
+        studentFreeTest.setIsPass("2");
+        studentFreeTest.setAuditMessage(freeTestDTO.getAuditMessage());
+        Date data = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        studentFreeTest.setAuditTime(sdf.format(data));
+        int i = studentFreeTestMapper.updateById(studentFreeTest);
         if (i > 0){
             return new Result(CommonCode.SUCCESS);
         }

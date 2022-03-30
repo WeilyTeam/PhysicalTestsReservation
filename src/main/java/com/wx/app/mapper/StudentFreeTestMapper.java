@@ -14,6 +14,9 @@ import java.util.List;
 */
 public interface StudentFreeTestMapper extends BaseMapper<StudentFreeTest> {
 
-    Page<StudentFreeTestVo> selectFreeList(@Param("page") Page<StudentFreeTestVo> page, @Param("condition") StudentInfoDTO studentTestInfo);
+    Page<StudentFreeTestVo> selectFreeList(@Param("page") Page<StudentFreeTestVo> page,
+                                           @Param("condition") StudentInfoDTO studentTestInfo,
+                                           @Param("isPass") String isPass,
+                                           @Param("semester") String semester);
     List<StudentFreeTestVo> selectFreeList(@Param("condition") StudentInfoDTO studentTestInfo);
 }

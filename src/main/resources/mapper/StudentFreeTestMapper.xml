@@ -31,6 +31,12 @@
             sys_user.id = student_info.user_id
         WHERE
             sys_user.status = 0
+            <if test="isPass != null">
+                and is_pass = #{isPass}
+            </if>
+            <if test="semester != null">
+                and student_free_test.semester = #{semester}
+            </if>
             <if test="condition.userName != null">
                 and user_name LIKE #{condition.userName}
             </if>

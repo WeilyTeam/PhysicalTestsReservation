@@ -5,6 +5,7 @@ package com.wx.app.controller;/**
  */
 
 import com.wx.app.dto.NicknameDTO;
+import com.wx.app.dto.UserDTO;
 import com.wx.app.entity.User;
 import com.wx.app.service.LoginService;
 import com.wx.app.utils.Result;
@@ -26,14 +27,14 @@ public class LoginController {
 
     /**
      * 登录接口
-     * @param user
+     * @param userDTO
      * @return
      */
     @ApiOperation(value = "登录接口")
     @PostMapping("login")
-    public Result login(@RequestBody User user){
-        log.info("{}",user.toString());
-        return loginService.login(user);
+    public Result login(@RequestBody UserDTO userDTO){
+        log.info("userDTO: {}",userDTO.toString());
+        return loginService.login(userDTO);
     }
 
     /**

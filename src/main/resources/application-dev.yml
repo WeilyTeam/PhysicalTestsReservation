@@ -1,5 +1,10 @@
 server:
   port: 8282
+#  ssl:
+#    key-store: E:\学习\web前后端\预学生约系统\新建文件夹\physical-fitness\src\main\resources\7519480_www.changzer.cn.pfx
+#    key-password: pj62v3f6
+#    key-store-type: pfx
+
 #  servlet:
 #    context-path: /api
 
@@ -36,5 +41,5 @@ spring:
         max-wait: -1
   web:
     resources:
-      static-locations: file:E:\\学习\\web前后端\\预学生约系统\\新建文件夹\\physical-fitness\\images
-#      static-locations: file:/opt/reserveApp/images
+      static-locations: file:E://学习//web前后端//预学生约系统//新建文件夹//physical-fitness
+#      static-locations: file:/opt/reserveApp

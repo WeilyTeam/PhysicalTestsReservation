@@ -6,6 +6,7 @@ package com.wx.app.service.impl;/**
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.wx.app.dto.NicknameDTO;
+import com.wx.app.dto.UserDTO;
 import com.wx.app.entity.LoginUser;
 import com.wx.app.entity.User;
 import com.wx.app.enums.CommonCode;
@@ -44,9 +45,9 @@ public class LoginServiceImpl implements LoginService {
     private RedisCache redisCache;
 
     @Override
-    public Result login(User user) {
+    public Result login(UserDTO userDTO) {
         //使用Authentication authenticate认证
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getUserName(),user.getPassword());
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDTO.getUserName(),userDTO.getPassword());
         Authentication authenticate;
         try {
             authenticate = authenticationManager.authenticate(authenticationToken);

@@ -33,9 +33,9 @@ class AppApplicationTests {
     @Test
     public void testPasswordEncoder(){
         PasswordEncoder ps = new BCryptPasswordEncoder();
-        //String encode = ps.encode("1234");
+        String encode = ps.encode("123123");
         //String encode2 = ps.encode("1234");
-        //System.out.println(encode);
+        System.out.println(encode);
         //System.out.println(encode2);
         //$2a$10$UViL.jTzZHy/m7K29SuwPenDT5s5XcfIoSHoEJImRBjbsnok3Y7Nu
 
