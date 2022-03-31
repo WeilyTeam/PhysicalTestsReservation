@@ -1,16 +1,11 @@
 package com.wx.app.service;
 
-import com.wx.app.dto.PageDTO;
-import com.wx.app.entity.TeacherInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.wx.app.utils.Result;
+import com.wx.app.entity.TeacherInfo;
 
 /**
  *
  */
 public interface TeacherInfoService extends IService<TeacherInfo> {
 
-    Result getTeacherList(PageDTO pageDTO);
-
-    Result addTeacher(TeacherInfo teacherInfo);
 }

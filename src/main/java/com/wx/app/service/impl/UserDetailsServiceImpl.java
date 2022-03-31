@@ -5,11 +5,12 @@ package com.wx.app.service.impl;/**
  */
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.wx.app.entity.LoginUser;
+import com.wx.app.entity.SysRole;
 import com.wx.app.entity.User;
-import com.wx.app.mapper.MenuMapper;
+import com.wx.app.mapper.SysRoleMapper;
 import com.wx.app.mapper.UserMapper;
-import com.wx.app.vo.StudentInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,7 +18,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -27,7 +27,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private UserMapper userManager;
 
     @Autowired
-    private MenuMapper menuManager;
+    private SysRoleMapper sysRoleMapper;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -42,7 +42,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
 
         // 权限查询
-        List<String> list = menuManager.selectPermsByUserId(user.getId());
+        SysRole name = sysRoleMapper.selectOne(new QueryWrapper<SysRole>().eq("name", user.getIdentity()));
+        List<String> list = new ArrayList<>();
+        list.add(name.getRoleKey());
         //封装为UserDetails
         return new LoginUser(user,list);
     }

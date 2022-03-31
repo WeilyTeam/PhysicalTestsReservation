@@ -34,6 +34,7 @@ public class StudentFreeTest implements Serializable {
     private String isPass;
     private String auditTime;
     private String auditMessage;
+    private Boolean isRead;
 
     private static final long serialVersionUID = 1L;
 

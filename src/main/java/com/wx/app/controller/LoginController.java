@@ -4,7 +4,7 @@ package com.wx.app.controller;/**
  * @apiNote
  */
 
-import com.wx.app.dto.NicknameDTO;
+import com.wx.app.dto.StuPwdDTO;
 import com.wx.app.dto.UserDTO;
 import com.wx.app.entity.User;
 import com.wx.app.service.LoginService;
@@ -35,6 +35,12 @@ public class LoginController {
     public Result login(@RequestBody UserDTO userDTO){
         log.info("userDTO: {}",userDTO.toString());
         return loginService.login(userDTO);
+    }
+
+    @ApiOperation(value = "登录接口")
+    @GetMapping("userInfo")
+    public Result userInfo(){
+        return loginService.userInfo();
     }
 
     /**
@@ -70,12 +76,28 @@ public class LoginController {
     }
 
     /**
-     * 修改昵称
+     * 重置密码
+     * @param userId
      * @return
      */
-    @ApiOperation(value = "昵称修改")
-    @PutMapping("nickname")
-    public Result updateNickname(@RequestBody NicknameDTO nicknameDTO){
-        return loginService.updateNickname(nicknameDTO);
+    @ApiOperation(value = "重置密码")
+    @PutMapping("/resetPwd")
+    public Result resetStuPwd(Long userId){
+        log.info("userId: {}",userId);
+
+        return loginService.resetStuPwd(userId);
     }
+
+    /**
+     * 修改密码
+     * @param
+     * @return
+     */
+    @ApiOperation(value = "修改密码")
+    @PutMapping("/updatePwd")
+    public Result updateStuPwd(@RequestBody StuPwdDTO stuPwdDTO){
+        log.info("Pwd{}",stuPwdDTO.toString());
+        return loginService.updateStuPwd(stuPwdDTO);
+    }
+
 }

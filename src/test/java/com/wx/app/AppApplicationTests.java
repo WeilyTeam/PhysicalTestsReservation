@@ -39,8 +39,8 @@ class AppApplicationTests {
         //System.out.println(encode2);
         //$2a$10$UViL.jTzZHy/m7K29SuwPenDT5s5XcfIoSHoEJImRBjbsnok3Y7Nu
 
-        System.out.println(ps.matches("1234",
-                "$2a$10$UViL.jTzZHy/m7K29SuwPenDT5s5XcfIoSHoEJImRBjbsnok3Y7Nu"));
+        System.out.println(ps.matches("12345",
+                "$2a$10$UFUBHSHX8jmeFLJEIuVgpu7/5GlL8WDUBICJekEJ.9j51MdzYjdSO"));
     }
 
     @Autowired
@@ -67,6 +67,15 @@ class AppApplicationTests {
         //剩下的 从硬盘删除 后面再写
         //result.setMsg("删除成功");
         //result.setCode(1);
+    }
+
+    @Test
+    public void redisTest(){
+        String redisKey = "login:" + 55;
+        LoginUser loginUser = redisCache.getCacheObject(redisKey);
+        if (loginUser == null) {
+            System.out.println("null");
+        }
     }
 
 }

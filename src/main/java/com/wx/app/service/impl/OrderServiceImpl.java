@@ -7,16 +7,16 @@ package com.wx.app.service.impl;/**
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wx.app.dto.OrderDTO;
+import com.wx.app.dto.PageDTO;
 import com.wx.app.dto.StudentInfoDTO;
 import com.wx.app.dto.TestListCondition;
-import com.wx.app.dto.PageDTO;
 import com.wx.app.entity.StudentTest;
 import com.wx.app.entity.StudentTestInfo;
-import com.wx.app.entity.TeacherInfo;
+import com.wx.app.entity.User;
 import com.wx.app.enums.CommonCode;
 import com.wx.app.mapper.StudentTestInfoMapper;
 import com.wx.app.mapper.StudentTestMapper;
-import com.wx.app.mapper.TeacherInfoMapper;
+import com.wx.app.mapper.UserMapper;
 import com.wx.app.service.OrderService;
 import com.wx.app.service.StudentTestInfoService;
 import com.wx.app.service.StudentTestService;
@@ -48,7 +48,7 @@ public class OrderServiceImpl implements OrderService {
     private StudentTestMapper studentTestMapper;
 
     @Autowired
-    private TeacherInfoMapper teacherInfoMapper;
+    private UserMapper userMapper;
 
     @Override
     public Result orderByid(OrderDTO orderDTO) {
@@ -118,8 +118,8 @@ public class OrderServiceImpl implements OrderService {
         List<StudentTestInfo> studentTestInfo = new ArrayList<StudentTestInfo>();
         for(StudentTest studentTest:studentTests){
             StudentTestInfo studentTestInfo1 = StudentTestInfoMapper.selectById(studentTest.getTestId());
-            TeacherInfo teacherInfo = teacherInfoMapper.selectById(studentTestInfo1.getHeadid());
-            studentTestInfo1.setTeacherInfo(teacherInfo);
+            User user = userMapper.selectById(studentTestInfo1.getHeadid());
+            studentTestInfo1.setTeacherInfo(user);
             studentTestInfo.add(studentTestInfo1);
         }
         return new Result(CommonCode.SUCCESS,studentTestInfo);

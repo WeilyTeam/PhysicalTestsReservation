@@ -3,13 +3,13 @@ package com.wx.app.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.wx.app.dto.TestListCondition;
 import com.wx.app.dto.PageDTO;
+import com.wx.app.dto.TestListCondition;
 import com.wx.app.entity.StudentTestInfo;
-import com.wx.app.entity.TeacherInfo;
-import com.wx.app.mapper.TeacherInfoMapper;
-import com.wx.app.service.StudentTestInfoService;
+import com.wx.app.entity.User;
 import com.wx.app.mapper.StudentTestInfoMapper;
+import com.wx.app.mapper.UserMapper;
+import com.wx.app.service.StudentTestInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +24,7 @@ public class StudentTestInfoServiceImpl extends ServiceImpl<StudentTestInfoMappe
     @Autowired
     private StudentTestInfoMapper studentTestInfoMapper;
     @Autowired
-    private TeacherInfoMapper teacherInfoMapper;
+    private UserMapper userMapper;
     @Override
     public Page<StudentTestInfo> getTestList(PageDTO pageDTO, TestListCondition testListCondition) {
         Page<StudentTestInfo> page = new Page<StudentTestInfo>(pageDTO.getCurrent(),pageDTO.getSize());
@@ -49,9 +49,9 @@ public class StudentTestInfoServiceImpl extends ServiceImpl<StudentTestInfoMappe
         List<StudentTestInfo> records = studentTestInfos.getRecords();
         for (StudentTestInfo record:records){
             //遍历查询老师信息
-            TeacherInfo teacherInfo = teacherInfoMapper.selectById(record.getHeadid());
+            User user = userMapper.selectById(record.getHeadid());
             record.setIsFull(record.getOrderNum().equals(record.getStore()));
-            record.setTeacherInfo(teacherInfo);
+            record.setTeacherInfo(user);
         }
         studentTestInfos.setRecords(records);
         return studentTestInfos;

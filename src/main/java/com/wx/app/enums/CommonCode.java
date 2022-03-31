@@ -29,6 +29,11 @@ public enum CommonCode {
     FAILURE(500,"操作失败"),
 
     /**
+     * 操作失败,信息不存在
+     */
+    FAILURE_UPDATE_PASSWORD(500,"操作失败,信息不存在"),
+
+    /**
      * 操作失败
      */
     FAILURE_APPLICATION(500,"操作失败,本学期已申请"),

@@ -6,11 +6,11 @@ package com.wx.app.filter;/**
 
 import com.alibaba.fastjson.JSON;
 import com.wx.app.entity.LoginUser;
+import com.wx.app.entity.User;
 import com.wx.app.enums.CommonCode;
 import com.wx.app.utils.JwtUtil;
 import com.wx.app.utils.RedisCache;
 import com.wx.app.utils.WebUtils;
-import com.wx.app.vo.StudentInfoVo;
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +52,6 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             Claims claims = JwtUtil.parseJWT(token);
             userId = claims.getSubject();
         } catch (Exception e) {
-
             Map<String, Object> map = new HashMap<>();
             map.put("code", CommonCode.TOKEN_ILLEGAL.getCode());
             map.put("msg", CommonCode.TOKEN_ILLEGAL.getmsg());
@@ -63,8 +62,9 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
         //从redis获取用户信息
         String redisKey = "login:" + userId;
-        StudentInfoVo studentTestInfo = redisCache.getCacheObject(redisKey);
-        if (studentTestInfo == null){
+        LoginUser loginUser = redisCache.getCacheObject(redisKey);
+        User user = loginUser.getUser();
+        if (user == null){
             Map<String, Object> map = new HashMap<>();
             map.put("code", CommonCode.LOGIN_DATE.getCode());
             map.put("msg", CommonCode.LOGIN_DATE.getmsg());
@@ -72,7 +72,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             WebUtils.renderString(response,json);
             return;
         }
-        LoginUser loginUser = studentTestInfo.getLoginUser();
+        //LoginUser loginUser = studentTestInfo.getLoginUser();
 
         //存入SecurityContextHolder
         // 获取权限信息

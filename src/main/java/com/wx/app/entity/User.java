@@ -9,7 +9,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.util.Date;
 
 
 /**
@@ -30,47 +29,15 @@ public class User implements Serializable {
     @TableId
     @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
-    /**
-    * 用户名
-    */
     private String userName;
-
-    /**
-    * 用户名
-    */
-    private String nickName;
-    /**
-    * 密码
-    */
+    private String name;
     private String password;
-    /**
-    * 账号状态（0正常 1停用）
-    */
-    private String status;
-    /**
-    * 邮箱
-    */
-    private String userType;
-    /**
-    * 创建人的用户id
-    */
-    @JsonSerialize(using = ToStringSerializer.class)
-    private Long createBy;
-    /**
-    * 创建时间
-    */
-    private Date createTime;
-    /**
-    * 更新人
-    */
-    @JsonSerialize(using = ToStringSerializer.class)
-    private Long updateBy;
-    /**
-    * 更新时间
-    */
-    private Date updateTime;
-    /**
-    * 删除标志（0代表未删除，1代表已删除）
-    */
-    private Integer delFlag;
+    private String identity;
+    private String schoolClass;
+    private String sex;
+    private String grade;
+    private String specialty;
+    private String college;
+    private String specialtyDirection;
+    private String phone;
 }

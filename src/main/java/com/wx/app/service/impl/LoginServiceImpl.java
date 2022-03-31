@@ -5,18 +5,18 @@ package com.wx.app.service.impl;/**
  */
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.wx.app.dto.NicknameDTO;
+import com.wx.app.dto.StuPwdDTO;
 import com.wx.app.dto.UserDTO;
 import com.wx.app.entity.LoginUser;
 import com.wx.app.entity.User;
 import com.wx.app.enums.CommonCode;
 import com.wx.app.mapper.UserMapper;
 import com.wx.app.service.LoginService;
+import com.wx.app.service.UserService;
 import com.wx.app.utils.JwtUtil;
 import com.wx.app.utils.RedisCache;
 import com.wx.app.utils.Result;
 import com.wx.app.utils.UserUtils;
-import com.wx.app.vo.StudentInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -42,6 +42,9 @@ public class LoginServiceImpl implements LoginService {
     private UserMapper userManager;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private RedisCache redisCache;
 
     @Override
@@ -63,12 +66,11 @@ public class LoginServiceImpl implements LoginService {
         Map<String,String> map = new HashMap<String,String>();
         map.put("token", token);
         map.put("refreshToken", refreshToken);
-        map.put("nickname", loginUser.getUser().getNickName());
 
         //把完整用户信息保存到redis
-        StudentInfoVo studentInfo = userManager.getStudentInfo(Long.parseLong(userId));
-        studentInfo.setLoginUser(loginUser);
-        redisCache.setCacheObject("login:"+userId, studentInfo,24*31, TimeUnit.HOURS);
+        //StudentInfoVo studentInfo = userManager.getStudentInfo(Long.parseLong(userId));
+        //studentInfo.setLoginUser(loginUser);
+        redisCache.setCacheObject("login:"+userId, loginUser,24*31, TimeUnit.HOURS);
 
         return new Result(CommonCode.SUCCESS_LOGIN, map);
     }
@@ -105,7 +107,7 @@ public class LoginServiceImpl implements LoginService {
 
         //得到执行人的id(如果可以每个人注册则不需要这个，并且取消注册接口的拦截)
         Long userId = UserUtils.getUserId();
-        user.setCreateBy(userId);
+        //user.setCreateBy(userId);
         userManager.insert(user);
         return new Result(CommonCode.SUCCESS_REGISTRATION);
     }
@@ -119,14 +121,27 @@ public class LoginServiceImpl implements LoginService {
         return new Result(CommonCode.SUCCESS,map);
     }
 
+
+
     @Override
-    public Result updateNickname(NicknameDTO nicknameDTO) {
-        User user = new User();
+    public Result userInfo() {
         Long userId = UserUtils.getUserId();
-        user.setId(userId);
-        user.setNickName(nicknameDTO.getNickname());
-        userManager.updateById(user);
-        return new Result(CommonCode.SUCCESS);
+        //从redis获取用户信息
+        String redisKey = "login:" + userId;
+        LoginUser loginUser = redisCache.getCacheObject(redisKey);
+        User user = loginUser.getUser();
+        user.setPassword(null);
+        return new Result(CommonCode.SUCCESS,user);
+    }
+
+    @Override
+    public Result resetStuPwd(Long userId) {
+        return userService.resetStuPwd(userId);
+    }
+
+    @Override
+    public Result updateStuPwd(StuPwdDTO stuPwdDTO) {
+        return userService.updateStuPwd(stuPwdDTO);
     }
 
 }
