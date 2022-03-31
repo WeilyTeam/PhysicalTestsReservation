@@ -8,6 +8,7 @@ import com.alibaba.excel.annotation.write.style.HeadRowHeight;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.wx.app.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -29,6 +30,17 @@ import java.util.List;
 @HeadRowHeight(20)
 public class StudentFreeTestVo implements Serializable {
 
+    public StudentFreeTestVo(User user) {
+        this.id = user.getId();
+        this.name = user.getName();
+        this.userName = user.getUserName();
+        this.schoolClass = user.getSchoolClass();
+        this.sex = user.getSex();
+        this.grade = user.getGrade();
+        this.specialty = user.getSpecialty();
+        this.college = user.getCollege();
+        this.specialtyDirection = user.getSpecialtyDirection();
+    }
 
     @ExcelIgnore
     @JsonSerialize(using = ToStringSerializer.class)

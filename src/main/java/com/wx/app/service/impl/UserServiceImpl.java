@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wx.app.dto.PageDTO;
 import com.wx.app.dto.StuPwdDTO;
 import com.wx.app.dto.StudentInfoDTO;
+import com.wx.app.dto.TeacherDTO;
 import com.wx.app.entity.LoginUser;
 import com.wx.app.entity.User;
 import com.wx.app.enums.CommonCode;
@@ -24,6 +25,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -55,8 +57,23 @@ public class UserServiceImpl implements UserService {
         //查询学生信息
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("identity","学生");
+
         if (studentTestInfo.getName() != null) {
-            queryWrapper.eq("name", studentTestInfo.getName());
+            queryWrapper.like("name", studentTestInfo.getName());
+        }else if (studentTestInfo.getCollege() != null){
+            queryWrapper.like("college", studentTestInfo.getCollege());
+        }else if (studentTestInfo.getGrade() != null){
+            queryWrapper.like("grade", studentTestInfo.getGrade());
+        }else if (studentTestInfo.getSchoolClass() != null){
+            queryWrapper.like("school_class", studentTestInfo.getSchoolClass());
+        }else if (studentTestInfo.getSpecialty() != null){
+            queryWrapper.like("specialty", studentTestInfo.getSpecialty());
+        }else if (studentTestInfo.getSex() != null){
+            queryWrapper.like("sex", studentTestInfo.getSex());
+        }else if (studentTestInfo.getSpecialtyDirection() != null){
+            queryWrapper.like("specialty_direction", studentTestInfo.getSpecialtyDirection());
+        }else if (studentTestInfo.getUserName() != null){
+            queryWrapper.like("user_name", studentTestInfo.getUserName());
         }
         Page<User> userPage = userMapper.selectPage(page, queryWrapper);
         return new Result(CommonCode.SUCCESS, userPage);
@@ -80,7 +97,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Result deleteStudent(Long userId) {
-        //逻辑删除学生
+
         int i = userMapper.deleteById(userId);
         if (i != 0){
             return new Result(CommonCode.SUCCESS);
@@ -116,9 +133,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Result getTeacherList(PageDTO pageDTO) {
-        Page<User> page = new Page<>(pageDTO.getCurrent(),pageDTO.getSize());
+    public Result getTeacherList(PageDTO pageDTO, TeacherDTO teacherDTO) {
         QueryWrapper<User> eq = new QueryWrapper<User>().eq("identity", "老师");
+        if (teacherDTO.getCollege() != null) {
+            eq.like("college", teacherDTO.getCollege());
+        }else if (teacherDTO.getName() != null) {
+            eq.like("name", teacherDTO.getName());
+        }else if (teacherDTO.getUserName() != null) {
+            eq.like("user_name", teacherDTO.getUserName());
+        }
+        if (pageDTO.getSize() == null || pageDTO.getCurrent() == null) {
+            List<User> users = userMapper.selectList(eq);
+            return new Result(CommonCode.SUCCESS,users);
+        }
+        Page<User> page = new Page<>(pageDTO.getCurrent(),pageDTO.getSize());
         Page<User> userPage = userMapper.selectPage(page, eq);
         return new Result(CommonCode.SUCCESS,userPage);
     }

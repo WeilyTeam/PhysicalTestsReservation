@@ -6,8 +6,10 @@ import com.alibaba.excel.read.listener.ReadListener;
 import com.alibaba.excel.util.ListUtils;
 import com.alibaba.excel.util.MapUtils;
 import com.alibaba.fastjson.JSON;
-import com.wx.app.dto.PageDTO;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.wx.app.dto.StudentInfoDTO;
+import com.wx.app.entity.StudentFreeTest;
+import com.wx.app.entity.User;
 import com.wx.app.enums.CommonCode;
 import com.wx.app.excel.DemoDAO;
 import com.wx.app.excel.DemoData;
@@ -145,7 +147,7 @@ public class ExcelController {
 
         @GetMapping("downloadFreeTestStudent")
     @ApiOperation(value = "免测学生Excel下载")
-    public void downloadFreeTestStudent(PageDTO pageDTO, HttpServletResponse response) throws IOException {
+    public void downloadFreeTestStudent(String isPass, String semester, HttpServletResponse response) throws IOException {
         // 这里注意 有同学反应使用swagger 会导致各种问题，请直接用浏览器或者用postman
         try {
             response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
@@ -154,18 +156,25 @@ public class ExcelController {
             String fileName = URLEncoder.encode("免测学生", "UTF-8").replaceAll("\\+", "%20");
             response.setHeader("Content-disposition", "attachment;filename*=utf-8''" + fileName + ".xlsx");
             // 这里需要设置不关闭流
-            List<StudentFreeTestVo> studentFreeTestPage = studentFreeTestMapper.selectFreeList(new StudentInfoDTO());
-            List<StudentFreeTestVo> newStudentFreeTestVo = new ArrayList<>();
-
-            //查询图片路由
-            for (StudentFreeTestVo studentFreeTestVo:studentFreeTestPage){
-                List<String> imgFreeTests = imgFreeTestMapper.selectListById(studentFreeTestVo.getId());
-                studentFreeTestVo.setImages(imgFreeTests);
-                newStudentFreeTestVo.add(studentFreeTestVo);
+            QueryWrapper<StudentFreeTest> queryWrapper = new QueryWrapper<>();
+            if (isPass != null) {
+                queryWrapper.eq("is_pass", isPass);
+            }
+            if (semester != null) {
+                queryWrapper.eq("semester", semester);
+            }
+            List<StudentFreeTest> studentFreeTests = studentFreeTestMapper.selectList(queryWrapper);
+            List<StudentFreeTestVo> studentFreeTestVos = new ArrayList<>();
+            for (StudentFreeTest studentFreeTest:studentFreeTests){
+                User user = userMapper.selectById(studentFreeTest.getUserId());
+                StudentFreeTestVo studentFreeTestVo = new StudentFreeTestVo(user);
+                studentFreeTestVo.setReason(studentFreeTest.getReason());
+                studentFreeTestVo.setSemester(studentFreeTest.getSemester());
+                studentFreeTestVos.add(studentFreeTestVo);
             }
 
             EasyExcel.write(response.getOutputStream(), StudentFreeTestVo.class).autoCloseStream(Boolean.FALSE).sheet("免测学生")
-                    .doWrite(newStudentFreeTestVo);
+                    .doWrite(studentFreeTestVos);
         } catch (Exception e) {
             // 重置response
             response.reset();
@@ -181,6 +190,7 @@ public class ExcelController {
     @GetMapping("downloadStudentList")
     @ApiOperation(value = "学生信息Excel下载")
     public void downloadStudentList(HttpServletResponse response) throws IOException {
+        int a = 0;
         // 这里注意 有同学反应使用swagger 会导致各种问题，请直接用浏览器或者用postman
         try {
             response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
@@ -190,6 +200,7 @@ public class ExcelController {
             response.setHeader("Content-disposition", "attachment;filename*=utf-8''" + fileName + ".xlsx");
             // 这里需要设置不关闭流
             List<StudentInfoVo> data = userMapper.getStudentList(new StudentInfoDTO());
+            System.out.println("aaa");
             EasyExcel.write(response.getOutputStream(), StudentInfoVo.class).autoCloseStream(Boolean.FALSE).sheet("学生信息")
                     .doWrite(data);
         } catch (Exception e) {

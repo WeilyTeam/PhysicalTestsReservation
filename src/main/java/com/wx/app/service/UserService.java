@@ -3,6 +3,7 @@ package com.wx.app.service;
 import com.wx.app.dto.PageDTO;
 import com.wx.app.dto.StuPwdDTO;
 import com.wx.app.dto.StudentInfoDTO;
+import com.wx.app.dto.TeacherDTO;
 import com.wx.app.entity.User;
 import com.wx.app.utils.Result;
 
@@ -24,7 +25,7 @@ public interface UserService {
 
     Result updateStuPwd(StuPwdDTO stuPwdDTO);
 
-    Result getTeacherList(PageDTO pageDTO);
+    Result getTeacherList(PageDTO pageDTO, TeacherDTO teacherDTO);
 
     Result addTeacher(User user);
 

@@ -42,7 +42,7 @@ public class StudentController {
      * @return
      */
     @ApiOperation(value = "获取学生列表")
-    @GetMapping("/studentList")
+    @GetMapping("/student/list")
     public Result studentList(PageDTO pageDTO, StudentInfoDTO studentTestInfo){
         log.info("pageDTO: {}",pageDTO.toString());
         log.info("studentTestInfo: {}",studentTestInfo.toString());
@@ -56,7 +56,7 @@ public class StudentController {
      * @return
      */
     @ApiOperation(value = "通过学生id获取学生信息")
-    @GetMapping("/getStudentById")
+    @GetMapping("/student/getById")
     public Result studentInfo(Long id){
         log.info("userId: {}",id);
 
@@ -76,7 +76,7 @@ public class StudentController {
     }
 
     /**
-     * 老师列表
+     *
      * @param user
      * @return
      */

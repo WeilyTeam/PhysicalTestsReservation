@@ -68,8 +68,6 @@ public class LoginServiceImpl implements LoginService {
         map.put("refreshToken", refreshToken);
 
         //把完整用户信息保存到redis
-        //StudentInfoVo studentInfo = userManager.getStudentInfo(Long.parseLong(userId));
-        //studentInfo.setLoginUser(loginUser);
         redisCache.setCacheObject("login:"+userId, loginUser,24*31, TimeUnit.HOURS);
 
         return new Result(CommonCode.SUCCESS_LOGIN, map);

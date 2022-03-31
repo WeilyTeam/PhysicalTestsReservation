@@ -1,6 +1,7 @@
 package com.wx.app.controller;
 
 import com.wx.app.dto.PageDTO;
+import com.wx.app.dto.TeacherDTO;
 import com.wx.app.entity.User;
 import com.wx.app.service.UserService;
 import com.wx.app.utils.Result;
@@ -31,10 +32,10 @@ public class TeacherController {
      * @return
      */
     @ApiOperation(value = "负责老师列表")
-    @GetMapping("/teacherList")
-    public Result teacherList(PageDTO pageDTO) {
+    @GetMapping("/teacher/list")
+    public Result teacherList(PageDTO pageDTO, TeacherDTO teacherDTO) {
         log.info("pageDTO: {}",pageDTO.toString());
-        return userService.getTeacherList(pageDTO);
+        return userService.getTeacherList(pageDTO,teacherDTO);
     }
 
     /**
