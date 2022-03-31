@@ -39,6 +39,18 @@ public class TeacherController {
 
     /**
      * 老师列表
+     * @param id
+     * @return
+     */
+    @ApiOperation(value = "负责老师列表")
+    @GetMapping("/teacherInfoById")
+    public Result getTeacherById(Long id) {
+        log.info("id: {}",id);
+        return userService.getTeacherById(id);
+    }
+
+    /**
+     * 老师列表
      * @param user
      * @return
      */
@@ -55,7 +67,7 @@ public class TeacherController {
      * @param user
      * @return
      */
-    @ApiOperation(value = "添加老师")
+    @ApiOperation(value = "修改老师")
     @PutMapping("/teacher")
     public Result updateTeacher(@RequestBody User user) {
         log.info("user: {}",user.toString());

@@ -31,4 +31,10 @@ public interface UserService {
     Result updateTeacher(User user);
 
     Result deleteTeacher(Long id, String userName);
+
+    Result getTeacherById(Long id);
+
+    Result addStudent(User user);
+
+    Result updateStudent(User user);
 }

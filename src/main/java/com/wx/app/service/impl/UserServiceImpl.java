@@ -138,11 +138,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Result updateTeacher(User user) {
+        user.setUserName(null);
         int i = 0;
         if (user.getId() != null) {
             i = userMapper.updateById(user);
         }else {
-            i = userMapper.update(user,new QueryWrapper<User>().eq("user_name",user.getUserName()));
+            QueryWrapper<User> queryWrapper = new QueryWrapper<User>().eq("user_name", user.getUserName());
+            queryWrapper.eq("identity", "老师");
+            i = userMapper.update(user,queryWrapper);
         }
         if (i == 0) {
             return new Result(CommonCode.FAILURE);
@@ -157,6 +160,54 @@ public class UserServiceImpl implements UserService {
             i = userMapper.deleteById(id);
         }else if (userName != null) {
             i = userMapper.delete(new  QueryWrapper<User>().eq("user_name",userName));
+        }
+        if (i == 0) {
+            return new Result(CommonCode.FAILURE);
+        }
+        return new Result(CommonCode.SUCCESS);
+    }
+
+    @Override
+    public Result getTeacherById(Long userId) {
+
+        //通过id获取信息
+        //从redis获取用户信息
+        String redisKey = "login:" + userId;
+        LoginUser loginUser = redisCache.getCacheObject(redisKey);
+        if (loginUser != null) {
+            User redisUser = loginUser.getUser();
+            redisUser.setPassword(null);
+            return new Result(CommonCode.SUCCESS, redisUser);
+        }
+        //如果redis中没有，则查询
+        User user = userMapper.selectById(userId);
+        user.setPassword(null);
+        return new Result(CommonCode.SUCCESS, user);
+    }
+
+    @Override
+    public Result addStudent(User user) {
+        PasswordEncoder ps = new BCryptPasswordEncoder();
+        String encode = ps.encode(user.getUserName());
+        user.setPassword(encode);
+        user.setIdentity("学生");
+        int insert = userMapper.insert(user);
+        if (insert == 0){
+            return new Result(CommonCode.FAILURE);
+        }
+        return new Result(CommonCode.SUCCESS);
+    }
+
+    @Override
+    public Result updateStudent(User user) {
+        user.setUserName(null);
+        int i = 0;
+        if (user.getId() != null) {
+            i = userMapper.updateById(user);
+        }else {
+            QueryWrapper<User> queryWrapper = new QueryWrapper<User>().eq("user_name", user.getUserName());
+            queryWrapper.eq("identity", "学生");
+            i = userMapper.update(user,queryWrapper);
         }
         if (i == 0) {
             return new Result(CommonCode.FAILURE);
