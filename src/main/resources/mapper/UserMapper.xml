@@ -5,23 +5,14 @@
 <mapper namespace="com.wx.app.mapper.UserMapper">
     <select id="getStudentList" resultType="com.wx.app.vo.StudentInfoVo">
         SELECT
-            info_id, user_id, name, school_class, sex, grade, specialty, college, specialty_direction, user_name
+            id, name, sex, grade, specialty, college, user_name
         FROM
-            `student_info`
-        LEFT JOIN
             sys_user
-        ON
-            sys_user.id = student_info.user_id
-        where
-            sys_user.status = 0
         <if test="condition.userName != null">
             and user_name LIKE #{condition.userName}
         </if>
         <if test="condition.name != null">
             and name LIKE #{condition.name}
-        </if>
-        <if test="condition.schoolClass != null">
-            and school_class LIKE #{condition.schoolClass}
         </if>
         <if test="condition.sex != null">
             and sex LIKE #{condition.sex}
@@ -34,9 +25,6 @@
         </if>
         <if test="condition.college != null">
             and college LIKE #{condition.college}
-        </if>
-        <if test="condition.specialtyDirection != null">
-            and specialty_direction LIKE #{condition.specialtyDirection}
         </if>
     </select>
 
@@ -44,39 +32,28 @@
 
     <select id="getStudentInfo" resultType="com.wx.app.vo.StudentInfoVo">
         SELECT
-            info_id, user_id, name, school_class, sex, grade, specialty, college, specialty_direction, user_name
+            id, name, sex, grade, specialty, college, user_name
         FROM
-            `student_info`
-        LEFT JOIN
             sys_user
-        ON
-            sys_user.id = student_info.user_id
-        WHERE `status` = 0 and user_id = #{userId}
+        WHERE id = #{userId}
     </select>
 
     <select id="getStudentById" resultType="com.wx.app.vo.StudentInfoVo">
         SELECT
-        student_test.id, info_id, student_info.user_id, name, school_class, sex, grade, specialty, college, specialty_direction, user_name
+        student_test.id, student_test.user_id, name, sex, grade, specialty, college, user_name
         FROM
             `student_test`
         LEFT JOIN
-            student_info
-        ON
-            student_test.user_id = student_info.user_id
-        LEFT JOIN
             sys_user
         ON
-            sys_user.id = student_info.user_id
+            student_test.user_id = sys_user.id
         WHERE
-            student_test.test_id = #{id} and sys_user.status = 0
+            student_test.test_id = #{id}
         <if test="condition.userName != null">
             and user_name LIKE #{condition.userName}
         </if>
         <if test="condition.name != null">
             and name LIKE #{condition.name}
-        </if>
-        <if test="condition.schoolClass != null">
-            and school_class LIKE #{condition.schoolClass}
         </if>
         <if test="condition.sex != null">
             and sex LIKE #{condition.sex}
@@ -89,9 +66,6 @@
         </if>
         <if test="condition.college != null">
             and college LIKE #{condition.college}
-        </if>
-        <if test="condition.specialtyDirection != null">
-            and specialty_direction LIKE #{condition.specialtyDirection}
         </if>
     </select>
 </mapper>

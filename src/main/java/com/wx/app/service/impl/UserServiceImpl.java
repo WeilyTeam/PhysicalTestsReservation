@@ -64,14 +64,10 @@ public class UserServiceImpl implements UserService {
             queryWrapper.like("college", studentTestInfo.getCollege());
         }else if (studentTestInfo.getGrade() != null){
             queryWrapper.like("grade", studentTestInfo.getGrade());
-        }else if (studentTestInfo.getSchoolClass() != null){
-            queryWrapper.like("school_class", studentTestInfo.getSchoolClass());
         }else if (studentTestInfo.getSpecialty() != null){
             queryWrapper.like("specialty", studentTestInfo.getSpecialty());
         }else if (studentTestInfo.getSex() != null){
             queryWrapper.like("sex", studentTestInfo.getSex());
-        }else if (studentTestInfo.getSpecialtyDirection() != null){
-            queryWrapper.like("specialty_direction", studentTestInfo.getSpecialtyDirection());
         }else if (studentTestInfo.getUserName() != null){
             queryWrapper.like("user_name", studentTestInfo.getUserName());
         }
@@ -146,6 +142,7 @@ public class UserServiceImpl implements UserService {
             List<User> users = userMapper.selectList(eq);
             return new Result(CommonCode.SUCCESS,users);
         }
+
         Page<User> page = new Page<>(pageDTO.getCurrent(),pageDTO.getSize());
         Page<User> userPage = userMapper.selectPage(page, eq);
         return new Result(CommonCode.SUCCESS,userPage);

@@ -4,9 +4,13 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.wx.app.vo.StudentInfoVo;
+import com.wx.app.vo.TeacherInfoVo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.Serializable;
 
@@ -33,11 +37,29 @@ public class User implements Serializable {
     private String name;
     private String password;
     private String identity;
-    private String schoolClass;
     private String sex;
     private String grade;
     private String specialty;
     private String college;
-    private String specialtyDirection;
     private String phone;
+
+    public User(StudentInfoVo item, String identity) {
+        this.userName = item.getUserName();
+        this.name = item.getName();
+        this.identity = identity;
+        this.sex = item.getSex();
+        this.grade = item.getGrade();
+        this.specialty = item.getSpecialty();
+        this.college = item.getCollege();
+    }
+
+
+    public User(TeacherInfoVo item, String identity) {
+        this.userName = item.getUserName();
+        this.name = item.getName();
+        this.identity = identity;
+        this.sex = item.getSex();
+        this.college = item.getCollege();
+        this.phone = item.getPhone();
+    }
 }

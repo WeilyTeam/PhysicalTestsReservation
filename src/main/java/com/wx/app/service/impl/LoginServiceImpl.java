@@ -100,12 +100,12 @@ public class LoginServiceImpl implements LoginService {
 
         //加密密码
         PasswordEncoder ps = new BCryptPasswordEncoder();
-        String passwordEncoder = ps.encode(user.getPassword());
-        user.setPassword(passwordEncoder);
+        String encode = ps.encode(user.getUserName());
+        user.setPassword(encode);
 
         //得到执行人的id(如果可以每个人注册则不需要这个，并且取消注册接口的拦截)
-        Long userId = UserUtils.getUserId();
-        //user.setCreateBy(userId);
+        //        Long userId = UserUtils.getUserId();
+        //        //user.setCreateBy(userId);
         userManager.insert(user);
         return new Result(CommonCode.SUCCESS_REGISTRATION);
     }

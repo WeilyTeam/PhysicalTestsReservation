@@ -83,6 +83,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Result addTest(StudentTestInfo studentTestInfo) {
+        Long userId = UserUtils.getUserId();
+        studentTestInfo.setHeadid(userId);
         boolean save = studentTestInfoService.save(studentTestInfo);
         if (save){
             return new Result(CommonCode.SUCCESS);
@@ -101,6 +103,10 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Result deleteOrderById(Long id) {
+        //体测信息预约减一
+        StudentTest byId = studentTestService.getById(id);
+        studentTestInfoService.decOrder(byId.getTestId());
+        //删除已预约的学生
         boolean b = studentTestService.removeById(id);
         if (b){
             return new Result(CommonCode.SUCCESS);

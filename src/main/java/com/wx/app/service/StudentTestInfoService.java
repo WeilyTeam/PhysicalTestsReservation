@@ -16,4 +16,6 @@ public interface StudentTestInfoService extends IService<StudentTestInfo> {
     StudentTestInfo checkStockById(Long id);
 
     void updateOrderNum(StudentTestInfo studentTestInfo);
+
+    void decOrder(Long testId);
 }

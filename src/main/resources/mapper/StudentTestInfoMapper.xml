@@ -31,6 +31,12 @@
         where
             id=#{id} and version = #{version}
     </update>
+    <update id="decOrder">
+        update student_test_info set
+            order_num=order_num-1
+        where
+            id=#{id}
+    </update>
 
     <!--select *  FROM `student_test_info` where date(day) >= date('2019-09-30')-->
 

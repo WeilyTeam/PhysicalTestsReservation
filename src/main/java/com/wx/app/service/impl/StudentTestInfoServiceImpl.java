@@ -10,6 +10,7 @@ import com.wx.app.entity.User;
 import com.wx.app.mapper.StudentTestInfoMapper;
 import com.wx.app.mapper.UserMapper;
 import com.wx.app.service.StudentTestInfoService;
+import com.wx.app.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +32,10 @@ public class StudentTestInfoServiceImpl extends ServiceImpl<StudentTestInfoMappe
 
         //创建QueryWrapper作为查询条件
         QueryWrapper<StudentTestInfo> queryWrapper = new QueryWrapper<>();
+        User user1 = UserUtils.getUser();
+        if ("老师".equals(user1.getIdentity())){
+            queryWrapper.eq("headId", user1.getId());
+        }
         queryWrapper.eq("del_flag", 0);
         //queryWrapper.("", 0);
         if(testListCondition.getLocation() != null){
@@ -68,5 +73,10 @@ public class StudentTestInfoServiceImpl extends ServiceImpl<StudentTestInfoMappe
     public void updateOrderNum(StudentTestInfo studentTestInfo) {
         //减库存
         studentTestInfoMapper.updateOrderNum(studentTestInfo);
+    }
+
+    @Override
+    public void decOrder(Long testId) {
+        studentTestInfoMapper.decOrder(testId);
     }
 }

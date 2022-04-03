@@ -32,7 +32,7 @@ public class TeacherController {
      * @return
      */
     @ApiOperation(value = "负责老师列表")
-    @GetMapping("/teacher/list")
+    @GetMapping("/teacherList")
     public Result teacherList(PageDTO pageDTO, TeacherDTO teacherDTO) {
         log.info("pageDTO: {}",pageDTO.toString());
         return userService.getTeacherList(pageDTO,teacherDTO);
