@@ -84,6 +84,8 @@ public class StudentFreeTestVo implements Serializable {
 
     @ExcelIgnore
     private String isPass;
+    @ExcelIgnore
+    private Integer isRead;
 
     @ExcelIgnore
     @TableField(exist = false)

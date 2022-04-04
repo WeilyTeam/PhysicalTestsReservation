@@ -20,4 +20,8 @@ public interface StudentFreeTestService extends IService<StudentFreeTest> {
     Result freeTestByToken(Long userId);
 
     Result rejectApplication(FreeTestDTO freeTestDTO);
+
+    Result hasMessage();
+
+    Result freeTestById(Long id);
 }

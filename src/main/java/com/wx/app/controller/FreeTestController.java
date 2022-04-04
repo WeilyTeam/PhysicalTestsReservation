@@ -39,6 +39,20 @@ public class FreeTestController {
         return studentFreeTestService.freeTestList(pageDTO, studentTestInfo, auditDOT);
     }
 
+    @GetMapping("/")
+    @ApiOperation(value = "获取免测列表")
+    public Result freeTestById(Long id){
+        log.info("id: {}",id);
+        return studentFreeTestService.freeTestById(id);
+    }
+
+
+    @GetMapping("/hasMessage")
+    @ApiOperation(value = "是否有未读免测消息")
+    public Result hasMessage(){
+        return studentFreeTestService.hasMessage();
+    }
+
     @GetMapping("/freeInfo")
     @ApiOperation(value = "根据token获取免测")
     public Result freeTestByToken(){

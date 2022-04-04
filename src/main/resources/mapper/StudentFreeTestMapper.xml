@@ -16,41 +16,45 @@
         reason,is_pass
     </sql>
 
-<!--    <select id="selectFreeList" resultType="com.wx.app.vo.StudentFreeTestVo">-->
-<!--        SELECT-->
-<!--            student_free_test.id, reason, semester, name, user_name, school_class, sex, grade, specialty, college, specialty_direction, is_pass-->
-<!--        FROM-->
-<!--            `student_free_test`-->
-<!--        LEFT JOIN-->
-<!--            student_info-->
-<!--        ON-->
-<!--            student_free_test.user_id = student_info.user_id-->
-<!--        LEFT JOIN-->
-<!--            sys_user-->
-<!--        ON-->
-<!--            sys_user.id = student_info.user_id-->
-<!--        WHERE-->
-<!--            sys_user.status = 0-->
-<!--            <if test="isPass != null">-->
-<!--                and is_pass = #{isPass}-->
-<!--            </if>-->
-<!--            <if test="semester != null">-->
-<!--                and student_free_test.semester = #{semester}-->
-<!--            </if>-->
-<!--            <if test="condition.userName != null">-->
-<!--                and user_name LIKE #{condition.userName}-->
-<!--            </if>-->
-<!--            <if test="condition.name != null">-->
-<!--                and name LIKE #{condition.name}-->
-<!--            </if>-->
-<!--            <if test="condition.sex != null">-->
-<!--                and sex LIKE #{condition.sex}-->
-<!--            </if>-->
-<!--            <if test="condition.grade != null">-->
-<!--                and grade LIKE #{condition.grade}-->
-<!--            </if>-->
-<!--            <if test="condition.college != null">-->
-<!--                and college LIKE #{condition.college}-->
-<!--            </if>-->
-<!--    </select>-->
+
+    <select id="selectFreeList" resultType="com.wx.app.vo.StudentFreeTestVo">
+        SELECT
+            student_free_test.id, reason, semester, name, user_name, sex, grade, college, is_pass,is_read
+        FROM
+            `student_free_test`
+        LEFT JOIN
+            sys_user
+        ON
+            sys_user.id = student_free_test.user_id
+        WHERE
+            1 = 1
+            <if test="isPass != null">
+                and student_free_test.is_pass = #{isPass}
+            </if>
+            <if test="semester != null">
+                and student_free_test.semester = #{semester}
+            </if>
+            <if test="condition.userName != null">
+                and sys_user.user_name LIKE #{condition.userName}
+            </if>
+            <if test="condition.name != null">
+                and sys_user.name LIKE #{condition.name}
+            </if>
+            <if test="condition.sex != null">
+                and sys_user.sex LIKE #{condition.sex}
+            </if>
+            <if test="condition.grade != null">
+                and sys_user.grade LIKE #{condition.grade}
+            </if>
+            <if test="condition.college != null">
+                and sys_user.college LIKE #{condition.college}
+            </if>
+    </select>
+    <select id="hasMessage" resultType="com.wx.app.entity.StudentFreeTest">
+        select id
+        FROM
+            `student_free_test`
+        WHERE
+            user_id = #{userId} AND is_read = 1
+    </select>
 </mapper>

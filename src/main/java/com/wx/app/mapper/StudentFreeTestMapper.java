@@ -18,5 +18,7 @@ public interface StudentFreeTestMapper extends BaseMapper<StudentFreeTest> {
                                            @Param("condition") StudentInfoDTO studentTestInfo,
                                            @Param("isPass") String isPass,
                                            @Param("semester") String semester);
-    List<StudentFreeTestVo> selectFreeList(@Param("condition") StudentInfoDTO studentTestInfo);
+
+    List<StudentFreeTest> hasMessage(@Param("userId") Long userId);
+    //List<StudentFreeTestVo> selectFreeList(@Param("condition") StudentInfoDTO studentTestInfo);
 }

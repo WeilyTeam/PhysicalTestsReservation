@@ -100,6 +100,7 @@ implements StudentFreeTestService{
         Date data = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         studentFreeTest.setAuditTime(sdf.format(data));
+        studentFreeTest.setIsRead(1);
         int i = studentFreeTestMapper.updateById(studentFreeTest);
         if (i > 0){
             return new Result(CommonCode.SUCCESS);
@@ -143,10 +144,37 @@ implements StudentFreeTestService{
         Date data = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         studentFreeTest.setAuditTime(sdf.format(data));
+        studentFreeTest.setIsRead(1);
         int i = studentFreeTestMapper.updateById(studentFreeTest);
         if (i > 0){
             return new Result(CommonCode.SUCCESS);
         }
         return new Result(CommonCode.FAILURE);
+    }
+
+    @Override
+    public Result hasMessage() {
+        Long userId = UserUtils.getUserId();
+        List<StudentFreeTest> studentFreeTests = studentFreeTestMapper.hasMessage(userId);
+        System.out.println(studentFreeTests.size());
+        if (studentFreeTests.size() != 0) {
+            return new Result(CommonCode.SUCCESS,true);
+        }
+        return new Result(CommonCode.SUCCESS,false);
+    }
+
+    @Override
+    public Result freeTestById(Long id) {
+        StudentFreeTest studentFreeTest1 = studentFreeTestMapper.selectById(id);
+        Map<String,Object> data = new HashMap<>();
+        List<String> list = imgFreeTestMapper.selectListById(studentFreeTest1.getId());
+        data.put("studentFreeTest",studentFreeTest1);
+        data.put("images",list);
+        if (studentFreeTest1.getUserId().equals(UserUtils.getUserId())) {
+            studentFreeTest1.setIsRead(2);
+            //标记为已读
+            studentFreeTestMapper.updateById(studentFreeTest1);
+        }
+        return new Result(CommonCode.SUCCESS,studentFreeTest1);
     }
 }
