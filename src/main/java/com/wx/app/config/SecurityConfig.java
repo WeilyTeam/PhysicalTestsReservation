@@ -42,7 +42,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring(). antMatchers("/swagger-ui.html")
                 .antMatchers("/webjars/**")
                 .antMatchers("/v2/**")
-                .antMatchers("/swagger-resources/**");
+                .antMatchers("/swagger-resources/**")
+                .antMatchers("/excel/*");
     }
     @Override
     protected void configure(HttpSecurity http) throws Exception {

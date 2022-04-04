@@ -7,11 +7,11 @@ import com.wx.app.dto.PageDTO;
 import com.wx.app.dto.StudentInfoDTO;
 import com.wx.app.entity.StudentTest;
 import com.wx.app.enums.CommonCode;
+import com.wx.app.mapper.StudentTestMapper;
 import com.wx.app.mapper.UserMapper;
 import com.wx.app.service.StudentTestService;
-import com.wx.app.mapper.StudentTestMapper;
 import com.wx.app.utils.Result;
-import com.wx.app.vo.StudentInfoVo;
+import com.wx.app.vo.TestStudentInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,8 +43,8 @@ public class StudentTestServiceImpl extends ServiceImpl<StudentTestMapper, Stude
 
     @Override
     public Result getTestList(PageDTO pageDTO, Long id, StudentInfoDTO studentTestInfo) {
-        Page<StudentInfoVo> page = new Page<StudentInfoVo>(pageDTO.getCurrent(),pageDTO.getSize());
-        Page<StudentInfoVo> studentById = userMapper.getStudentById(page, id, studentTestInfo);
+        Page<TestStudentInfoVo> page = new Page<>(pageDTO.getCurrent(),pageDTO.getSize());
+        Page<TestStudentInfoVo> studentById = userMapper.getStudentById(page, id, studentTestInfo);
         return new Result(CommonCode.SUCCESS,studentById);
     }
 }

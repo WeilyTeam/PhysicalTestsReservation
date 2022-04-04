@@ -40,11 +40,6 @@ public class StudentInfoDTO implements Serializable {
 
     private String grade;
 
-    /*
-      *  @ExcelProperty("专业")
-     */
-    private String specialty;
-
 
     /*
         @ExcelProperty("学院")

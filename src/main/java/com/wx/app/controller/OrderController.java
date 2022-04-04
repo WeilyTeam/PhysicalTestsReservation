@@ -133,6 +133,27 @@ public class OrderController {
         return orderService.orderByid(orderDTO);
     }
 
+
+    /**
+     * 预约接口
+     * @param orderDTO
+     * @return
+     */
+    @ApiOperation(value = "预约接口")
+    @PostMapping("/orderByAdmin")
+    public Result orderByAdmin(@RequestBody OrderDTO orderDTO) {
+        if (orderDTO.getTestId() == null || orderDTO.getUserId() == null) {
+            return  new Result(CommonCode.VALIDATE_FAILED);
+        }
+        log.info("orderDTO: {}",orderDTO.toString());
+
+        if (!rateLimiter.tryAcquire(3, TimeUnit.SECONDS)){
+            log.info("当前请求被限流，直接抛弃，无法调用后序逻辑");
+            return new Result(CommonCode.FAILURE_TO_ORDER);
+        }
+        return orderService.orderByid(orderDTO);
+    }
+
     /**
      * 删除体测信息
      * @param id

@@ -13,11 +13,15 @@ import com.wx.app.dto.TeacherDTO;
 import com.wx.app.entity.LoginUser;
 import com.wx.app.entity.User;
 import com.wx.app.enums.CommonCode;
+import com.wx.app.mapper.StudentMapper;
+import com.wx.app.mapper.TeacherInfoMapper;
 import com.wx.app.mapper.UserMapper;
 import com.wx.app.service.UserService;
 import com.wx.app.utils.RedisCache;
 import com.wx.app.utils.Result;
 import com.wx.app.utils.UserUtils;
+import com.wx.app.vo.StudentInfoVo;
+import com.wx.app.vo.TeacherInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -33,6 +37,10 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private StudentMapper studentMapper;
+    @Autowired
+    private TeacherInfoMapper teacherInfoMapper;
     @Autowired
     private RedisCache redisCache;
 
@@ -53,25 +61,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Result getStudentList(PageDTO pageDTO, StudentInfoDTO studentTestInfo) {
-        Page<User> page = new Page<>(pageDTO.getCurrent(),pageDTO.getSize());
+        Page<StudentInfoVo> page = new Page<>(pageDTO.getCurrent(),pageDTO.getSize());
         //查询学生信息
-        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        QueryWrapper<StudentInfoVo> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("identity","学生");
-
         if (studentTestInfo.getName() != null) {
             queryWrapper.like("name", studentTestInfo.getName());
         }else if (studentTestInfo.getCollege() != null){
             queryWrapper.like("college", studentTestInfo.getCollege());
         }else if (studentTestInfo.getGrade() != null){
             queryWrapper.like("grade", studentTestInfo.getGrade());
-        }else if (studentTestInfo.getSpecialty() != null){
-            queryWrapper.like("specialty", studentTestInfo.getSpecialty());
         }else if (studentTestInfo.getSex() != null){
             queryWrapper.like("sex", studentTestInfo.getSex());
         }else if (studentTestInfo.getUserName() != null){
             queryWrapper.like("user_name", studentTestInfo.getUserName());
         }
-        Page<User> userPage = userMapper.selectPage(page, queryWrapper);
+        Page<StudentInfoVo> userPage = studentMapper.selectPage(page, queryWrapper);
         return new Result(CommonCode.SUCCESS, userPage);
     }
 
@@ -130,7 +135,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Result getTeacherList(PageDTO pageDTO, TeacherDTO teacherDTO) {
-        QueryWrapper<User> eq = new QueryWrapper<User>().eq("identity", "老师");
+        QueryWrapper<TeacherInfoVo> eq = new QueryWrapper<TeacherInfoVo>().eq("identity", "老师");
         if (teacherDTO.getCollege() != null) {
             eq.like("college", teacherDTO.getCollege());
         }else if (teacherDTO.getName() != null) {
@@ -139,12 +144,12 @@ public class UserServiceImpl implements UserService {
             eq.like("user_name", teacherDTO.getUserName());
         }
         if (pageDTO.getSize() == null || pageDTO.getCurrent() == null) {
-            List<User> users = userMapper.selectList(eq);
+            List<TeacherInfoVo> users = teacherInfoMapper.selectList(eq);
             return new Result(CommonCode.SUCCESS,users);
         }
 
-        Page<User> page = new Page<>(pageDTO.getCurrent(),pageDTO.getSize());
-        Page<User> userPage = userMapper.selectPage(page, eq);
+        Page<TeacherInfoVo> page = new Page<>(pageDTO.getCurrent(),pageDTO.getSize());
+        Page<TeacherInfoVo> userPage = teacherInfoMapper.selectPage(page, eq);
         return new Result(CommonCode.SUCCESS,userPage);
     }
 

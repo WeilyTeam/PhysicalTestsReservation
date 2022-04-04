@@ -36,7 +36,6 @@ public class StudentFreeTestVo implements Serializable {
         this.userName = user.getUserName();
         this.sex = user.getSex();
         this.grade = user.getGrade();
-        this.specialty = user.getSpecialty();
         this.college = user.getCollege();
     }
 
@@ -64,7 +63,6 @@ public class StudentFreeTestVo implements Serializable {
     private String reason;
 
 
-
     @ColumnWidth(8)
     @ExcelProperty("性别")
     private String sex;
@@ -75,17 +73,14 @@ public class StudentFreeTestVo implements Serializable {
     private String grade;
 
 
-    @ExcelProperty("专业")
-    @ColumnWidth(20)
-    private String specialty;
-
 
     @ColumnWidth(20)
     @ExcelProperty("学院")
     private String college;
 
-
-
+    @ColumnWidth(15)
+    @ExcelProperty("手机号")
+    private String phone;
 
     @ExcelIgnore
     private String isPass;

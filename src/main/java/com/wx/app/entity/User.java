@@ -9,8 +9,6 @@ import com.wx.app.vo.TeacherInfoVo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.Serializable;
 
@@ -39,7 +37,6 @@ public class User implements Serializable {
     private String identity;
     private String sex;
     private String grade;
-    private String specialty;
     private String college;
     private String phone;
 
@@ -49,7 +46,6 @@ public class User implements Serializable {
         this.identity = identity;
         this.sex = item.getSex();
         this.grade = item.getGrade();
-        this.specialty = item.getSpecialty();
         this.college = item.getCollege();
     }
 

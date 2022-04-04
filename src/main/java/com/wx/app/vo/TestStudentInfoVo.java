@@ -8,6 +8,7 @@ import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.write.style.ColumnWidth;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.AllArgsConstructor;
@@ -20,7 +21,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @TableName(value = "sys_user")
-public class StudentInfoVo implements Serializable {
+public class TestStudentInfoVo implements Serializable {
 
     @ColumnWidth(20)
     @ExcelProperty("学号")
@@ -43,5 +44,6 @@ public class StudentInfoVo implements Serializable {
 
     @JsonSerialize(using = ToStringSerializer.class)
     @ExcelIgnore
+    @JsonProperty("testUserId")
     private Long id;
 }

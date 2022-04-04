@@ -38,9 +38,9 @@
         WHERE id = #{userId}
     </select>
 
-    <select id="getStudentById" resultType="com.wx.app.vo.StudentInfoVo">
+    <select id="getStudentById" resultType="com.wx.app.vo.TestStudentInfoVo">
         SELECT
-        student_test.id, student_test.user_id, name, sex, grade, specialty, college, user_name
+        student_test.id, student_test.user_id, name, sex, grade, college, user_name
         FROM
             `student_test`
         LEFT JOIN
@@ -50,22 +50,19 @@
         WHERE
             student_test.test_id = #{id}
         <if test="condition.userName != null">
-            and user_name LIKE #{condition.userName}
+            and sys_user.user_name LIKE #{condition.userName}
         </if>
         <if test="condition.name != null">
-            and name LIKE #{condition.name}
+            and sys_user.name LIKE #{condition.name}
         </if>
         <if test="condition.sex != null">
-            and sex LIKE #{condition.sex}
+            and sys_user.sex LIKE #{condition.sex}
         </if>
         <if test="condition.grade != null">
-            and grade LIKE #{condition.grade}
-        </if>
-        <if test="condition.specialty != null">
-            and specialty LIKE #{condition.specialty}
+            and sys_user.grade LIKE #{condition.grade}
         </if>
         <if test="condition.college != null">
-            and college LIKE #{condition.college}
+            and sys_user.college LIKE #{condition.college}
         </if>
     </select>
 </mapper>

@@ -16,50 +16,41 @@
         reason,is_pass
     </sql>
 
-    <select id="selectFreeList" resultType="com.wx.app.vo.StudentFreeTestVo">
-        SELECT
-            student_free_test.id, reason, semester, name, user_name, school_class, sex, grade, specialty, college, specialty_direction, is_pass
-        FROM
-            `student_free_test`
-        LEFT JOIN
-            student_info
-        ON
-            student_free_test.user_id = student_info.user_id
-        LEFT JOIN
-            sys_user
-        ON
-            sys_user.id = student_info.user_id
-        WHERE
-            sys_user.status = 0
-            <if test="isPass != null">
-                and is_pass = #{isPass}
-            </if>
-            <if test="semester != null">
-                and student_free_test.semester = #{semester}
-            </if>
-            <if test="condition.userName != null">
-                and user_name LIKE #{condition.userName}
-            </if>
-            <if test="condition.name != null">
-                and name LIKE #{condition.name}
-            </if>
-            <if test="condition.schoolClass != null">
-                and school_class LIKE #{condition.schoolClass}
-            </if>
-            <if test="condition.sex != null">
-                and sex LIKE #{condition.sex}
-            </if>
-            <if test="condition.grade != null">
-                and grade LIKE #{condition.grade}
-            </if>
-            <if test="condition.specialty != null">
-                and specialty LIKE #{condition.specialty}
-            </if>
-            <if test="condition.college != null">
-                and college LIKE #{condition.college}
-            </if>
-            <if test="condition.specialtyDirection != null">
-                and specialty_direction LIKE #{condition.specialtyDirection}
-            </if>
-    </select>
+<!--    <select id="selectFreeList" resultType="com.wx.app.vo.StudentFreeTestVo">-->
+<!--        SELECT-->
+<!--            student_free_test.id, reason, semester, name, user_name, school_class, sex, grade, specialty, college, specialty_direction, is_pass-->
+<!--        FROM-->
+<!--            `student_free_test`-->
+<!--        LEFT JOIN-->
+<!--            student_info-->
+<!--        ON-->
+<!--            student_free_test.user_id = student_info.user_id-->
+<!--        LEFT JOIN-->
+<!--            sys_user-->
+<!--        ON-->
+<!--            sys_user.id = student_info.user_id-->
+<!--        WHERE-->
+<!--            sys_user.status = 0-->
+<!--            <if test="isPass != null">-->
+<!--                and is_pass = #{isPass}-->
+<!--            </if>-->
+<!--            <if test="semester != null">-->
+<!--                and student_free_test.semester = #{semester}-->
+<!--            </if>-->
+<!--            <if test="condition.userName != null">-->
+<!--                and user_name LIKE #{condition.userName}-->
+<!--            </if>-->
+<!--            <if test="condition.name != null">-->
+<!--                and name LIKE #{condition.name}-->
+<!--            </if>-->
+<!--            <if test="condition.sex != null">-->
+<!--                and sex LIKE #{condition.sex}-->
+<!--            </if>-->
+<!--            <if test="condition.grade != null">-->
+<!--                and grade LIKE #{condition.grade}-->
+<!--            </if>-->
+<!--            <if test="condition.college != null">-->
+<!--                and college LIKE #{condition.college}-->
+<!--            </if>-->
+<!--    </select>-->
 </mapper>
