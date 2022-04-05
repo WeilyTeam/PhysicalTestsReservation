@@ -72,9 +72,6 @@ public class ExcelController {
     private StudentFreeTestMapper studentFreeTestMapper;
 
     @Autowired
-    private ImgFreeTestMapper imgFreeTestMapper;
-
-    @Autowired
     private TeacherInfoMapper teacherInfoMapper;
 
 
@@ -170,6 +167,8 @@ public class ExcelController {
             response.getWriter().println(JSON.toJSONString(map));
         }
     }
+
+
 
     @GetMapping("downloadStudentList")
     @ApiOperation(value = "学生信息Excel下载")
@@ -342,9 +341,9 @@ public class ExcelController {
                     log.info("数据：{}", item.toString());
                     User newUser = new User(item, "学生");
                     Result register = loginService.register(newUser);
-                    if (register.getCode() == 406) {
-                        throw new RuntimeException(newUser.getUserName() + "用户名已存在");
-                    }
+                    //if (register.getCode() == 406) {
+                    //    throw new RuntimeException(newUser.getUserName() + "用户名已存在");
+                    //}
                 }
                 log.info("存储数据库成功！");
             }
@@ -394,9 +393,9 @@ public class ExcelController {
                     log.info("数据：{}", item.toString());
                     User newUser = new User(item, "老师");
                     Result register = loginService.register(newUser);
-                    if (register.getCode() == 406) {
-                        throw new RuntimeException(newUser.getUserName() + "用户名已存在");
-                    }
+                    //if (register.getCode() == 406) {
+                    //    throw new RuntimeException(newUser.getUserName() + "用户名已存在");
+                    //}
                 }
                 log.info("存储数据库成功！");
             }
