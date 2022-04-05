@@ -167,8 +167,6 @@ public class ExcelController {
             response.getWriter().println(JSON.toJSONString(map));
         }
     }
-
-
     @GetMapping("downloadStudentList")
     @ApiOperation(value = "学生信息Excel下载")
     public void downloadStudentList(StudentInfoDTO studentTestInfo, HttpServletResponse response) throws IOException {
