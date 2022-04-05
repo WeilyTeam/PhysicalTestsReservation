@@ -20,9 +20,6 @@
         <if test="condition.grade != null">
             and grade LIKE #{condition.grade}
         </if>
-        <if test="condition.specialty != null">
-            and specialty LIKE #{condition.specialty}
-        </if>
         <if test="condition.college != null">
             and college LIKE #{condition.college}
         </if>

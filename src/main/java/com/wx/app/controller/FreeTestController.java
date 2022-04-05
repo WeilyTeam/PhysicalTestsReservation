@@ -9,6 +9,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,6 +31,7 @@ public class FreeTestController {
     @Autowired
     private ImageService imageService;
 
+    @PreAuthorize("hasAnyAuthority('admin')")
     @GetMapping("/list")
     @ApiOperation(value = "获取免测列表")
     public Result freeTestList(PageDTO pageDTO, AuditDOT auditDOT, StudentInfoDTO studentTestInfo){
@@ -39,7 +41,9 @@ public class FreeTestController {
         return studentFreeTestService.freeTestList(pageDTO, studentTestInfo, auditDOT);
     }
 
-    @GetMapping("/")
+
+    @PreAuthorize("hasAnyAuthority('admin')")
+    @GetMapping("/getById")
     @ApiOperation(value = "获取免测列表")
     public Result freeTestById(Long id){
         log.info("id: {}",id);
@@ -47,12 +51,15 @@ public class FreeTestController {
     }
 
 
+    @PreAuthorize("hasAnyAuthority('student')")
     @GetMapping("/hasMessage")
     @ApiOperation(value = "是否有未读免测消息")
     public Result hasMessage(){
         return studentFreeTestService.hasMessage();
     }
 
+
+    @PreAuthorize("hasAnyAuthority('student')")
     @GetMapping("/freeInfo")
     @ApiOperation(value = "根据token获取免测")
     public Result freeTestByToken(){
@@ -60,6 +67,7 @@ public class FreeTestController {
         return studentFreeTestService.freeTestByToken(userId);
     }
 
+    @PreAuthorize("hasAnyAuthority('student')")
     @PostMapping("/application")
     @ApiOperation(value = "免测申请")
     public Result freeTestApplication(@RequestBody StudentFreeTestDTO studentFreeTestDTO){
@@ -74,6 +82,7 @@ public class FreeTestController {
      */
     @ResponseBody
     @PostMapping("/uploadImg")
+    @PreAuthorize("hasAnyAuthority('student')")
     @ApiOperation(value = "图片上传")
     public Result uploadImage(@RequestParam("file") MultipartFile file) {
         return imageService.uploadImage(file);
@@ -82,13 +91,16 @@ public class FreeTestController {
 
     @PutMapping("/agreeApplication")
     @ApiOperation(value = "同意免测")
+    @PreAuthorize("hasAnyAuthority('admin')")
     public Result agreeApplication(@RequestBody FreeTestDTO freeTestDTO){
         log.info("freeTestDTO: {}",freeTestDTO.toString());
         return studentFreeTestService.agreeApplication(freeTestDTO);
     }
 
+
     @PostMapping("/rejectApplication")
     @ApiOperation(value = "拒绝免测")
+    @PreAuthorize("hasAnyAuthority('admin')")
     public Result rejectApplication(@RequestBody FreeTestDTO freeTestDTO){
         log.info("freeTestDTO: {}",freeTestDTO.toString());
         return studentFreeTestService.rejectApplication(freeTestDTO);
@@ -96,6 +108,7 @@ public class FreeTestController {
 
     @DeleteMapping("/delete")
     @ApiOperation(value = "删除免测")
+    @PreAuthorize("hasAnyAuthority('admin')")
     public Result deleteFreeTest(Long id){
         log.info("id: {}",id);
         return studentFreeTestService.deleteFreeTest(id);

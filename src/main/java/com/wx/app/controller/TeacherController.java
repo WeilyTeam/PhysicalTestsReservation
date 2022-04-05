@@ -9,6 +9,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -33,6 +34,7 @@ public class TeacherController {
      */
     @ApiOperation(value = "负责老师列表")
     @GetMapping("/teacherList")
+    @PreAuthorize("hasAnyAuthority('admin')")
     public Result teacherList(PageDTO pageDTO, TeacherDTO teacherDTO) {
         log.info("pageDTO: {}",pageDTO.toString());
         return userService.getTeacherList(pageDTO,teacherDTO);
@@ -45,6 +47,7 @@ public class TeacherController {
      */
     @ApiOperation(value = "负责老师列表")
     @GetMapping("/teacherInfoById")
+    @PreAuthorize("hasAnyAuthority('admin')")
     public Result getTeacherById(Long id) {
         log.info("id: {}",id);
         return userService.getTeacherById(id);
@@ -57,6 +60,7 @@ public class TeacherController {
      */
     @ApiOperation(value = "添加老师")
     @PostMapping("/teacher")
+    @PreAuthorize("hasAnyAuthority('admin')")
     public Result addTeacher(@RequestBody User user) {
         log.info("user: {}",user.toString());
 
@@ -70,6 +74,7 @@ public class TeacherController {
      */
     @ApiOperation(value = "修改老师")
     @PutMapping("/teacher")
+    @PreAuthorize("hasAnyAuthority('admin')")
     public Result updateTeacher(@RequestBody User user) {
         log.info("user: {}",user.toString());
 
@@ -84,6 +89,7 @@ public class TeacherController {
      */
     @ApiOperation(value = "删除老师")
     @DeleteMapping("/teacher")
+    @PreAuthorize("hasAnyAuthority('admin')")
     public Result deleteTeacher(Long id, String userName) {
         log.info("id: {}",id);
         log.info("userName: {}",userName);

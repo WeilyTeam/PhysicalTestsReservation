@@ -82,6 +82,10 @@ public class StudentFreeTestVo implements Serializable {
     @ExcelProperty("手机号")
     private String phone;
 
+    @ColumnWidth(15)
+    @ExcelProperty("审批人")
+    private String handler;
+
     @ExcelIgnore
     private String isPass;
     @ExcelIgnore

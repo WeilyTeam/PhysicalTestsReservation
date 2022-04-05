@@ -34,14 +34,14 @@ class AppApplicationTests {
     @Test
     public void testPasswordEncoder(){
         PasswordEncoder ps = new BCryptPasswordEncoder();
-        String encode = ps.encode("3456456");
+        String encode = ps.encode("121");
         //String encode2 = ps.encode("1234");
         System.out.println(encode);
         //System.out.println(encode2);
         //$2a$10$UViL.jTzZHy/m7K29SuwPenDT5s5XcfIoSHoEJImRBjbsnok3Y7Nu
 
-        System.out.println(ps.matches("3456456",
-                "$2a$10$F.dBOqHdwJ8KtH.oMmsL6u4kF/gXTn179LsQOsl0HodFJhQn7/NKu"));
+        System.out.println(ps.matches("121",
+                "$2a$10$rvatjCTPjEwwbIZYCZJkqurqhejrygVP7v97G18KGQj5LqidVUdC6"));
     }
 
     @Autowired

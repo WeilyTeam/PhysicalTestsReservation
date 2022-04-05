@@ -8,6 +8,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -24,12 +25,14 @@ public class SemesterController {
 
     @GetMapping("/semester")
     @ApiOperation(value = "查询学期")
+    @PreAuthorize("hasAnyAuthority('admin','teacher')")
     public Result getAllSemester(){
         return studetnSemesterService.getAllSemester();
     }
 
     @PostMapping("/semester")
     @ApiOperation(value = "添加学期")
+    @PreAuthorize("hasAnyAuthority('admin','teacher')")
     public Result addSemester(@RequestBody StudetnSemester semester){
         log.info("semester: {}",semester.toString());
         return studetnSemesterService.addSemester(semester);
@@ -37,6 +40,7 @@ public class SemesterController {
 
     @DeleteMapping("/semester")
     @ApiOperation(value = "删除学期")
+    @PreAuthorize("hasAnyAuthority('admin','teacher')")
     public Result deleteSemester(String semester){
         log.info("semester: {}",semester);
         return studetnSemesterService.deleteSemester(semester);
@@ -44,6 +48,7 @@ public class SemesterController {
 
     @PutMapping("/semester")
     @ApiOperation(value = "修改学期")
+    @PreAuthorize("hasAnyAuthority('admin','teacher')")
     public Result updateSemester(@RequestBody StudetnSemesterDTO semester){
         log.info("semester: {}",semester.toString());
         return studetnSemesterService.updateSemester(semester);

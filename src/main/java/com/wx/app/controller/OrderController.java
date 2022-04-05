@@ -6,10 +6,10 @@ package com.wx.app.controller;/**
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.common.util.concurrent.RateLimiter;
-import com.wx.app.dto.StudentInfoDTO;
-import com.wx.app.dto.TestListCondition;
 import com.wx.app.dto.OrderDTO;
 import com.wx.app.dto.PageDTO;
+import com.wx.app.dto.StudentInfoDTO;
+import com.wx.app.dto.TestListCondition;
 import com.wx.app.entity.StudentTestInfo;
 import com.wx.app.enums.CommonCode;
 import com.wx.app.service.OrderService;
@@ -19,6 +19,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.concurrent.TimeUnit;
@@ -57,6 +58,7 @@ public class OrderController {
      */
     @ApiOperation(value = "修改体测信息")
     @PutMapping("/updateTest")
+    @PreAuthorize("hasAnyAuthority('admin','teacher')")
     public Result updateTest(@RequestBody StudentTestInfo studentTestInfo) {
         log.info("studentTestInfo: {}",studentTestInfo.toString());
         return orderService.updateTest(studentTestInfo);
@@ -80,6 +82,7 @@ public class OrderController {
      */
     @ApiOperation(value = "添加体测信息")
     @PostMapping("/addTest")
+    @PreAuthorize("hasAnyAuthority('admin','teacher')")
     public Result addTest(@RequestBody StudentTestInfo studentTestInfo) {
         log.info("studentTestInfo: {}",studentTestInfo.toString());
         return orderService.addTest(studentTestInfo);
@@ -92,6 +95,7 @@ public class OrderController {
      */
     @ApiOperation(value = "删除体测信息")
     @DeleteMapping("/deleteTestById")
+    @PreAuthorize("hasAnyAuthority('admin','teacher')")
     public Result deleteTest(Long id) {
         log.info("id: {}",id);
         return orderService.deleteTestById(id);
@@ -104,6 +108,7 @@ public class OrderController {
      */
     @ApiOperation(value = "获取已预约列表")
     @GetMapping("/orderList")
+    @PreAuthorize("hasAnyAuthority('admin','teacher')")
     public Result orderList(PageDTO pageDTO, Long id, StudentInfoDTO studentTestInfo) {
         log.info("pageDTO: {}",pageDTO.toString());
         log.info("id: {}",id);
@@ -120,6 +125,7 @@ public class OrderController {
      */
     @ApiOperation(value = "预约接口")
     @PostMapping("/order")
+    @PreAuthorize("hasAnyAuthority('student')")
     public Result order(@RequestBody OrderDTO orderDTO) {
         log.info("orderDTO: {}",orderDTO.toString());
 
@@ -141,6 +147,7 @@ public class OrderController {
      */
     @ApiOperation(value = "预约接口")
     @PostMapping("/orderByAdmin")
+    @PreAuthorize("hasAnyAuthority('admin','teacher')")
     public Result orderByAdmin(@RequestBody OrderDTO orderDTO) {
         if (orderDTO.getTestId() == null || orderDTO.getUserId() == null) {
             return  new Result(CommonCode.VALIDATE_FAILED);
@@ -161,6 +168,7 @@ public class OrderController {
      */
     @ApiOperation(value = "删除已预约信息")
     @DeleteMapping("/deleteOrderById")
+    @PreAuthorize("hasAnyAuthority('admin','teacher')")
     public Result deleteOrderById(Long id) {
         log.info("id: {}",id);
         return orderService.deleteOrderById(id);

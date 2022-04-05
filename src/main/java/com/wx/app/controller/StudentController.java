@@ -13,6 +13,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -31,6 +32,7 @@ public class StudentController {
      */
     @ApiOperation(value = "删除学生")
     @DeleteMapping("/student")
+    @PreAuthorize("hasAnyAuthority('admin')")
     public Result deleteStudent(Long userId){
         log.info("userId: {}",userId);
         return userService.deleteStudent(userId);
@@ -43,6 +45,7 @@ public class StudentController {
      */
     @ApiOperation(value = "获取学生列表")
     @GetMapping("/student/list")
+    @PreAuthorize("hasAnyAuthority('admin')")
     public Result studentList(PageDTO pageDTO, StudentInfoDTO studentTestInfo){
         log.info("pageDTO: {}",pageDTO.toString());
         log.info("studentTestInfo: {}",studentTestInfo.toString());
@@ -57,6 +60,7 @@ public class StudentController {
      */
     @ApiOperation(value = "通过学生id获取学生信息")
     @GetMapping("/student/getById")
+    @PreAuthorize("hasAnyAuthority('admin')")
     public Result studentInfo(Long id){
         log.info("userId: {}",id);
 
@@ -70,6 +74,7 @@ public class StudentController {
      */
     @ApiOperation(value = "通过学生id获取学生信息")
     @PostMapping("/student")
+    @PreAuthorize("hasAnyAuthority('admin')")
     public Result addStudent(@RequestBody User user){
         log.info("user: {}",user.toString());
         return userService.addStudent(user);
@@ -82,6 +87,7 @@ public class StudentController {
      */
     @ApiOperation(value = "修改学生")
     @PutMapping("/student")
+    @PreAuthorize("hasAnyAuthority('admin')")
     public Result updateStudent(@RequestBody User user) {
         log.info("user: {}",user.toString());
         return userService.updateStudent(user);
