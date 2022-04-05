@@ -52,10 +52,6 @@ import java.util.Map;
 @RequestMapping("/excel")
 public class ExcelController {
 
-
-    @Autowired
-    private DemoDAO demoDAO;
-
     @Autowired
     private StudentFreeTestService studentFreeTestService;
 
@@ -153,7 +149,6 @@ public class ExcelController {
                 studentFreeTestVo.setSemester(studentFreeTest.getSemester());
                 studentFreeTestVos.add(studentFreeTestVo);
             }
-
             EasyExcel.write(response.getOutputStream(), StudentFreeTestVo.class).autoCloseStream(Boolean.FALSE).sheet("免测学生")
                     .doWrite(studentFreeTestVos);
         } catch (Exception e) {
