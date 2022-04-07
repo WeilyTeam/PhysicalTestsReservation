@@ -31,8 +31,9 @@ public class FreeTestController {
     @Autowired
     private ImageService imageService;
 
-    @PreAuthorize("hasAnyAuthority('admin')")
+
     @GetMapping("/list")
+    @PreAuthorize("hasAnyAuthority('admin')")
     @ApiOperation(value = "获取免测列表")
     public Result freeTestList(PageDTO pageDTO, AuditDOT auditDOT, StudentInfoDTO studentTestInfo){
         log.info("pageDTO: {}",pageDTO.toString());
@@ -42,7 +43,7 @@ public class FreeTestController {
     }
 
 
-    @PreAuthorize("hasAnyAuthority('admin')")
+
     @GetMapping("/getById")
     @ApiOperation(value = "获取免测列表")
     public Result freeTestById(Long id){
@@ -51,17 +52,19 @@ public class FreeTestController {
     }
 
 
-    @PreAuthorize("hasAnyAuthority('student')")
+
     @GetMapping("/hasMessage")
     @ApiOperation(value = "是否有未读免测消息")
+    @PreAuthorize("hasAnyAuthority('student')")
     public Result hasMessage(){
         return studentFreeTestService.hasMessage();
     }
 
 
-    @PreAuthorize("hasAnyAuthority('student')")
+
     @GetMapping("/freeInfo")
     @ApiOperation(value = "根据token获取免测")
+    @PreAuthorize("hasAnyAuthority('student')")
     public Result freeTestByToken(){
         Long userId = UserUtils.getUserId();
         return studentFreeTestService.freeTestByToken(userId);

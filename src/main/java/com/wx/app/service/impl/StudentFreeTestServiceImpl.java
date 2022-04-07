@@ -170,16 +170,12 @@ implements StudentFreeTestService{
     @Override
     public Result freeTestById(Long id) {
         StudentFreeTest studentFreeTest1 = studentFreeTestMapper.selectById(id);
-        Map<String,Object> data = new HashMap<>();
-        List<String> list = imgFreeTestMapper.selectListById(studentFreeTest1.getId());
-        data.put("studentFreeTest",studentFreeTest1);
-        data.put("images",list);
         String isPassed = studentFreeTest1.getIsPass();
         if (("1".equals(isPassed) || "2".equals(isPassed)) && studentFreeTest1.getUserId().equals(UserUtils.getUserId())) {
             studentFreeTest1.setIsRead(2);
             //标记为已读
             studentFreeTestMapper.updateById(studentFreeTest1);
         }
-        return new Result(CommonCode.SUCCESS,studentFreeTest1);
+        return new Result(CommonCode.SUCCESS);
     }
 }

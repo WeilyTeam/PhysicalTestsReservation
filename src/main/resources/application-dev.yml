@@ -1,10 +1,9 @@
 server:
   port: 8282
-#  ssl:
-#    key-store: E:\学习\web前后端\预学生约系统\新建文件夹\physical-fitness\src\main\resources\7519480_www.changzer.cn.pfx
-#    key-password: pj62v3f6
-#    key-store-type: pfx
-
+  ssl:
+    key-store: classpath:7567733_physicaltest.weilylab.com.pfx
+    key-store-password: 6Ksl2YC9
+    keyStoreType: PKCS12
 #  servlet:
 #    context-path: /api
 

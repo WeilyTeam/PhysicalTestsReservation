@@ -25,7 +25,7 @@ public class SemesterController {
 
     @GetMapping("/semester")
     @ApiOperation(value = "查询学期")
-    @PreAuthorize("hasAnyAuthority('admin','teacher')")
+    @PreAuthorize("hasAnyAuthority('admin','teacher','student')")
     public Result getAllSemester(){
         return studetnSemesterService.getAllSemester();
     }
