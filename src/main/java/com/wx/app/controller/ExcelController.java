@@ -146,10 +146,19 @@ public class ExcelController {
             List<StudentFreeTestVo> studentFreeTestVos = new ArrayList<>();
             for (StudentFreeTest studentFreeTest : studentFreeTests) {
                 User user = userMapper.selectById(studentFreeTest.getUserId());
-                StudentFreeTestVo studentFreeTestVo = new StudentFreeTestVo(user);
-                studentFreeTestVo.setReason(studentFreeTest.getReason());
-                studentFreeTestVo.setSemester(studentFreeTest.getSemester());
-                studentFreeTestVos.add(studentFreeTestVo);
+                StudentFreeTestVo studentFreeTestVo = new StudentFreeTestVo();
+                if(user!=null){
+                    studentFreeTestVo.setId(user.getId());
+                    studentFreeTestVo.setName(user.getName());
+                    studentFreeTestVo.setUserName(user.getUserName());
+                    studentFreeTestVo.setSex(user.getSex());
+                    studentFreeTestVo.setGrade(user.getGrade());
+                    studentFreeTestVo.setCollege(user.getCollege());
+                    studentFreeTestVo.setReason(studentFreeTest.getReason());
+                    studentFreeTestVo.setSemester(studentFreeTest.getSemester());
+                    studentFreeTestVos.add(studentFreeTestVo);
+                }
+
             }
             EasyExcel.write(response.getOutputStream(), StudentFreeTestVo.class).autoCloseStream(Boolean.FALSE).sheet("免测学生")
                     .doWrite(studentFreeTestVos);
@@ -164,6 +173,7 @@ public class ExcelController {
             response.getWriter().println(JSON.toJSONString(map));
         }
     }
+
     @GetMapping("downloadStudentList")
     @ApiOperation(value = "学生信息Excel下载")
     public void downloadStudentList(StudentInfoDTO studentTestInfo, HttpServletResponse response) throws IOException {

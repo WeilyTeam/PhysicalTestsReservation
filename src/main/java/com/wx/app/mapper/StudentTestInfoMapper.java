@@ -13,4 +13,6 @@ public interface StudentTestInfoMapper extends BaseMapper<StudentTestInfo> {
     void updateOrderNum(StudentTestInfo studentTestInfo);
 
     void decOrder(@Param("id") Long testId);
+
+    StudentTestInfo getById(Long id);
 }

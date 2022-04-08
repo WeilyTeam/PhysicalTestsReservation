@@ -1,6 +1,5 @@
 package com.wx.app.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -18,9 +17,11 @@ import java.io.Serializable;
 @Data
 public class StudentTestInfo implements Serializable {
 
-    @TableId(type = IdType.AUTO)
+    @TableId
     @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
+
+
     private String name;
 
     private String location;

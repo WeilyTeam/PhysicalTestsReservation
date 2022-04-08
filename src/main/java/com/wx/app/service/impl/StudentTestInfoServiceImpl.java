@@ -65,8 +65,7 @@ public class StudentTestInfoServiceImpl extends ServiceImpl<StudentTestInfoMappe
     @Override
     public StudentTestInfo checkStockById(Long id) {
         //通过id获取StudentTestInfo
-        StudentTestInfo studentTestInfo = studentTestInfoMapper.selectById(id);
-        return studentTestInfo;
+        return studentTestInfoMapper.selectById(id);
     }
 
     @Override

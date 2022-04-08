@@ -39,7 +39,8 @@ public class OrderServiceImpl implements OrderService {
     private StudentTestInfoService studentTestInfoService;
 
     @Autowired
-    private StudentTestInfoMapper StudentTestInfoMapper;
+    private StudentTestInfoMapper studentTestInfoMapper;
+
 
     @Autowired
     private StudentTestService studentTestService;
@@ -123,7 +124,7 @@ public class OrderServiceImpl implements OrderService {
         List<StudentTest> studentTests = studentTestMapper.selectList(queryWrapper);
         List<StudentTestInfo> studentTestInfo = new ArrayList<StudentTestInfo>();
         for(StudentTest studentTest:studentTests){
-            StudentTestInfo studentTestInfo1 = StudentTestInfoMapper.selectById(studentTest.getTestId());
+            StudentTestInfo studentTestInfo1 = studentTestInfoMapper.selectById(studentTest.getTestId());
             User user = userMapper.selectById(studentTestInfo1.getHeadid());
             studentTestInfo1.setTeacherInfo(user);
             studentTestInfo.add(studentTestInfo1);
@@ -133,7 +134,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Result updateTest(StudentTestInfo studentTestInfo) {
-        int i = StudentTestInfoMapper.updateById(studentTestInfo);
+        int i = studentTestInfoMapper.updateById(studentTestInfo);
         log.info("updateById  {}",i);
         if (i > 0){
             return new Result(CommonCode.SUCCESS);

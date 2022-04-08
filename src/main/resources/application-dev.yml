@@ -42,6 +42,6 @@ spring:
     resources:
 #      static-locations: file:E://学习//web前后端//预学生约系统//新建文件夹//physical-fitness
       static-locations: file:/opt/reserveApp
-logging:
-  level:
-    com.wx.app.mapper: debug
+#logging:
+#  level:
+#    com.wx.app.mapper: debug

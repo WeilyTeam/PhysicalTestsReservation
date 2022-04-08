@@ -134,7 +134,7 @@ public class OrderController {
             return new Result(CommonCode.FAILURE_TO_ORDER);
         }
         Long userId = UserUtils.getUserId();
-        orderDTO.setTestId(userId);
+        orderDTO.setUserId(userId);
 
         return orderService.orderByid(orderDTO);
     }

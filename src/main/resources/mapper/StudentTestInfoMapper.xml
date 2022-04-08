@@ -37,6 +37,9 @@
         where
             id=#{id}
     </update>
+    <select id="getById" resultType="com.wx.app.entity.StudentTestInfo">
+        select * from student_test_info where id = #{id}
+    </select>
 
     <!--select *  FROM `student_test_info` where date(day) >= date('2019-09-30')-->
 

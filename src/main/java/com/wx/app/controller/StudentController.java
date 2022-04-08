@@ -68,11 +68,11 @@ public class StudentController {
     }
 
     /**
-     * 通过id查询学生信息
+     * 添加学生
      * @param user
      * @return
      */
-    @ApiOperation(value = "通过学生id获取学生信息")
+    @ApiOperation(value = "添加学生")
     @PostMapping("/student")
     @PreAuthorize("hasAnyAuthority('admin')")
     public Result addStudent(@RequestBody User user){
