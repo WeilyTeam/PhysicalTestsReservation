@@ -11,6 +11,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.File;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @SpringBootTest
@@ -77,6 +80,14 @@ class AppApplicationTests {
         if (loginUser == null) {
             System.out.println("null");
         }
+    }
+
+    @Test
+    public void dateTest() throws ParseException {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date parse = simpleDateFormat.parse("2022-04-07");
+        int d = parse.compareTo(new Date());
+        System.out.println(d);
     }
 
 }

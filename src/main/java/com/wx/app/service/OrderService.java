@@ -19,6 +19,7 @@ public interface OrderService {
     Result orderByid(OrderDTO orderDTO);
 
     Page<StudentTestInfo> testList(PageDTO pageDTO, TestListCondition testListCondition);
+    Page<StudentTestInfo> allTestList(PageDTO pageDTO, TestListCondition testListCondition);
 
     Result orderList(PageDTO pageDTO, Long id, StudentInfoDTO studentTestInfo);
 
@@ -31,4 +32,5 @@ public interface OrderService {
     Result getOrderInfo();
 
     Result updateTest(StudentTestInfo studentTestInfo);
+
 }

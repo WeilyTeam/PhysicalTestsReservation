@@ -86,7 +86,9 @@ implements StudentFreeTestService{
             return new Result(CommonCode.FAILURE);
         }
         //插入免测申请的图片路由
-        imgFreeTestMapper.insertImages(studentFreeTestDTO.getImages(),studentFreeTest.getId());
+        if(studentFreeTestDTO.getImages().size() != 0){
+            imgFreeTestMapper.insertImages(studentFreeTestDTO.getImages(),studentFreeTest.getId());
+        }
         return new Result(CommonCode.SUCCESS);
     }
 

@@ -51,6 +51,23 @@ public class OrderController {
         return new Result(200,"操作成功",list);
     }
 
+
+    /**
+     * 获取体测列表
+     * @param pageDTO
+     * @return
+     */
+    @ApiOperation(value = "获取体测列表")
+    @GetMapping("/allTestList")
+    @PreAuthorize("hasAnyAuthority('admin','teacher')")
+    public Result allTestList(PageDTO pageDTO, TestListCondition testListCondition) {
+        log.info("pageDTO: {}",pageDTO.toString());
+        log.info("testListCondition: {}",testListCondition.toString());
+
+        Page<StudentTestInfo> list = orderService.allTestList(pageDTO, testListCondition);
+        return new Result(200,"操作成功",list);
+    }
+
     /**
      * 获取体测列表
      * @param

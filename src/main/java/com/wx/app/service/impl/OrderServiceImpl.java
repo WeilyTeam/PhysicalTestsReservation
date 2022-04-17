@@ -27,7 +27,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -57,7 +60,7 @@ public class OrderServiceImpl implements OrderService {
         StudentTestInfo studentTestInfo = null;
         try {
             studentTestInfo = checkStock(orderDTO.getTestId());
-        } catch (RuntimeException e) {
+        } catch (RuntimeException | ParseException e) {
             String message = e.getMessage();
             return new Result(500,message);
         }
@@ -72,6 +75,12 @@ public class OrderServiceImpl implements OrderService {
     public Page<StudentTestInfo> testList(PageDTO pageDTO, TestListCondition testListCondition) {
 
         Page<StudentTestInfo> studentTestInfo = studentTestInfoService.getTestList(pageDTO, testListCondition);
+        return studentTestInfo;
+    }
+
+    @Override
+    public Page<StudentTestInfo> allTestList(PageDTO pageDTO, TestListCondition testListCondition) {
+        Page<StudentTestInfo> studentTestInfo = studentTestInfoService.getAllTestList(pageDTO, testListCondition);
         return studentTestInfo;
     }
 
@@ -143,8 +152,15 @@ public class OrderServiceImpl implements OrderService {
     }
 
     //校验库存
-    private StudentTestInfo checkStock(Long id){
+    private StudentTestInfo checkStock(Long id) throws ParseException {
         StudentTestInfo studentTestInfo = studentTestInfoService.checkStockById(id);
+        String day = studentTestInfo.getDay();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date parse = simpleDateFormat.parse(day);
+        int d = parse.compareTo(new Date());
+        if (d <= 0){
+            throw new RuntimeException("预约时间已过");
+        }
         if (studentTestInfo.getStore().equals(studentTestInfo.getOrderNum())){
             throw new RuntimeException("人数已满!!!");
         }

@@ -14,6 +14,10 @@ import com.wx.app.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 /**
@@ -28,6 +32,54 @@ public class StudentTestInfoServiceImpl extends ServiceImpl<StudentTestInfoMappe
     private UserMapper userMapper;
     @Override
     public Page<StudentTestInfo> getTestList(PageDTO pageDTO, TestListCondition testListCondition) {
+        Page<StudentTestInfo> page = new Page<StudentTestInfo>(pageDTO.getCurrent(),pageDTO.getSize());
+
+        //创建QueryWrapper作为查询条件
+        QueryWrapper<StudentTestInfo> queryWrapper = new QueryWrapper<>();
+
+        //获取明天的日期
+        Date date = new Date();
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(date);
+        //把日期往后增加一天,整数  往后推,负数往前移动
+        calendar.add(Calendar.DATE,1);
+        date=calendar.getTime();
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String format = dateFormat.format(date);
+        queryWrapper.ge("day", format);
+        User user1 = UserUtils.getUser();
+        if ("老师".equals(user1.getIdentity())){
+            queryWrapper.eq("headId", user1.getId());
+        }
+        queryWrapper.eq("del_flag", 0);
+        //queryWrapper.("", 0);
+        if(testListCondition.getLocation() != null){
+            queryWrapper.like("location", testListCondition.getLocation());
+        }
+        if(testListCondition.getDay() != null){
+            queryWrapper.like("day", testListCondition.getDay());
+        }
+        if(testListCondition.getHour() != null){
+            queryWrapper.like("hour", testListCondition.getHour());
+        }if(testListCondition.getSemester() != null){
+            queryWrapper.like("semester", testListCondition.getSemester());
+        }
+        //查询StudentTestInfo列表信息
+        Page<StudentTestInfo> studentTestInfos = studentTestInfoMapper.selectPage(page,queryWrapper);
+        List<StudentTestInfo> records = studentTestInfos.getRecords();
+        for (StudentTestInfo record:records){
+            //遍历查询老师信息
+            User user = userMapper.selectById(record.getHeadid());
+            record.setIsFull(record.getOrderNum().equals(record.getStore()));
+            record.setTeacherInfo(user);
+        }
+        studentTestInfos.setRecords(records);
+        return studentTestInfos;
+    }
+
+    @Override
+    public Page<StudentTestInfo> getAllTestList(PageDTO pageDTO, TestListCondition testListCondition) {
         Page<StudentTestInfo> page = new Page<StudentTestInfo>(pageDTO.getCurrent(),pageDTO.getSize());
 
         //创建QueryWrapper作为查询条件
