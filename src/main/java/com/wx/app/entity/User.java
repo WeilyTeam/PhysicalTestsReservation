@@ -37,7 +37,10 @@ public class User implements Serializable {
     private String identity;
     private String sex;
     private String grade;
-    private String college;
+    private String specialtyClass;
+    private String nationality;
+    private String birth;
+    private String idCard;
     private String phone;
 
     public User(StudentInfoVo item, String identity) {
@@ -46,7 +49,7 @@ public class User implements Serializable {
         this.identity = identity;
         this.sex = item.getSex();
         this.grade = item.getGrade();
-        this.college = item.getCollege();
+        //this.college = item.getCollege();
     }
 
 
@@ -55,7 +58,7 @@ public class User implements Serializable {
         this.name = item.getName();
         this.identity = identity;
         this.sex = item.getSex();
-        this.college = item.getCollege();
+        //this.college = item.getCollege();
         this.phone = item.getPhone();
     }
 }

@@ -11,6 +11,7 @@ import com.wx.app.dto.PageDTO;
 import com.wx.app.dto.StudentInfoDTO;
 import com.wx.app.dto.TestListCondition;
 import com.wx.app.entity.StudentTestInfo;
+import com.wx.app.entity.User;
 import com.wx.app.enums.CommonCode;
 import com.wx.app.service.OrderService;
 import com.wx.app.utils.Result;
@@ -44,6 +45,7 @@ public class OrderController {
     @ApiOperation(value = "获取体测列表")
     @GetMapping("/testList")
     public Result testList(PageDTO pageDTO, TestListCondition testListCondition) {
+
         log.info("pageDTO: {}",pageDTO.toString());
         log.info("testListCondition: {}",testListCondition.toString());
 
@@ -142,7 +144,7 @@ public class OrderController {
      */
     @ApiOperation(value = "预约接口")
     @PostMapping("/order")
-    @PreAuthorize("hasAnyAuthority('student')")
+    @PreAuthorize("hasAnyAuthority('monitor')")
     public Result order(@RequestBody OrderDTO orderDTO) {
         log.info("orderDTO: {}",orderDTO.toString());
 
@@ -150,8 +152,8 @@ public class OrderController {
             log.info("当前请求被限流，直接抛弃，无法调用后序逻辑");
             return new Result(CommonCode.FAILURE_TO_ORDER);
         }
-        Long userId = UserUtils.getUserId();
-        orderDTO.setUserId(userId);
+        User user = UserUtils.getUser();
+        orderDTO.setSpecialtyClass(user.getSpecialtyClass());
 
         return orderService.orderByid(orderDTO);
     }
@@ -166,7 +168,7 @@ public class OrderController {
     @PostMapping("/orderByAdmin")
     @PreAuthorize("hasAnyAuthority('admin','teacher')")
     public Result orderByAdmin(@RequestBody OrderDTO orderDTO) {
-        if (orderDTO.getTestId() == null || orderDTO.getUserId() == null) {
+        if (orderDTO.getSpecialtyClass() == null || orderDTO.getTestId() == null) {
             return  new Result(CommonCode.VALIDATE_FAILED);
         }
         log.info("orderDTO: {}",orderDTO.toString());

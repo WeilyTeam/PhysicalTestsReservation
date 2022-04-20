@@ -54,6 +54,48 @@ public class StudentController {
     }
 
     /**
+     * 学生list
+     * @param pageDTO
+     * @return
+     */
+    @ApiOperation(value = "获取学生列表")
+    @GetMapping("/student/monitor/list")
+    @PreAuthorize("hasAnyAuthority('admin')")
+    public Result studentMonitorList(PageDTO pageDTO, StudentInfoDTO studentTestInfo){
+        log.info("pageDTO: {}",pageDTO.toString());
+        log.info("studentTestInfo: {}",studentTestInfo.toString());
+
+        return userService.getStudentMonitorList(pageDTO, studentTestInfo);
+    }
+    /**
+     * 学生list
+     * @param userId
+     * @return
+     */
+    @ApiOperation(value = "修改学生为班长")
+    @PutMapping("/student/monitor")
+    @PreAuthorize("hasAnyAuthority('admin')")
+    public Result studentToMonitor(Long userId){
+        log.info("userId: {}",userId);
+
+        return userService.studentToMonitor(userId);
+    }
+
+    /**
+     * 学生list
+     * @param userId
+     * @return
+     */
+    @ApiOperation(value = "修改学生为班长")
+    @PutMapping("/student/monitor/back")
+    @PreAuthorize("hasAnyAuthority('admin')")
+    public Result studentToMonitorBack(Long userId){
+        log.info("userId: {}",userId);
+
+        return userService.studentToMonitorBack(userId);
+    }
+
+    /**
      * 通过id查询学生信息
      * @param id
      * @return

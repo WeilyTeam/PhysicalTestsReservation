@@ -128,8 +128,16 @@ public class LoginServiceImpl implements LoginService {
         String redisKey = "login:" + userId;
         LoginUser loginUser = redisCache.getCacheObject(redisKey);
         User user = loginUser.getUser();
-        user.setPassword(null);
-        return new Result(CommonCode.SUCCESS,user);
+        Map<String,String> map = new HashMap<String,String>();
+        map.put("id",user.getId().toString());
+        map.put("userName",user.getUserName());
+        map.put("name",user.getName());
+        map.put("identity",user.getIdentity());
+        map.put("sex",user.getSex());
+        map.put("grade",user.getGrade());
+        map.put("specialtyClass",user.getSpecialtyClass());
+        map.put("phone",user.getPhone());
+        return new Result(CommonCode.SUCCESS,map);
     }
 
     @Override

@@ -126,9 +126,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Result getOrderInfo() {
-        Long userId = UserUtils.getUserId();
+        User user1 = UserUtils.getUser();
         QueryWrapper<StudentTest> queryWrapper = new QueryWrapper<StudentTest>();
-        queryWrapper.eq("user_id", userId);
+        queryWrapper.eq("specialty_class", user1.getSpecialtyClass());
 
         List<StudentTest> studentTests = studentTestMapper.selectList(queryWrapper);
         List<StudentTestInfo> studentTestInfo = new ArrayList<StudentTestInfo>();
@@ -164,8 +164,8 @@ public class OrderServiceImpl implements OrderService {
         if (studentTestInfo.getStore().equals(studentTestInfo.getOrderNum())){
             throw new RuntimeException("人数已满!!!");
         }
-        Long userId = UserUtils.getUserId();
-        StudentTest studentTest =  studentTestService.checkOrder(userId, studentTestInfo.getSemester());
+        User user = UserUtils.getUser();
+        StudentTest studentTest =  studentTestService.checkOrder(user.getSpecialtyClass(), studentTestInfo.getSemester());
         if (studentTest != null){
             throw new RuntimeException("本学期已预约");
         }
@@ -182,9 +182,9 @@ public class OrderServiceImpl implements OrderService {
     private Long createOrder(StudentTestInfo studentTestInfo){
         StudentTest studentTest=new StudentTest();
 
-        Long userId = UserUtils.getUserId();
+        User user = UserUtils.getUser();
 
-        studentTest.setUserId(userId)
+        studentTest.setSpecialtyClass(user.getSpecialtyClass())
                 .setTestId(studentTestInfo.getId())
                 .setSemester(studentTestInfo.getSemester());
 

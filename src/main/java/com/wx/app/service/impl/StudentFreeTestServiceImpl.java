@@ -46,6 +46,8 @@ implements StudentFreeTestService{
                 isPass = "0";
             }
         }
+
+
         String semester = auditDOT.getSemester();
         //分页插件，查询StudentFreeTestVo列表
         Page<StudentFreeTestVo> page = new Page<StudentFreeTestVo>(pageDTO.getCurrent(),pageDTO.getSize());

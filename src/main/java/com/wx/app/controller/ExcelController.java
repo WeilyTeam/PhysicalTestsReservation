@@ -20,6 +20,7 @@ import com.wx.app.mapper.UserMapper;
 import com.wx.app.service.LoginService;
 import com.wx.app.service.StudentFreeTestService;
 import com.wx.app.utils.Result;
+import com.wx.app.vo.ShowStudentInfoVo;
 import com.wx.app.vo.StudentFreeTestVo;
 import com.wx.app.vo.StudentInfoVo;
 import com.wx.app.vo.TeacherInfoVo;
@@ -153,7 +154,7 @@ public class ExcelController {
                     studentFreeTestVo.setUserName(user.getUserName());
                     studentFreeTestVo.setSex(user.getSex());
                     studentFreeTestVo.setGrade(user.getGrade());
-                    studentFreeTestVo.setCollege(user.getCollege());
+                    //studentFreeTestVo.setCollege(user.getCollege());
                     studentFreeTestVo.setReason(studentFreeTest.getReason());
                     studentFreeTestVo.setSemester(studentFreeTest.getSemester());
                     studentFreeTestVos.add(studentFreeTestVo);
@@ -190,12 +191,8 @@ public class ExcelController {
             queryWrapper.eq("identity","学生").orderByAsc("user_name");
             if (studentTestInfo.getName() != null) {
                 queryWrapper.like("name", studentTestInfo.getName());
-            }else if (studentTestInfo.getCollege() != null){
-                queryWrapper.like("college", studentTestInfo.getCollege());
             }else if (studentTestInfo.getGrade() != null){
                 queryWrapper.like("grade", studentTestInfo.getGrade());
-            }else if (studentTestInfo.getSex() != null){
-                queryWrapper.like("sex", studentTestInfo.getSex());
             }else if (studentTestInfo.getUserName() != null){
                 queryWrapper.like("user_name", studentTestInfo.getUserName());
             }
@@ -420,7 +417,7 @@ public class ExcelController {
             response.setHeader("Content-disposition", "attachment;filename*=utf-8''" + fileName + ".xlsx");
             // 这里需要设置不关闭流
 
-            List<StudentInfoVo> studentById = userMapper.getStudentById(id, studentTestInfo);
+            List<ShowStudentInfoVo> studentById = userMapper.getStudentById(id, studentTestInfo);
             EasyExcel.write(response.getOutputStream(), StudentInfoVo.class).autoCloseStream(Boolean.FALSE).sheet("已预约学生信息")
                     .doWrite(studentById);
         } catch (Exception e) {

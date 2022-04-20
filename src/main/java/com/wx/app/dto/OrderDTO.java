@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderDTO {
-    private Long userId;
+    private String specialtyClass;
     private Long testId;
 }

@@ -57,6 +57,9 @@ public class StudentTestInfoServiceImpl extends ServiceImpl<StudentTestInfoMappe
         if(testListCondition.getLocation() != null){
             queryWrapper.like("location", testListCondition.getLocation());
         }
+        if(testListCondition.getName() != null){
+            queryWrapper.like("name", testListCondition.getName());
+        }
         if(testListCondition.getDay() != null){
             queryWrapper.like("day", testListCondition.getDay());
         }
@@ -93,12 +96,16 @@ public class StudentTestInfoServiceImpl extends ServiceImpl<StudentTestInfoMappe
         if(testListCondition.getLocation() != null){
             queryWrapper.like("location", testListCondition.getLocation());
         }
+        if(testListCondition.getName() != null){
+            queryWrapper.like("name", testListCondition.getName());
+        }
         if(testListCondition.getDay() != null){
             queryWrapper.like("day", testListCondition.getDay());
         }
         if(testListCondition.getHour() != null){
             queryWrapper.like("hour", testListCondition.getHour());
-        }if(testListCondition.getSemester() != null){
+        }
+        if(testListCondition.getSemester() != null){
             queryWrapper.like("semester", testListCondition.getSemester());
         }
         //查询StudentTestInfo列表信息

@@ -13,7 +13,7 @@ public interface StudentTestService extends IService<StudentTest> {
 
     void createOrder(StudentTest studentTest);
 
-    StudentTest checkOrder(Long id, String semester);
+    StudentTest checkOrder(String specialtyClass, String semester);
 
     Result getTestList(PageDTO pageDTO, Long id, StudentInfoDTO studentTestInfo);
 

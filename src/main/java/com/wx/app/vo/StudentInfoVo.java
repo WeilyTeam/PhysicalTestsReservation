@@ -35,11 +35,23 @@ public class StudentInfoVo implements Serializable {
     @ExcelProperty("年级")
     private String grade;
     @ColumnWidth(25)
-    @ExcelProperty("学院")
-    private String college;
+    @ExcelProperty("专业班级")
+    private String specialtyClass;
     @ColumnWidth(15)
     @ExcelProperty("手机号")
     private String phone;
+
+    @ColumnWidth(15)
+    @ExcelProperty("名族代码")
+    private String nationality;
+
+    @ColumnWidth(15)
+    @ExcelProperty("生日")
+    private String birth;
+
+    @ColumnWidth(15)
+    @ExcelProperty("身份证")
+    private String idCard;
 
     @JsonSerialize(using = ToStringSerializer.class)
     @ExcelIgnore

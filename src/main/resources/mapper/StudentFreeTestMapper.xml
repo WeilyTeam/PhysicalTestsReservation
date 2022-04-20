@@ -19,7 +19,7 @@
 
     <select id="selectFreeList" resultType="com.wx.app.vo.StudentFreeTestVo">
         SELECT
-            student_free_test.id, reason, semester, name, user_name, sex, grade, college, is_pass,is_read, handler
+            student_free_test.id, reason, semester, name, user_name, sex, grade, id_card, birth, nationality, specialty_class, is_pass,is_read, handler, type, remark
         FROM
             `student_free_test`
         LEFT JOIN
@@ -46,8 +46,8 @@
             <if test="condition.grade != null">
                 and sys_user.grade LIKE #{condition.grade}
             </if>
-            <if test="condition.college != null">
-                and sys_user.college LIKE #{condition.college}
+            <if test="condition.type != null">
+                and student_free_test.type = #{condition.type}
             </if>
     </select>
     <select id="hasMessage" resultType="com.wx.app.entity.StudentFreeTest">

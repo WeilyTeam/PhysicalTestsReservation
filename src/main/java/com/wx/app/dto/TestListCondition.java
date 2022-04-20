@@ -13,4 +13,5 @@ public class TestListCondition {
     private String day;
     private String hour;
     private String semester;
+    private String name;
 }

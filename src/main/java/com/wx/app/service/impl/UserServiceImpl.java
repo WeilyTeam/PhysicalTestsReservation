@@ -64,15 +64,29 @@ public class UserServiceImpl implements UserService {
         Page<StudentInfoVo> page = new Page<>(pageDTO.getCurrent(),pageDTO.getSize());
         //查询学生信息
         QueryWrapper<StudentInfoVo> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("identity","学生");
+        queryWrapper.eq("identity","学生")
+            .or().eq("identity","班长");
         if (studentTestInfo.getName() != null) {
             queryWrapper.like("name", studentTestInfo.getName());
-        }else if (studentTestInfo.getCollege() != null){
-            queryWrapper.like("college", studentTestInfo.getCollege());
         }else if (studentTestInfo.getGrade() != null){
             queryWrapper.like("grade", studentTestInfo.getGrade());
-        }else if (studentTestInfo.getSex() != null){
-            queryWrapper.like("sex", studentTestInfo.getSex());
+        }else if (studentTestInfo.getUserName() != null){
+            queryWrapper.like("user_name", studentTestInfo.getUserName());
+        }
+        Page<StudentInfoVo> userPage = studentMapper.selectPage(page, queryWrapper);
+        return new Result(CommonCode.SUCCESS, userPage);
+    }
+
+    @Override
+    public Result getStudentMonitorList(PageDTO pageDTO, StudentInfoDTO studentTestInfo) {
+        Page<StudentInfoVo> page = new Page<>(pageDTO.getCurrent(),pageDTO.getSize());
+        //查询学生信息
+        QueryWrapper<StudentInfoVo> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("identity","班长");
+        if (studentTestInfo.getName() != null) {
+            queryWrapper.like("name", studentTestInfo.getName());
+        }else if (studentTestInfo.getGrade() != null){
+            queryWrapper.like("grade", studentTestInfo.getGrade());
         }else if (studentTestInfo.getUserName() != null){
             queryWrapper.like("user_name", studentTestInfo.getUserName());
         }
@@ -240,6 +254,28 @@ public class UserServiceImpl implements UserService {
             i = userMapper.update(user,queryWrapper);
         }
         if (i == 0) {
+            return new Result(CommonCode.FAILURE);
+        }
+        return new Result(CommonCode.SUCCESS);
+    }
+
+    @Override
+    public Result studentToMonitor(Long userId) {
+        User user = userMapper.selectById(userId);
+        user.setIdentity("班长");
+        int i = userMapper.updateById(user);
+        if (i==0){
+            return new Result(CommonCode.FAILURE);
+        }
+        return new Result(CommonCode.SUCCESS);
+    }
+
+    @Override
+    public Result studentToMonitorBack(Long userId) {
+        User user = userMapper.selectById(userId);
+        user.setIdentity("学生");
+        int i = userMapper.updateById(user);
+        if (i==0){
             return new Result(CommonCode.FAILURE);
         }
         return new Result(CommonCode.SUCCESS);

@@ -29,12 +29,6 @@ public class StudentInfoDTO implements Serializable {
 
 
     /*
-        @ExcelProperty("性别")
-     */
-
-    private String sex;
-
-    /*
         @ExcelProperty("年级")
      */
 
@@ -45,5 +39,14 @@ public class StudentInfoDTO implements Serializable {
         @ExcelProperty("学院")
      */
 
-    private String college;
+    private String specialtyClass;
+
+    //private String college;
+
+    /*
+        @ExcelProperty("性别")
+     */
+
+    private String sex;
+    private Integer type;
 }

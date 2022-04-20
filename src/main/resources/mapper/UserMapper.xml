@@ -5,7 +5,7 @@
 <mapper namespace="com.wx.app.mapper.UserMapper">
     <select id="getStudentList" resultType="com.wx.app.vo.StudentInfoVo">
         SELECT
-            id, name, sex, grade, specialty, college, user_name
+            id, name, sex, grade, specialty_class, user_name, phone
         FROM
             sys_user
         WHERE
@@ -22,30 +22,27 @@
         <if test="condition.grade != null">
             and grade LIKE #{condition.grade}
         </if>
-        <if test="condition.college != null">
-            and college LIKE #{condition.college}
-        </if>
     </select>
 
 
 
     <select id="getStudentInfo" resultType="com.wx.app.vo.StudentInfoVo">
         SELECT
-            id, name, sex, grade, specialty, college, user_name
+            id, name, sex, grade, specialty_class, user_name, phone
         FROM
             sys_user
         WHERE id = #{userId}
     </select>
 
-    <select id="getStudentById" resultType="com.wx.app.vo.TestStudentInfoVo">
+    <select id="getStudentById" resultType="com.wx.app.vo.ShowStudentInfoVo">
         SELECT
-        student_test.id, student_test.user_id, name, sex, grade, college, user_name
+        student_test.id, student_test.specialty_class, name, sex, grade, user_name, phone
         FROM
             `student_test`
         LEFT JOIN
             sys_user
         ON
-            student_test.user_id = sys_user.id
+            student_test.specialty_class = sys_user.specialty_class
         WHERE
             student_test.test_id = #{id}
         <if test="condition.userName != null">
@@ -59,9 +56,6 @@
         </if>
         <if test="condition.grade != null">
             and sys_user.grade LIKE #{condition.grade}
-        </if>
-        <if test="condition.college != null">
-            and sys_user.college LIKE #{condition.college}
         </if>
     </select>
 </mapper>

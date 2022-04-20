@@ -35,9 +35,9 @@ public class TestStudentInfoVo implements Serializable {
     @ColumnWidth(15)
     @ExcelProperty("年级")
     private String grade;
-    @ColumnWidth(25)
-    @ExcelProperty("学院")
-    private String college;
+    //@ColumnWidth(25)
+    //@ExcelProperty("学院")
+    //private String college;
     @ColumnWidth(15)
     @ExcelProperty("手机号")
     private String phone;

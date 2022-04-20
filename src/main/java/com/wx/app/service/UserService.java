@@ -16,6 +16,7 @@ public interface UserService {
     Result resetStuPwd(Long id);
 
     Result getStudentList(PageDTO pageDTO, StudentInfoDTO studentTestInfo);
+    Result getStudentMonitorList(PageDTO pageDTO, StudentInfoDTO studentTestInfo);
 
     Result getStudentInfo(Long userId);
 
@@ -38,4 +39,8 @@ public interface UserService {
     Result addStudent(User user);
 
     Result updateStudent(User user);
+
+    Result studentToMonitor(Long userId);
+
+    Result studentToMonitorBack(Long userId);
 }

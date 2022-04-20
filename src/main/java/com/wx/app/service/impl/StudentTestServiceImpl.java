@@ -11,7 +11,7 @@ import com.wx.app.mapper.StudentTestMapper;
 import com.wx.app.mapper.UserMapper;
 import com.wx.app.service.StudentTestService;
 import com.wx.app.utils.Result;
-import com.wx.app.vo.TestStudentInfoVo;
+import com.wx.app.vo.ShowStudentInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,17 +34,17 @@ public class StudentTestServiceImpl extends ServiceImpl<StudentTestMapper, Stude
     }
 
     @Override
-    public StudentTest checkOrder(Long id, String semester) {
+    public StudentTest checkOrder(String specialtyClass, String semester) {
         QueryWrapper<StudentTest> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("user_id", id)
+        queryWrapper.eq("specialty_class", specialtyClass)
                 .eq("semester", semester);
         return studentTestMapper.selectOne(queryWrapper);
     }
 
     @Override
     public Result getTestList(PageDTO pageDTO, Long id, StudentInfoDTO studentTestInfo) {
-        Page<TestStudentInfoVo> page = new Page<>(pageDTO.getCurrent(),pageDTO.getSize());
-        Page<TestStudentInfoVo> studentById = userMapper.getStudentById(page, id, studentTestInfo);
+        Page<ShowStudentInfoVo> page = new Page<>(pageDTO.getCurrent(),pageDTO.getSize());
+        Page<ShowStudentInfoVo> studentById = userMapper.getStudentById(page, id, studentTestInfo);
         return new Result(CommonCode.SUCCESS,studentById);
     }
 }

@@ -20,10 +20,10 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @TableName(value = "sys_user")
-public class TeacherInfoVo implements Serializable {
+public class ShowStudentInfoVo implements Serializable {
 
     @ColumnWidth(20)
-    @ExcelProperty("工号")
+    @ExcelProperty("学号")
     private String userName;
     @ColumnWidth(15)
     @ExcelProperty("姓名")
@@ -31,12 +31,16 @@ public class TeacherInfoVo implements Serializable {
     @ColumnWidth(10)
     @ExcelProperty("性别")
     private String sex;
-    //@ColumnWidth(25)
-    //@ExcelProperty("学院")
-    //private String college;
     @ColumnWidth(15)
+    @ExcelProperty("年级")
+    private String grade;
+    @ColumnWidth(25)
+    @ExcelProperty("专业班级")
+    private String specialtyClass;
+    @ColumnWidth(25)
     @ExcelProperty("手机号")
     private String phone;
+
 
     @JsonSerialize(using = ToStringSerializer.class)
     @ExcelIgnore
