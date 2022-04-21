@@ -59,6 +59,11 @@ public enum CommonCode {
     FAILURE_TO_LOGIN(500,"登录失败，学号或者密码错误"),
 
     /**
+     * 登录失败，学工号或者密码错误
+     */
+    FAILURE_TO_LOGIN_ADMIN(500,"登录失败，学工号错误"),
+
+    /**
      * 当前人数过多，请重试!
      */
     FAILURE_TO_ORDER(500,"当前人数过多，请重试!"),

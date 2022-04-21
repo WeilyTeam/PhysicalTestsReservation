@@ -8,6 +8,7 @@ import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.write.style.ColumnWidth;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.AllArgsConstructor;
@@ -31,9 +32,13 @@ public class TeacherInfoVo implements Serializable {
     @ColumnWidth(10)
     @ExcelProperty("性别")
     private String sex;
-    //@ColumnWidth(25)
-    //@ExcelProperty("学院")
-    //private String college;
+
+
+    @ColumnWidth(25)
+    @ExcelProperty("学院")
+    @JsonProperty("college")
+    private String specialtyClass;
+
     @ColumnWidth(15)
     @ExcelProperty("手机号")
     private String phone;

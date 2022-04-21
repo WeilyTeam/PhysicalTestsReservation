@@ -8,7 +8,6 @@ import com.alibaba.excel.annotation.write.style.HeadRowHeight;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import com.wx.app.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -29,18 +28,6 @@ import java.util.List;
 @ContentRowHeight(20)
 @HeadRowHeight(20)
 public class StudentFreeTestVo implements Serializable {
-
-    public StudentFreeTestVo(User user) {
-        this.id = user.getId();
-        this.name = user.getName();
-        this.userName = user.getUserName();
-        this.sex = user.getSex();
-        this.grade = user.getGrade();
-        this.idCard = user.getIdCard();
-        this.birth = user.getBirth();
-        this.nationality = user.getNationality();
-        this.specialtyClass = user.getSpecialtyClass();
-    }
 
     @ExcelIgnore
     @JsonSerialize(using = ToStringSerializer.class)
@@ -65,6 +52,21 @@ public class StudentFreeTestVo implements Serializable {
     @ExcelProperty("原因")
     private String reason;
 
+    @ColumnWidth(15)
+    @ExcelProperty("备注")
+    private String remark;
+
+    @ColumnWidth(15)
+    @ExcelProperty("审批人")
+    private String handler;
+
+    @ColumnWidth(15)
+    @ExcelProperty("审批信息")
+    private String auditMessage;
+
+    @ColumnWidth(15)
+    @ExcelProperty("审批时间")
+    private String auditTime;
 
     @ColumnWidth(8)
     @ExcelProperty("性别")
@@ -95,13 +97,7 @@ public class StudentFreeTestVo implements Serializable {
     @ColumnWidth(15)
     @ExcelProperty("手机号")
     private String phone;
-    @ColumnWidth(15)
-    @ExcelProperty("备注")
-    private String remark;
 
-    @ColumnWidth(15)
-    @ExcelProperty("审批人")
-    private String handler;
 
     @ExcelIgnore
     private String isPass;

@@ -78,7 +78,9 @@ implements StudentFreeTestService{
         if (studentFreeTests.size() != 0){
             return new Result(CommonCode.FAILURE_APPLICATION);
         }
-
+        if (studentFreeTestDTO.getType() == null){
+            studentFreeTestDTO.setType(0);
+        }
         StudentFreeTest studentFreeTest = new StudentFreeTest(studentFreeTestDTO,userId);
 
         //插入免测申请数据

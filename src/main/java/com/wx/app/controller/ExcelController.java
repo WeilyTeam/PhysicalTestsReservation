@@ -127,7 +127,7 @@ public class ExcelController {
 
     @GetMapping("downloadFreeTestStudent")
     @ApiOperation(value = "免测学生Excel下载")
-    public void downloadFreeTestStudent(String isPass, String semester, HttpServletResponse response) throws IOException {
+    public void downloadFreeTestStudent(Integer type, String isPass, String semester, HttpServletResponse response) throws IOException {
         // 这里注意 有同学反应使用swagger 会导致各种问题，请直接用浏览器或者用postman
         try {
             response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
@@ -143,6 +143,9 @@ public class ExcelController {
             if (semester != null) {
                 queryWrapper.eq("semester", semester);
             }
+            if (type != null) {
+                queryWrapper.eq("type", type);
+            }
             List<StudentFreeTest> studentFreeTests = studentFreeTestMapper.selectList(queryWrapper);
             List<StudentFreeTestVo> studentFreeTestVos = new ArrayList<>();
             for (StudentFreeTest studentFreeTest : studentFreeTests) {
@@ -154,12 +157,20 @@ public class ExcelController {
                     studentFreeTestVo.setUserName(user.getUserName());
                     studentFreeTestVo.setSex(user.getSex());
                     studentFreeTestVo.setGrade(user.getGrade());
+                    studentFreeTestVo.setSpecialtyClass(user.getSpecialtyClass());
+                    studentFreeTestVo.setNationality(user.getNationality());
+                    studentFreeTestVo.setBirth(user.getBirth());
+                    studentFreeTestVo.setIdCard(user.getIdCard());
+                    studentFreeTestVo.setPhone(user.getPhone());
+                    studentFreeTestVo.setRemark(studentFreeTest.getRemark());
+                    studentFreeTestVo.setHandler(studentFreeTest.getHandler());
                     //studentFreeTestVo.setCollege(user.getCollege());
+                    studentFreeTestVo.setAuditTime(studentFreeTest.getAuditTime());
+                    studentFreeTestVo.setAuditMessage(studentFreeTest.getAuditMessage());
                     studentFreeTestVo.setReason(studentFreeTest.getReason());
                     studentFreeTestVo.setSemester(studentFreeTest.getSemester());
                     studentFreeTestVos.add(studentFreeTestVo);
                 }
-
             }
             EasyExcel.write(response.getOutputStream(), StudentFreeTestVo.class).autoCloseStream(Boolean.FALSE).sheet("免测学生")
                     .doWrite(studentFreeTestVos);
@@ -188,7 +199,7 @@ public class ExcelController {
             response.setHeader("Content-disposition", "attachment;filename*=utf-8''" + fileName + ".xlsx");
             // 这里需要设置不关闭流
             QueryWrapper<StudentInfoVo> queryWrapper = new QueryWrapper<>();
-            queryWrapper.eq("identity","学生").orderByAsc("user_name");
+            queryWrapper.eq("identity","学生").or().eq("identity","班长").orderByAsc("user_name");
             if (studentTestInfo.getName() != null) {
                 queryWrapper.like("name", studentTestInfo.getName());
             }else if (studentTestInfo.getGrade() != null){

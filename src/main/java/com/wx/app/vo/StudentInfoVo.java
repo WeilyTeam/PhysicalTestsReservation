@@ -52,7 +52,8 @@ public class StudentInfoVo implements Serializable {
     @ColumnWidth(15)
     @ExcelProperty("身份证")
     private String idCard;
-
+    @ExcelIgnore
+    private String identity;
     @JsonSerialize(using = ToStringSerializer.class)
     @ExcelIgnore
     private Long id;

@@ -5,6 +5,7 @@ package com.wx.app.service.impl;/**
  */
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.wx.app.dto.StuPwdDTO;
 import com.wx.app.dto.UserDTO;
 import com.wx.app.entity.LoginUser;
@@ -73,6 +74,39 @@ public class LoginServiceImpl implements LoginService {
         return new Result(CommonCode.SUCCESS_LOGIN, map);
     }
 
+    @Override
+    public Result loginAdmin(UserDTO userDTO) {
+        QueryWrapper<User> query = new QueryWrapper<>();
+        query.eq("user_name",userDTO.getUserName() );
+        User user = userManager.selectOne(query);
+        if (user == null) {
+            return new Result(CommonCode.FAILURE_TO_LOGIN_ADMIN);
+        }else if ("学生".equals(user.getIdentity()) || "班长".equals(user.getIdentity())){
+            return new Result(CommonCode.FORBIDDEN);
+        }
+        //使用Authentication authenticate认证
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDTO.getUserName(),userDTO.getPassword());
+        Authentication authenticate;
+        try {
+            authenticate = authenticationManager.authenticate(authenticationToken);
+        }catch (Exception e){
+            return new Result(CommonCode.FAILURE_TO_LOGIN);
+        }
+
+        //如果登录成功 生成jwt
+        LoginUser loginUser = (LoginUser) authenticate.getPrincipal();
+        String userId = loginUser.getUser().getId().toString();
+        String token = JwtUtil.createJWT(userId,1000*60*60*24*31L);
+        String refreshToken = JwtUtil.createJWT(userId,1000*60*60*24*31L);
+        Map<String,String> map = new HashMap<String,String>();
+        map.put("token", token);
+        map.put("refreshToken", refreshToken);
+
+        //把完整用户信息保存到redis
+        redisCache.setCacheObject("login:"+userId, loginUser,24*31, TimeUnit.HOURS);
+
+        return new Result(CommonCode.SUCCESS_LOGIN, map);
+    }
 
 
     @Override

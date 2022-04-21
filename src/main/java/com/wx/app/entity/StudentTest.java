@@ -1,6 +1,7 @@
 package com.wx.app.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.AllArgsConstructor;
@@ -18,6 +19,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
+@TableName(value="student_test")
 public class StudentTest implements Serializable {
     /**
      *
@@ -29,7 +31,11 @@ public class StudentTest implements Serializable {
 
     private String semester;
 
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long testId;
+
+    @JsonSerialize(using = ToStringSerializer.class)
+    private Long userId;
 
     private static final long serialVersionUID = 1L;
 

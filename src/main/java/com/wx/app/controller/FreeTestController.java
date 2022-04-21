@@ -55,7 +55,7 @@ public class FreeTestController {
 
     @GetMapping("/hasMessage")
     @ApiOperation(value = "是否有未读免测消息")
-    @PreAuthorize("hasAnyAuthority('student')")
+    @PreAuthorize("hasAnyAuthority('student','monitor')")
     public Result hasMessage(){
         return studentFreeTestService.hasMessage();
     }
@@ -64,13 +64,13 @@ public class FreeTestController {
 
     @GetMapping("/freeInfo")
     @ApiOperation(value = "根据token获取免测")
-    @PreAuthorize("hasAnyAuthority('student')")
+    @PreAuthorize("hasAnyAuthority('student','monitor')")
     public Result freeTestByToken(){
         Long userId = UserUtils.getUserId();
         return studentFreeTestService.freeTestByToken(userId);
     }
 
-    @PreAuthorize("hasAnyAuthority('student')")
+    @PreAuthorize("hasAnyAuthority('student','monitor')")
     @PostMapping("/application")
     @ApiOperation(value = "免测申请")
     public Result freeTestApplication(@RequestBody StudentFreeTestDTO studentFreeTestDTO){
@@ -85,7 +85,7 @@ public class FreeTestController {
      */
     @ResponseBody
     @PostMapping("/uploadImg")
-    @PreAuthorize("hasAnyAuthority('student')")
+    @PreAuthorize("hasAnyAuthority('student','monitor')")
     @ApiOperation(value = "图片上传")
     public Result uploadImage(@RequestParam("file") MultipartFile file) {
         return imageService.uploadImage(file);

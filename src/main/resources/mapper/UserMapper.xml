@@ -38,13 +38,10 @@
         SELECT
         student_test.id, student_test.specialty_class, name, sex, grade, user_name, phone
         FROM
-            `student_test`
-        LEFT JOIN
-            sys_user
-        ON
-            student_test.specialty_class = sys_user.specialty_class
+            `student_test`,sys_user
         WHERE
-            student_test.test_id = #{id}
+            student_test.specialty_class = sys_user.specialty_class
+        and student_test.test_id = #{id}
         <if test="condition.userName != null">
             and sys_user.user_name LIKE #{condition.userName}
         </if>
@@ -56,6 +53,9 @@
         </if>
         <if test="condition.grade != null">
             and sys_user.grade LIKE #{condition.grade}
+        </if>
+        <if test="condition.specialtyClass != null">
+            and sys_user.specialty_class LIKE #{condition.specialtyClass}
         </if>
     </select>
 </mapper>

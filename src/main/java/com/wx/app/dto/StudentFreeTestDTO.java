@@ -20,6 +20,8 @@ public class StudentFreeTestDTO implements Serializable {
     private String semester;
 
     private String reason;
+    private Integer type;
+    private String remark;
 
     private List<String> images;
 

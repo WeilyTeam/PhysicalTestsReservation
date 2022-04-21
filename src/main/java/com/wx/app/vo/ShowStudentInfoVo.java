@@ -10,6 +10,7 @@ import com.alibaba.excel.annotation.write.style.ColumnWidth;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.wx.app.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -45,4 +46,14 @@ public class ShowStudentInfoVo implements Serializable {
     @JsonSerialize(using = ToStringSerializer.class)
     @ExcelIgnore
     private Long id;
+
+    public ShowStudentInfoVo(User user) {
+        this.userName = user.getUserName();
+        this.name = user.getName();
+        this.sex = user.getSex();
+        this.grade = user.getGrade();
+        this.specialtyClass = user.getSpecialtyClass();
+        this.phone = user.getPhone();
+        this.id = user.getId();
+    }
 }

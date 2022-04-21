@@ -37,6 +37,18 @@ public class LoginController {
         return loginService.login(userDTO);
     }
 
+    /**
+     * 登录接口
+     * @param userDTO
+     * @return
+     */
+    @ApiOperation(value = "登录接口")
+    @PostMapping("loginAdmin")
+    public Result loginAdmin(@RequestBody UserDTO userDTO){
+        log.info("userDTO: {}",userDTO.toString());
+        return loginService.loginAdmin(userDTO);
+    }
+
     @ApiOperation(value = "登录接口")
     @GetMapping("userInfo")
     public Result userInfo(){

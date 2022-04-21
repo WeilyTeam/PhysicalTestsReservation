@@ -165,7 +165,7 @@ public class OrderServiceImpl implements OrderService {
             throw new RuntimeException("人数已满!!!");
         }
         User user = UserUtils.getUser();
-        StudentTest studentTest =  studentTestService.checkOrder(user.getSpecialtyClass(), studentTestInfo.getSemester());
+        StudentTest studentTest =  studentTestService.checkOrder(user.getId(), studentTestInfo.getSemester());
         if (studentTest != null){
             throw new RuntimeException("本学期已预约");
         }

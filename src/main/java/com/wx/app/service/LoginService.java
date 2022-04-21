@@ -11,7 +11,7 @@ import com.wx.app.utils.Result;
 
 public interface LoginService {
     Result login(UserDTO userDTO);
-
+    Result loginAdmin(UserDTO userDTO);
     Result logout();
 
     Result register(User user);
@@ -24,4 +24,6 @@ public interface LoginService {
     Result resetStuPwd(Long userId);
 
     Result updateStuPwd(StuPwdDTO stuPwdDTO);
+
+
 }

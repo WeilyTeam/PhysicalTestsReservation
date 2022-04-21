@@ -64,8 +64,7 @@ public class UserServiceImpl implements UserService {
         Page<StudentInfoVo> page = new Page<>(pageDTO.getCurrent(),pageDTO.getSize());
         //查询学生信息
         QueryWrapper<StudentInfoVo> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("identity","学生")
-            .or().eq("identity","班长");
+
         if (studentTestInfo.getName() != null) {
             queryWrapper.like("name", studentTestInfo.getName());
         }else if (studentTestInfo.getGrade() != null){
@@ -73,6 +72,9 @@ public class UserServiceImpl implements UserService {
         }else if (studentTestInfo.getUserName() != null){
             queryWrapper.like("user_name", studentTestInfo.getUserName());
         }
+        queryWrapper.and(wrapper -> wrapper.eq("identity", "学生")
+                .or().eq("identity", "班长")
+        );
         Page<StudentInfoVo> userPage = studentMapper.selectPage(page, queryWrapper);
         return new Result(CommonCode.SUCCESS, userPage);
     }
@@ -151,7 +153,7 @@ public class UserServiceImpl implements UserService {
     public Result getTeacherList(PageDTO pageDTO, TeacherDTO teacherDTO) {
         QueryWrapper<TeacherInfoVo> eq = new QueryWrapper<TeacherInfoVo>().eq("identity", "老师");
         if (teacherDTO.getCollege() != null) {
-            eq.like("college", teacherDTO.getCollege());
+            eq.like("specialty_class", teacherDTO.getCollege());
         }else if (teacherDTO.getName() != null) {
             eq.like("name", teacherDTO.getName());
         }else if (teacherDTO.getUserName() != null) {
@@ -182,7 +184,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Result updateTeacher(User user) {
-        user.setUserName(null);
+        user.setIdentity("老师");
         int i = 0;
         if (user.getId() != null) {
             i = userMapper.updateById(user);
@@ -244,7 +246,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Result updateStudent(User user) {
-        user.setUserName(null);
+        user.setIdentity("学生");
         int i = 0;
         if (user.getId() != null) {
             i = userMapper.updateById(user);

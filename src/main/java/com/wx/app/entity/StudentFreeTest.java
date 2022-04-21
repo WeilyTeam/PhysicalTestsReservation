@@ -47,5 +47,7 @@ public class StudentFreeTest implements Serializable {
         this.reason = studentFreeTestDTO.getReason();
         this.semester = studentFreeTestDTO.getSemester();
         this.userId = userId;
+        this.type = studentFreeTestDTO.getType();
+        this.remark = studentFreeTestDTO.getRemark();
     }
 }
