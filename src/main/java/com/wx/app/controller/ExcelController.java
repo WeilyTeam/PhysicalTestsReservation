@@ -418,7 +418,7 @@ public class ExcelController {
 
     @GetMapping("downloadStudentListFormTest")
     @ApiOperation(value = "体测学生信息Excel下载")
-    public void downloadStudentListFormTest(Long id, StudentInfoDTO studentTestInfo, HttpServletResponse response) throws IOException {
+    public void downloadStudentListFormTest(Long testId, StudentInfoDTO studentTestInfo, HttpServletResponse response) throws IOException {
         // 这里注意 有同学反应使用swagger 会导致各种问题，请直接用浏览器或者用postman
         try {
             response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
@@ -428,8 +428,8 @@ public class ExcelController {
             response.setHeader("Content-disposition", "attachment;filename*=utf-8''" + fileName + ".xlsx");
             // 这里需要设置不关闭流
 
-            List<ShowStudentInfoVo> studentById = userMapper.getStudentById(id, studentTestInfo);
-            EasyExcel.write(response.getOutputStream(), StudentInfoVo.class).autoCloseStream(Boolean.FALSE).sheet("已预约学生信息")
+            List<ShowStudentInfoVo> studentById = userMapper.getStudentById(testId, studentTestInfo);
+            EasyExcel.write(response.getOutputStream(), ShowStudentInfoVo.class).autoCloseStream(Boolean.FALSE).sheet("已预约学生信息")
                     .doWrite(studentById);
         } catch (Exception e) {
             // 重置response

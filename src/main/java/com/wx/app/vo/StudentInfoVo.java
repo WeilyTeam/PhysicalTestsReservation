@@ -49,7 +49,7 @@ public class StudentInfoVo implements Serializable {
     @ExcelProperty("生日")
     private String birth;
 
-    @ColumnWidth(15)
+    @ColumnWidth(20)
     @ExcelProperty("身份证")
     private String idCard;
     @ExcelIgnore
