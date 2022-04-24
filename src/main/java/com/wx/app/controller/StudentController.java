@@ -68,7 +68,7 @@ public class StudentController {
         return userService.getStudentMonitorList(pageDTO, studentTestInfo);
     }
     /**
-     * 学生list
+     *
      * @param userId
      * @return
      */
@@ -133,6 +133,19 @@ public class StudentController {
     public Result updateStudent(@RequestBody User user) {
         log.info("user: {}",user.toString());
         return userService.updateStudent(user);
+    }
+
+    /**
+     *
+     * @param specialtyClass
+     * @return
+     */
+    @ApiOperation(value = "班级查询学生列表")
+    @GetMapping("/student/class")
+    @PreAuthorize("hasAnyAuthority('admin')")
+    public Result getStudentsByClass(PageDTO pageDTO, String specialtyClass) {
+        log.info("specialtyClass: {}",specialtyClass);
+        return userService.getStudentsByClass(pageDTO,specialtyClass);
     }
 
 }

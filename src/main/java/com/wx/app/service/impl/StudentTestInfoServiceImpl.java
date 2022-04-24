@@ -8,9 +8,11 @@ import com.wx.app.dto.TestListCondition;
 import com.wx.app.entity.StudentTestInfo;
 import com.wx.app.entity.User;
 import com.wx.app.mapper.StudentTestInfoMapper;
+import com.wx.app.mapper.TeacherInfoMapper;
 import com.wx.app.mapper.UserMapper;
 import com.wx.app.service.StudentTestInfoService;
 import com.wx.app.utils.UserUtils;
+import com.wx.app.vo.TeacherInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +32,8 @@ public class StudentTestInfoServiceImpl extends ServiceImpl<StudentTestInfoMappe
     private StudentTestInfoMapper studentTestInfoMapper;
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private TeacherInfoMapper teacherInfoMapper;
     @Override
     public Page<StudentTestInfo> getTestList(PageDTO pageDTO, TestListCondition testListCondition) {
         Page<StudentTestInfo> page = new Page<StudentTestInfo>(pageDTO.getCurrent(),pageDTO.getSize());
@@ -73,9 +77,9 @@ public class StudentTestInfoServiceImpl extends ServiceImpl<StudentTestInfoMappe
         List<StudentTestInfo> records = studentTestInfos.getRecords();
         for (StudentTestInfo record:records){
             //遍历查询老师信息
-            User user = userMapper.selectById(record.getHeadid());
+            TeacherInfoVo teacherInfoVo = teacherInfoMapper.selectById(record.getHeadid());
             record.setIsFull(record.getOrderNum().equals(record.getStore()));
-            record.setTeacherInfo(user);
+            record.setTeacherInfo(teacherInfoVo);
         }
         studentTestInfos.setRecords(records);
         return studentTestInfos;
@@ -113,9 +117,11 @@ public class StudentTestInfoServiceImpl extends ServiceImpl<StudentTestInfoMappe
         List<StudentTestInfo> records = studentTestInfos.getRecords();
         for (StudentTestInfo record:records){
             //遍历查询老师信息
-            User user = userMapper.selectById(record.getHeadid());
+            //User user = userMapper.selectById(record.getHeadid());
+            TeacherInfoVo teacherInfoVo = teacherInfoMapper.selectById(record.getHeadid());
+
             record.setIsFull(record.getOrderNum().equals(record.getStore()));
-            record.setTeacherInfo(user);
+            record.setTeacherInfo(teacherInfoVo);
         }
         studentTestInfos.setRecords(records);
         return studentTestInfos;

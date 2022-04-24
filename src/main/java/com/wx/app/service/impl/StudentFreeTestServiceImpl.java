@@ -106,6 +106,7 @@ implements StudentFreeTestService{
         Date data = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         studentFreeTest.setAuditTime(sdf.format(data));
+        studentFreeTest.setAuditMessage(freeTestDTO.getAuditMessage());
         //未读
         studentFreeTest.setIsRead(1);
         studentFreeTest.setHandler(UserUtils.getUser().getName());
@@ -152,6 +153,7 @@ implements StudentFreeTestService{
         Date data = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         studentFreeTest.setAuditTime(sdf.format(data));
+        studentFreeTest.setAuditMessage(freeTestDTO.getAuditMessage());
         //未读
         studentFreeTest.setIsRead(1);
         studentFreeTest.setHandler(UserUtils.getUser().getName());

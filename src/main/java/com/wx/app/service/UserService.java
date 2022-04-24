@@ -43,4 +43,6 @@ public interface UserService {
     Result studentToMonitor(Long userId);
 
     Result studentToMonitorBack(Long userId);
+
+    Result getStudentsByClass(PageDTO pageDTO, String specialtyClass);
 }

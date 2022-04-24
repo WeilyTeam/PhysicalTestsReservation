@@ -101,7 +101,7 @@ public class FreeTestController {
     }
 
 
-    @PostMapping("/rejectApplication")
+    @PutMapping("/rejectApplication")
     @ApiOperation(value = "拒绝免测")
     @PreAuthorize("hasAnyAuthority('admin')")
     public Result rejectApplication(@RequestBody FreeTestDTO freeTestDTO){

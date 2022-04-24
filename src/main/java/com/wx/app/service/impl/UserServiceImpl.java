@@ -13,6 +13,7 @@ import com.wx.app.dto.TeacherDTO;
 import com.wx.app.entity.LoginUser;
 import com.wx.app.entity.User;
 import com.wx.app.enums.CommonCode;
+import com.wx.app.mapper.ShowStudentInfoVoMapper;
 import com.wx.app.mapper.StudentMapper;
 import com.wx.app.mapper.TeacherInfoMapper;
 import com.wx.app.mapper.UserMapper;
@@ -20,6 +21,7 @@ import com.wx.app.service.UserService;
 import com.wx.app.utils.RedisCache;
 import com.wx.app.utils.Result;
 import com.wx.app.utils.UserUtils;
+import com.wx.app.vo.ShowStudentInfoVo;
 import com.wx.app.vo.StudentInfoVo;
 import com.wx.app.vo.TeacherInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +43,8 @@ public class UserServiceImpl implements UserService {
     private StudentMapper studentMapper;
     @Autowired
     private TeacherInfoMapper teacherInfoMapper;
+    @Autowired
+    private ShowStudentInfoVoMapper showStudentInfoVoMapper;
     @Autowired
     private RedisCache redisCache;
 
@@ -281,5 +285,14 @@ public class UserServiceImpl implements UserService {
             return new Result(CommonCode.FAILURE);
         }
         return new Result(CommonCode.SUCCESS);
+    }
+
+    @Override
+    public Result getStudentsByClass(PageDTO pageDTO, String specialtyClass) {
+        QueryWrapper<ShowStudentInfoVo> queryWrapper = new QueryWrapper<>();
+        Page<ShowStudentInfoVo> page = new Page<>(pageDTO.getCurrent(),pageDTO.getSize());
+        queryWrapper.eq("specialty_class", specialtyClass);
+        Page<ShowStudentInfoVo> showStudentInfoVoPage = showStudentInfoVoMapper.selectPage(page, queryWrapper);
+        return new Result(CommonCode.SUCCESS,showStudentInfoVoPage);
     }
 }

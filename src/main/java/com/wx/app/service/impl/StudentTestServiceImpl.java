@@ -8,6 +8,7 @@ import com.wx.app.dto.StudentInfoDTO;
 import com.wx.app.entity.StudentTest;
 import com.wx.app.entity.User;
 import com.wx.app.enums.CommonCode;
+import com.wx.app.mapper.ShowStudentInfoVoMapper;
 import com.wx.app.mapper.StudentTestMapper;
 import com.wx.app.mapper.UserMapper;
 import com.wx.app.service.StudentTestService;
@@ -30,6 +31,9 @@ public class StudentTestServiceImpl extends ServiceImpl<StudentTestMapper, Stude
 
     @Autowired
     private StudentTestMapper studentTestMapper;
+
+    @Autowired
+    private ShowStudentInfoVoMapper showStudentInfoVoMapper;
 
     @Autowired
     private UserMapper userMapper;
@@ -66,14 +70,16 @@ public class StudentTestServiceImpl extends ServiceImpl<StudentTestMapper, Stude
         List<Map<String,Object>> list = new ArrayList<>();
         for (StudentTest studentTest : studentTestPage.getRecords()) {
             User user = userMapper.selectById(studentTest.getUserId());
-            ShowStudentInfoVo showStudentInfoVo = new ShowStudentInfoVo(user);
-            String specialtyClass = user.getSpecialtyClass();
-            Map<String,Object> map = new HashMap<>();
-            map.put("id", studentTest.getId().toString());
-            map.put("user", showStudentInfoVo);
-            map.put("semester", studentTest.getSemester());
-            map.put("specialtyClass",specialtyClass);
-            list.add(map);
+            if (user != null) {
+                ShowStudentInfoVo showStudentInfoVo = new ShowStudentInfoVo(user);
+                String specialtyClass = user.getSpecialtyClass();
+                Map<String,Object> map = new HashMap<>();
+                map.put("id", studentTest.getId().toString());
+                map.put("user", showStudentInfoVo);
+                map.put("semester", studentTest.getSemester());
+                map.put("specialtyClass",specialtyClass);
+                list.add(map);
+            }
         }
         res.setRecords(list);
         return new Result(CommonCode.SUCCESS,res);

@@ -16,12 +16,14 @@ import com.wx.app.entity.User;
 import com.wx.app.enums.CommonCode;
 import com.wx.app.mapper.StudentTestInfoMapper;
 import com.wx.app.mapper.StudentTestMapper;
+import com.wx.app.mapper.TeacherInfoMapper;
 import com.wx.app.mapper.UserMapper;
 import com.wx.app.service.OrderService;
 import com.wx.app.service.StudentTestInfoService;
 import com.wx.app.service.StudentTestService;
 import com.wx.app.utils.Result;
 import com.wx.app.utils.UserUtils;
+import com.wx.app.vo.TeacherInfoVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,6 +45,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private StudentTestInfoMapper studentTestInfoMapper;
+
+    @Autowired
+    private TeacherInfoMapper teacherInfoMapper;
 
 
     @Autowired
@@ -134,8 +139,8 @@ public class OrderServiceImpl implements OrderService {
         List<StudentTestInfo> studentTestInfo = new ArrayList<StudentTestInfo>();
         for(StudentTest studentTest:studentTests){
             StudentTestInfo studentTestInfo1 = studentTestInfoMapper.selectById(studentTest.getTestId());
-            User user = userMapper.selectById(studentTestInfo1.getHeadid());
-            studentTestInfo1.setTeacherInfo(user);
+            TeacherInfoVo teacherInfoVo = teacherInfoMapper.selectById(studentTestInfo1.getHeadid());
+            studentTestInfo1.setTeacherInfo(teacherInfoVo);
             studentTestInfo.add(studentTestInfo1);
         }
         return new Result(CommonCode.SUCCESS,studentTestInfo);
