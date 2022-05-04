@@ -2,9 +2,9 @@ package com.wx.app.controller;
 
 import com.wx.app.dto.PageDTO;
 import com.wx.app.dto.TeacherDTO;
-import com.wx.app.entity.User;
 import com.wx.app.service.UserService;
 import com.wx.app.utils.Result;
+import com.wx.app.vo.TeacherInfoVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -54,14 +54,14 @@ public class TeacherController {
     }
 
     /**
-     * 老师列表
+     * 老师
      * @param user
      * @return
      */
     @ApiOperation(value = "添加老师")
     @PostMapping("/teacher")
     @PreAuthorize("hasAnyAuthority('admin')")
-    public Result addTeacher(@RequestBody User user) {
+    public Result addTeacher(@RequestBody TeacherInfoVo user) {
         log.info("user: {}",user.toString());
 
         return userService.addTeacher(user);
@@ -75,7 +75,7 @@ public class TeacherController {
     @ApiOperation(value = "修改老师")
     @PutMapping("/teacher")
     @PreAuthorize("hasAnyAuthority('admin')")
-    public Result updateTeacher(@RequestBody User user) {
+    public Result updateTeacher(@RequestBody TeacherInfoVo user) {
         log.info("user: {}",user.toString());
 
         return userService.updateTeacher(user);

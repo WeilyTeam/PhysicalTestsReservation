@@ -44,9 +44,9 @@ public class StudentTestServiceImpl extends ServiceImpl<StudentTestMapper, Stude
     }
 
     @Override
-    public StudentTest checkOrder(Long userId, String semester) {
+    public StudentTest checkOrder(Long userId, String semester,String specialtyClass) {
         QueryWrapper<StudentTest> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("user_id", userId)
+        queryWrapper.eq("specialty_class", specialtyClass)
                 .eq("semester", semester);
         return studentTestMapper.selectOne(queryWrapper);
     }

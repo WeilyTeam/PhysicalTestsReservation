@@ -1,15 +1,16 @@
 server:
   port: 8282
   ssl:
-    key-store: classpath:7567733_physicaltest.weilylab.com.pfx
-    key-store-password: 6Ksl2YC9
+    #配置为 https://
+    key-store: classpath:7567733_physicaltest.weilylab.com.pfx #ssl文件
+    key-store-password: ssl的密码
     keyStoreType: PKCS12
 #  servlet:
 #    context-path: /api
 
 spring:
   datasource:
-    url: jdbc:mysql://114.55.254.24:3306/security?characterEncoding=utf-8&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/security?characterEncoding=utf-8&serverTimezone=UTC
     username: root
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -19,7 +20,7 @@ spring:
     # redis数据库索引(默认为0)，我们使用索引为3的数据库，避免和其他数据库冲突
     database: 1
     # redis服务器地址（默认为loaclhost）
-    host: 114.55.254.24
+    host: localhost
     # redis端口（默认为6379）
     port: 6379
     # redis访问密码（默认为空）

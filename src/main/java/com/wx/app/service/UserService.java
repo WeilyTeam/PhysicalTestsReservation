@@ -6,6 +6,7 @@ import com.wx.app.dto.StudentInfoDTO;
 import com.wx.app.dto.TeacherDTO;
 import com.wx.app.entity.User;
 import com.wx.app.utils.Result;
+import com.wx.app.vo.TeacherInfoVo;
 
 /**
  * @author lingqu
@@ -28,9 +29,9 @@ public interface UserService {
 
     Result getTeacherList(PageDTO pageDTO, TeacherDTO teacherDTO);
 
-    Result addTeacher(User user);
+    Result addTeacher(TeacherInfoVo user);
 
-    Result updateTeacher(User user);
+    Result updateTeacher(TeacherInfoVo user);
 
     Result deleteTeacher(Long id, String userName);
 

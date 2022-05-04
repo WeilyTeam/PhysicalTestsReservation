@@ -6,7 +6,6 @@ package com.wx.app.filter;/**
 
 import com.alibaba.fastjson.JSON;
 import com.wx.app.entity.LoginUser;
-import com.wx.app.entity.User;
 import com.wx.app.enums.CommonCode;
 import com.wx.app.utils.JwtUtil;
 import com.wx.app.utils.RedisCache;
@@ -63,8 +62,8 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         //从redis获取用户信息
         String redisKey = "login:" + userId;
         LoginUser loginUser = redisCache.getCacheObject(redisKey);
-        User user = loginUser.getUser();
-        if (user == null){
+        //User user = loginUser.getUser();
+        if (loginUser == null){
             Map<String, Object> map = new HashMap<>();
             map.put("code", CommonCode.LOGIN_DATE.getCode());
             map.put("msg", CommonCode.LOGIN_DATE.getmsg());

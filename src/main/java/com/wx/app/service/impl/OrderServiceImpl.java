@@ -170,7 +170,7 @@ public class OrderServiceImpl implements OrderService {
             throw new RuntimeException("人数已满!!!");
         }
         User user = UserUtils.getUser();
-        StudentTest studentTest =  studentTestService.checkOrder(user.getId(), studentTestInfo.getSemester());
+        StudentTest studentTest =  studentTestService.checkOrder(user.getId(), studentTestInfo.getSemester(),user.getSpecialtyClass());
         if (studentTest != null){
             throw new RuntimeException("本学期已预约");
         }
@@ -191,6 +191,7 @@ public class OrderServiceImpl implements OrderService {
 
         studentTest.setSpecialtyClass(user.getSpecialtyClass())
                 .setTestId(studentTestInfo.getId())
+                .setUserId(user.getId())
                 .setSemester(studentTestInfo.getSemester());
 
         studentTestService.createOrder(studentTest);

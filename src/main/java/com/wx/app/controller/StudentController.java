@@ -74,7 +74,7 @@ public class StudentController {
      */
     @ApiOperation(value = "修改学生为班长")
     @PutMapping("/student/monitor")
-    @PreAuthorize("hasAnyAuthority('admin')")
+    @PreAuthorize("hasAnyAuthority('admin','teacher')")
     public Result studentToMonitor(Long userId){
         log.info("userId: {}",userId);
 
@@ -86,9 +86,9 @@ public class StudentController {
      * @param userId
      * @return
      */
-    @ApiOperation(value = "修改学生为班长")
+    @ApiOperation(value = "修改班长为学生")
     @PutMapping("/student/monitor/back")
-    @PreAuthorize("hasAnyAuthority('admin')")
+    @PreAuthorize("hasAnyAuthority('admin','teacher')")
     public Result studentToMonitorBack(Long userId){
         log.info("userId: {}",userId);
 

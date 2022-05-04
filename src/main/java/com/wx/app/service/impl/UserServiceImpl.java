@@ -31,6 +31,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -174,7 +175,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Result addTeacher(User user) {
+    public Result addTeacher(TeacherInfoVo teacherInfoVo) {
+        User user = new User();
+        user.setId(teacherInfoVo.getId());
+        user.setUserName(teacherInfoVo.getUserName());
+        user.setName(teacherInfoVo.getName());
+        user.setSex(teacherInfoVo.getSex());
+        user.setSpecialtyClass(teacherInfoVo.getSpecialtyClass());
+        user.setPhone(teacherInfoVo.getPhone());
         PasswordEncoder ps = new BCryptPasswordEncoder();
         String encode = ps.encode(user.getUserName());
         user.setPassword(encode);
@@ -187,8 +195,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Result updateTeacher(User user) {
+    public Result updateTeacher(TeacherInfoVo teacherInfoVo) {
+        User user = new User();
+        user.setId(teacherInfoVo.getId());
+        user.setUserName(teacherInfoVo.getUserName());
+        user.setName(teacherInfoVo.getName());
+        user.setSex(teacherInfoVo.getSex());
+        user.setSpecialtyClass(teacherInfoVo.getSpecialtyClass());
+        user.setPhone(teacherInfoVo.getPhone());
         user.setIdentity("老师");
+        redisCache.deleteObject("login:"+user.getId());
         int i = 0;
         if (user.getId() != null) {
             i = userMapper.updateById(user);
@@ -241,6 +257,7 @@ public class UserServiceImpl implements UserService {
         String encode = ps.encode(user.getUserName());
         user.setPassword(encode);
         user.setIdentity("学生");
+
         int insert = userMapper.insert(user);
         if (insert == 0){
             return new Result(CommonCode.FAILURE);
@@ -250,6 +267,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Result updateStudent(User user) {
+
+        redisCache.deleteObject("login:"+user.getId());
         user.setIdentity("学生");
         int i = 0;
         if (user.getId() != null) {
@@ -267,9 +286,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Result studentToMonitor(Long userId) {
+        //获取原本loginuser
+        LoginUser loginUser = redisCache.getCacheObject("login:" + userId);
         User user = userMapper.selectById(userId);
         user.setIdentity("班长");
         int i = userMapper.updateById(user);
+        //如果原本loginuser存在就更新他
+        if (loginUser != null) {
+            loginUser.setUser(user);
+            List<String> list = new ArrayList<String>();
+            list.add("monitor");
+            loginUser.setPermissions(list);
+            redisCache.deleteObject("login:"+userId);
+            redisCache.setCacheObject("login:"+userId, loginUser,24*31, TimeUnit.HOURS);
+        }
         if (i==0){
             return new Result(CommonCode.FAILURE);
         }
@@ -278,9 +308,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Result studentToMonitorBack(Long userId) {
+        //获取原本loginuser
+        LoginUser loginUser = redisCache.getCacheObject("login:" + userId);
         User user = userMapper.selectById(userId);
         user.setIdentity("学生");
         int i = userMapper.updateById(user);
+        if (loginUser != null) {
+            loginUser.setUser(user);
+            List<String> list = new ArrayList<String>();
+            list.add("student");
+            loginUser.setPermissions(list);
+            redisCache.deleteObject("login:"+userId);
+            redisCache.setCacheObject("login:"+userId, loginUser,24*31, TimeUnit.HOURS);
+        }
         if (i==0){
             return new Result(CommonCode.FAILURE);
         }
